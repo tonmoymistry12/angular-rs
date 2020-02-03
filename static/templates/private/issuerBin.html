@@ -1,0 +1,75 @@
+<div class="ruleByEditor">
+    <div class="row">
+        <div class="col-md-6 pageHeading noPadding">
+            <h5>{{binName}}</h5>
+        </div>
+        <div class="col-md-6 text-right">
+            <!--  <i type="button" ng-click="goBackView()"
+               class="fa fa-arrow-circle-o-left caseSearch-Left-Arrow cursor">Back</i> -->
+        </div>
+    </div>
+    <tabset>
+
+        <tab heading="Issuer Bin" ng-click="resetIssBinTab();">
+            <div class="animate-switch-container">
+                <form name="createBinIssuer"  class="form-validation rule" ng-submit="createBinIssuer.$valid && updateBin()" novalidate accessible-form>
+                    <div class="clearfix row">
+                        <div class="form-group col-md-4">
+                            <span class="textcell_reports">Bin Id<span class="text-danger rule-mandatory">*</span></span><!--unique-bin-id-script-->
+                            <input ng-disabled="isView || isEdit" placeholder="Enter Bin Id"  ng-space class="form-control" type="text" name="binId" ng-model="formData.binMetaData.bin_id" autocomplete="off" ng-pattern="/^[a-zA-Z0-9_.-]*$/" ng-pattern-restrict data-toggle="popover" data-content="Bin id can only consist of alphabet, number, underscore, dot and hyphen" data-trigger="focus" data-placement="bottom"  required><!--(RuleService.getCopyFlag()=='true')?false:true-->
+                            <div ng-messages="createBinIssuer.binId.$error" ng-show="createBinIssuer.binId.$error.required && issSubmitted">
+                                <div ng-message="required" class="text-danger">Please Enter Bin Id.</div>
+                            </div>
+                            <div ng-messages="createBinIssuer.binId.$error" ng-show="createBinIssuer.binId.$error.pattern && issSubmitted">
+                                <div ng-message="pattern" class="text-danger">No space and special characters are allowed except _-.</div>
+                            </div>
+                            <div ng-messages="createBinIssuer.binId.$error" ng-show="createBinIssuer.binId.$error.unique && issSubmitted">
+                                <div ng-message="unique" class="text-danger">Bin id already exists.</div>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            <span class="textcell_reports">Organization <span class="text-danger rule-mandatory">*</span></span>
+                            <div class="userRole">
+                                <select ng-disabled="isView || isEdit" class="form-control" ng-model="formData.binMetaData.org_id" name="selectedOrgId1" id="selectedOrgId1" required>
+                                    <option value="">SELECT</option>
+                                    <option ng-repeat="bank in bankList" value="{{bank.orgId}}">{{bank.name}}</option>
+                                </select>
+                            </div>
+                            <div ng-messages="createBinIssuer.selectedOrgId1.$error" ng-show="createBinIssuer.selectedOrgId1.$error.required && issSubmitted">
+                                <div ng-message="required" class="text-danger">Please Select Organization.</div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="clearfix row">
+
+                        <div class="form-group col-md-4">
+                            <span class="textcell_reports">Bin Type</span>
+                            <div class="userRole">
+                                <select ng-disabled="isView" class="form-control" ng-model="formData.binMetaData.bin_type" name="binType" id="selectedBinId">
+                                    <option value="">SELECT</option>
+                                    <option ng-repeat="bin in binTypeList" value="{{bin.value}}">{{bin.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            <span class="textcell_reports">Is International </span>
+                            <td> <input ng-disabled="isView" type="radio" name="isInternational" ng-value="true" ng-model="formData.binMetaData.is_international" ng-checked="isInternational"/><span class="ruleRadio">Yes</span></td>
+                            <td> <input ng-disabled="isView" type="radio" name="isInternational" ng-value="false" ng-model="formData.binMetaData.is_international" ng-checked="isInternational"/><span class="ruleRadio">No</span></td>
+                        </div>
+                    </div>
+
+                    <div>
+                        <button ng-disabled="" type="submit" id="issuerBin_Submit" class="btn btn-lg btn-danger" ng-click="issSubmitted=true">Submit
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </tab>
+
+    </tabset>
+
+</div>

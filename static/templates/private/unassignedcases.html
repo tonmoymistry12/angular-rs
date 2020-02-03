@@ -1,0 +1,179 @@
+<div class="userDashboard container-fluid">
+<div class="hasHeader">
+		<div class="userTabs clearfix ">
+			<div class="tab-content formStyle">
+	<!-- <h5>Unassign Cases</h5> -->
+	<h5>Assign Manual Cases</h5>
+	<form name="myForm">
+	 <div class="row searchCriteria">
+	 <div class="col-xs-2 col-lg-2">
+      	<div class="date_cell">
+			<span class="textcell_reports">FROM DATE:</span> <input type="text"
+				date-picker2 placeholder="MM-DD-YYYY" maxlength="10"
+				class="form-control3" ng-change="chnageDate()" ng-model="fromDate1" min-date="-100M"
+				max-date="+0D" required readonly="" />
+		</div>
+		<div class="text-danger" id="fromdatetodatemsg" ng-if="showMiMaxDateMsg"><small>From date can not be grater than to date .</small></div>
+    </div>
+    <div class="col-xs-2 col-lg-2">
+      <div class="date_cell">
+			<span class="textcell_reports">TO DATE:</span> <input type="text"
+				date-picker2 placeholder="MM-DD-YYYY" maxlength="10" ng-change="toDate()"
+				class="form-control3" min-date="{{mintoDate | date:'dd-MM-yyyy'}}" ng-model="toDate1" 
+				max-date="+0D" required readonly="" />
+
+		</div>
+	</div>
+	<div class="col-xs-5 col-lg-5">
+    	<span class="textcell_reports">ORGANISATION:</span> 
+		<select class="form-control upperCases"  ng-disabled="isDisabled"
+		 ng-model="case_orgId" 
+		 ng-dropdown 
+		 ng-change="change_orgID(case_orgId.orgId)"  
+		 ng-options="option.name for option in orgarnisations track by option.orgId" 
+		 required >
+		<option style="display:none" value="">PLEASE SELECT</option>
+	   </select> 
+	   
+	   <!-- <ui-select 
+           id="organisation_fld"
+           name="organisation_fld"
+           ng-model="case_orgId" 
+           uiSelectNoAnimate
+           theme="selectize"  
+           title="Choose a organisation"
+           append-to-body="true" 
+           close-on-select="true" 
+           on-select="change_orgID(case_orgId)"
+           ng-required="true"
+           ng-disabled="isDisabled"
+	       >
+      	 <ui-select-match placeholder="SELECT A ORGANISATION IN THE LIST...">{{$select.selected.name}}</ui-select-match>
+	     <ui-select-choices 
+	        repeat="option.orgId as option  in orgarnisations | propsFilter:{name:$select.search} |  uppercase"
+	        position="down" 
+	        
+	        refresh-delay="300">
+	      <span ng-bind-html="option.name | highlight: $select.search"></span>
+	      <small ng-bind-html="option.code | highlight: $select.search"></small>
+	    </ui-select-choices>
+    </ui-select> -->
+    
+    </div>
+	 <div class="col-xs-3 col-lg-3">
+    	<span class="textcell_reports">CHANNEL:</span> 
+		<select class="form-control upperCases" 
+		 ng-model="case_channel" 
+		 ng-dropdown 
+		 ng-change="change_channel(case_channel)"  
+		 ng-options="option.channelDesc  for option in channel_code | orderBy:'channelDesc' track by option.channelCode"
+		 required>
+		<option style="display:none" value="">PLEASE SELECT</option>
+	   </select>
+    
+    </div>
+    <div class="col-xs-3 col-lg-3">
+    
+    <button type="submit" id="review_cases_submit" style="margin-top: 3.3% !important;" class="btn btn-lg btn-danger" ng-click="onCaseSubmit()" ng-disabled="myForm.$invalid">Submit</button>
+    </div>
+  </div>
+  </form>
+  <div ng-if="second_block">
+	   <span ng-show="searchUserData.length > '0'" class="showTotalRecords">
+							<strong>Total Records :{{searchUserData.length}}</strong>
+						</span>
+  <div class="tab-pane active searchUser" id="searchUser">
+ <table class="table  t-responsive" id="user_table">
+							<thead id="user_table_header">
+								<tr id="user_table_row">
+									<th scope="col" id="img" class="first_row"></th>
+									<th scope="col" id="user_id">Case Id <span id="caseIdSort" class="fa fa-chevron-right calColor" ng-click="sort('caseId')" ng-class="caseIdSort?'fa-rotate-90':'fa-rotate-270'"></span></th>
+<!--
+								  	<th scope="col" id="lname">Txn Id <span id="lname_sort" class="fa fa-chevron-right calColor" ng-click="sort('txnId')" ng-class="txnIdSort?'fa-rotate-90':'fa-rotate-270'"></span></th>
+-->
+                                    <th scope="col" id="alertCount">Alert Count 
+                                    	<span id="alert_count_sort" class="fa fa-chevron-right calColor" ng-click="sort('txnCount')" ng-class="alertCountsort?'fa-rotate-90':'fa-rotate-270'"></span>
+                                    </th>
+								  	<th scope="col" id="lname">Time <span id="lname_sort" class="fa fa-chevron-right calColor" ng-click="sort('creationTs')" ng-class="creationTsSort?'fa-rotate-90':'fa-rotate-270'"></span></th>
+                                    <th scope="col" id="caseStatus">Case Status </th>
+                                    <th scope="col" id="manual/auto">Manual/Auto </th>
+<!--
+                                    <th scope="col" id="fname">Source Channel </th>
+-->
+								  	<th scope="col" id="last_login">Fraud&nbsp;Score
+								  		<!-- <span id="risk_score_sort" class="fa fa-chevron-right calColor" ng-click="sort('riskScore')" ng-class="fraudScoreSort?'fa-rotate-90':'fa-rotate-270'"></span> -->
+								  	</th>
+<!--
+								  	<th scope="col" id="last_login">Case Type</th>
+-->
+								  	<!-- <th scope="col" id="acc_status">Priority</th> -->
+								  	<th scope="col" id="action">Action</th><!--ng-hide="(authority == 'ROLE_NPCI_APPLICATION_SUPERVISOR')  || (authority == 'ROLE_NPCI_APPLICATION_ANALYSTS') || (authority == 'ROLE_BANK_SUPERVISOR') || (authority == 'ROLE_BANK_ANALYSTS')" ng-class="authority == 'ROLE_NTS_MGMT'?'ntsMgm':''"-->
+								</tr>
+							</thead>
+							<!-- <tbody ng-repeat="user in searchUserData" id="user_table_body"> -->
+							<tbody  dir-paginate="user in searchUserData|orderBy:sortKey:reverse|filter:search|itemsPerPage:selectedPage" id="user_table_body">
+								<tr id="user_table_expand_row" ng-class="user.select?'expandColorTr':''">
+									<td data-label="Expand to more info" id="user_select">
+										<h5><span class="fa" ng-class="!user.select?'fa-plus':'fa-minus'" ng-init="user.select=false" ng-model="user.select" ng-click="user.select=!user.select;isSessionValid()"></span></h5>
+									</td>
+									<td data-label="User Id" id="user_info_id">{{ user.caseId }}</td>		
+									<td data-label="txn count" id="txnCount" class="fixWidth"><p class="Uname">{{ user.txnCount }}</p></td>
+									<td data-label="Last Name" id="user_info_lname" class="tableWidth"><p>{{ user.creationTs!=null?(user.creationTs | GMT):'NA'}}</p></td>
+<!--
+								 	<td data-label="First Name" id="user_info_fname" class="fixWidth"><p class="Uname">{{channelDisplay(user.sourceChannel) }}</p></td>
+-->
+                                    <td data-label="case status">{{ user.caseStatus }}</td>
+                                    <td data-label="case type">{{ user.isManual == false ? 'AUTO' : 'MANUAL' }}</td>
+								  	<td data-label="Time stamp" id="user_info_prevlogin">{{ chckRiskScore(user)}}</td>
+<!--
+								  	<td data-label="Time stamp" id="user_info_prevlogin">{{user.caseStatus}}</td>
+-->
+								   <!--  <td data-label="Account Status" id="user_info_priority">{{ user.priority }}</td> -->
+								  	<td data-label="Action" id="user_info_action" ng-class="authority == 'ROLE_NTS_MGMT'?'ntsMgm':''">
+								  		<div class="dropdown" id="user_info_action_dropdown" >
+										  <button class="btn dropdown-toggle button-width" type="button" data-toggle="dropdown"><span class="fa fa-cog add_red" aria-hidden="true"></span>
+										  </button>
+										  <ul class="dropdown-menu drop-downadj drop-downadj2" id="user_info_action_dropdown_action">
+										    <li ng-if="user.caseStatus !='AUTO_EXPIRED'"><a href="#" id="assign_case"><span class="glyphicon" ng-click="assign(user.caseId)" >&#xe013; Assign</span></a></li>
+										   <li ><a ng-click="showData(user.caseId, user.sourceChannel,user.assignedToOrig)" id="view_case" href="#" ><span  class="glyphicon" aria-hidden="true">&#xe105; View</span></a></li>
+										  </ul>										 
+										</div>
+								  	</td>							  	
+								</tr>
+								<tr ng-show="user.select" id="user_select_row" class="expandColor">
+									<td colspan="8" >
+										<div class="row clearfix" style="padding-left:1%">
+											<div class="col-sm-offset-1 col-sm-4" id="user_select_fname"><strong>Last Updated Time :</strong> <span class="firstName">{{user.lastUpdateTs!=null?(user.lastUpdateTs | GMT):'NA'}}</span> </div>
+										</div>
+										
+									</td>																						  	
+								</tr>
+							</tbody>
+</table>
+</div>	
+	<div class="text-center noData ng-hide" id="no_data_found"
+		ng-show="searchUserData.length == 0">
+		<h6>No Data Found</h6>
+	</div>
+<div class="gridPagination clearfix" >
+	 <div class="col-sm-1" ng-show="searchUserData.length > 0">
+		<select ng-model="selectedPage" name="pageSize" id="selectpage" ng-change="changePageSize(selectedPage)">
+			<option value="5">5</option>
+			<option value="10">10</option>
+			<option value="25">25</option>
+			<option value="50">50</option>
+			<option value="100">100</option>
+		</select>
+	</div>
+	
+	
+	
+	 <dir-pagination-controls max-size="3"  direction-links="true" boundary-links="true" ></dir-pagination-controls>				
+	 </div>
+	 
+</div>
+	</div>
+	</div>
+	</div>
+		
+</div>

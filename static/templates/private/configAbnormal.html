@@ -1,0 +1,71 @@
+<div class="userDashboard container-fluid">
+    <div class="hasHeader">
+        <div class="userTabs clearfix settings">
+            <div class="tab-content formStyle">
+                <div class="row labelLeft">
+                    <div class="col-md-6 pageHeading noPadding">
+                        <h5>{{title}}</h5>
+                    </div>
+                </div>
+                <div class="tab-pane active searchUser" id="searchUser">
+
+                    <form name="abnormalHours" ng-submit="abnormalHours.$valid && configAbnormalHours()" novalidate>
+
+                        <div class="clearfix row">
+                        <div class="form-group col-md-3">
+                            <span class="textcell_reports">MCC</span>
+                            <input class="form-control" maxlength="4" ng-disabled="createFlag==true?false:true" type="text" placeholder="ENTER MCC*" name="mcc" ng-model="mcc" only-digits="true" autocomplete="off" auto-focus required>
+                            <div ng-messages="abnormalHours.mcc.$error" ng-show="abnormalHours.mcc.$error.required && submitted">
+                                <div ng-message="required" class="text-danger">Please Enter MCC</div>
+                            </div>
+                        </div>
+                        </div>
+
+                        <div class="clearfix row">
+                            <div class="form-group col-md-7">
+                            	 <div class="form-group col-md-3">
+                                <span class="textcell_reports">From Time(hh:mm:ss)</span>
+                                <span class="ruleDate">
+                                    <input type="time" step="1" class="ruleTime" id="fromTime" name="fromTime" ng-model="fromTime"
+                                           placeholder="HH:mm:ss*" min="00:00:00" value = "{{fromTime | date:'HH:mm:ss'}}"
+                                           ng-change="changeFromTime(fromTime | date:'HH:mm:ss')" required/>
+                                </span>
+                                <div ng-messages="abnormalHours.fromTime.$invalid" class="text-danger" ng-show="abnormalHours.fromTime.$invalid && submitted">
+                                    <small>Invalid Time Format (hh:mm:ss)</small>
+                                </div>
+                                </div>
+                                <div class="form-group col-md-3">
+                                 <span class="textcell_reports">To Time (hh:mm:ss)</span>
+                                <div class="date_cell ruleDate">
+                                    <input type="time" step="1" class="ruleTime" id="toTime" name="toTime" ng-model="toTime"
+                                           placeholder="HH:mm:ss*" min="00:00:00" value = "{{toTime | date:'HH:mm:ss'}}"
+                                           ng-change="changeToTime(toTime | date:'HH:mm:ss')" required/>
+                                </div>
+                                <div ng-messages="abnormalHours.toTime.$invalid" class="text-danger" ng-show="abnormalHours.toTime.$invalid && submitted">
+                                    <small>Invalid Time Format (hh:mm:ss)</small>
+                                </div>
+								</div>
+                            </div>
+
+                            <!-- <div class="form-group col-md-4">
+                               
+                            </div> -->
+                        </div>
+
+                            <div><button type="submit" id="abnormalHours_Submit" class="btn btn-lg btn-danger" ng-click="submitted=true">Submit
+                            </button> <span ng-if="createFlag==true?false:true"><button class="btn btn-lg btn-danger" type="button" ng-click="goBack()">Back</button></span> </div>
+
+
+                    </form>
+
+                </div>
+               <!--  <div class="back_width" >
+                   
+                </div> -->
+            </div>
+
+        </div>
+    </div>
+
+
+</div>

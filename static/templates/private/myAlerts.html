@@ -1,0 +1,96 @@
+<div class="userDashboard container-fluid">
+    <div class="hasHeader">
+        <div class="userTabs clearfix ">
+            <div class="tab-content formStyle">
+                <h5>My Cases</h5>
+                <form name="myForm">
+                    <div class="form-group col-sm-12 noPadding">
+                        <select ng-model="selectedStatus" name="selectedStatus" id="selectedStatus" class="form-control col-sm-4" id="selectedStatus" ng-change="myAlerts()">
+                            <option style="display:none" label="PLEASE SELECT THE STATUS"></option>
+                            <option ng-repeat="item in status" value="{{item.value}}">{{item.type}}</option>
+                        </select>
+                    </div>
+                </form>
+
+                <div class="tab-pane active searchUser" id="searchUser">
+                    <div class="form-group col-sm-12 noPadding">
+                        <span class="textcell_reports">Search By:</span>
+                        <select class="form-control col-sm-4" ng-model="searchBy" name="searchBy" id="searchBy" ng-change="sarchSelected(searchBy)">
+                            <option style="display:none" label="ENTER SEARCH CRITERIA"></option>
+                            <option class="upperCases" ng-repeat="item in searchCategory" value="{{item.value}}">{{item.type}}</option>
+                        </select>
+                        <div class="col-sm-4" ng-show="searchBy=='alertId'">
+                        <input class="form-control" placeholder="Enter Alert Id" ng-model="searchType.alert.alertId"/>
+                        </div>
+                        <div class="col-sm-4" ng-show="searchBy=='caseId'">
+                            <input class="form-control" placeholder="Enter Case Id" ng-model="searchType.alert.caseId"/>
+                        </div>
+                        <div class="col-sm-4" ng-show="searchBy=='txnId'">
+                            <input class="form-control" placeholder="Enter Transaction Id" ng-model="searchType.caseTransactionDetail.txnId"/>
+                        </div>
+                    </div>
+                    <table class="table  t-responsive">
+                        <thead>
+                        <tr>
+                            <th scope="col" id="img"></th>
+                            <th scope="col">Alert Id <span id="createdTime_sort" class="fa fa-chevron-right calColor" ng-click="sort('alertId')" ng-class="alertIdSort?'fa-rotate-90':'fa-rotate-270'"></span></th>
+                            <th scope="col">Case Id <span id="createdTime_sort" class="fa fa-chevron-right calColor" ng-click="sort('caseId')" ng-class="caseIdSort?'fa-rotate-90':'fa-rotate-270'"></span></th>
+                            <th scope="col">Transaction Id <span id="createdTime_sort" class="fa fa-chevron-right calColor" ng-click="sort('txnId')" ng-class="txnIdSort?'fa-rotate-90':'fa-rotate-270'"></span></th>
+                            <th scope="col" id="createdTime">Creation Time <span id="createdTime_sort" class="fa fa-chevron-right calColor" ng-click="sort('creationTs')" ng-class="creationTsSort?'fa-rotate-90':'fa-rotate-270'"></span></th>
+                            <th scope="col" id="updatedTime">Last Updated Time <span id="updatedTime_sort" class="fa fa-chevron-right calColor" ng-click="sort('lastUpdateTs')" ng-class="lastUpdateTsSort?'fa-rotate-90':'fa-rotate-270'"></span></th>
+                            <th scope="col">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody ng-hide="data.length == '0'" dir-paginate="alert in data|orderBy:sortKey:reverse|filter:searchType|itemsPerPage:5">
+                        <tr id="alert_table_expand_row" ng-class="alert.select?'expandColorTr':''">
+                            <td data-label="Expand to more info" id="alert_select">
+                                <h5><span class="fa" ng-class="!alert.select?'fa-plus':'fa-minus'" ng-init="alert.select=false" ng-model="alert.select" ng-click="alert.select=!alert.select;isSessionValid()"></span></h5>
+                            </td>
+                            <td data-label="alert id">{{ alert.alert.alertId }}</td>
+                            <td data-label="alert id">{{ alert.alert.caseId }}</td>
+                            <td data-label="Tax Amount">{{alert.caseTransactionDetail.txnId}}</td>
+                            <td data-label="created time">{{ alert.alert.creationTs==null?'NA':alert.alert.creationTs| date: 'yyyy-MM-dd HH:mm:ss Z ' | GMT}}</td>
+                            <td data-label="updated time">{{ alert.alert.lastUpdateTs==null?'NA':alert.alert.lastUpdateTs | date: 'yyyy-MM-dd HH:mm:ss Z ' | GMT}}</td>
+                            <td data-label="Action" id="alert_action" class='' >
+                                <div class="dropdown" id="alert_action_dropdown">
+                                    <button class="btn dropdown-toggle button-width text-center" type="button" data-toggle="dropdown"><span class="fa fa-cog fa-cog-red" aria-hidden="true"></span>
+                                    </button>
+                                    <ul class="dropdown-menu drop-downadj fa-eye-ul" id="alert_info_action_dropdown_action">
+                                        <li><a href="#" id="view_alert" ng-click="showData(alert)"><span class="fa fa-eye" aria-hidden="true" >View Alert</span></a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr ng-show="alert.select" id="case_select_row" class="expandColor">
+                            <td colspan="9" class="queueTable">
+                                <div class="row clearfix">
+                                    <div class="col-sm-offset-1" id="queue_name"><strong>Alert Description :</strong> <span class="lastName">{{ alert.alert.alertDesc }}</span></div>
+                                    <div class="col-sm-offset-1" id="cardNumber"><strong>Card Number :</strong> <span class="lastName">{{ alert.caseTransactionDetail.cardNumber }}</span></div>
+                                </div>
+                            </td>
+                        </tr>
+
+
+                        </tbody>
+                    </table>
+                    <div class="text-center noData" id="no_data_found" ng-show="data.length == '0'"> <h6>No Data Found</h6></div>
+                    <div class="gridPagination clearfix" ng-show="data.length !='0'">
+                        <div class="col-sm-1 noPadding" >
+                            <select ng-if="showme" ng-model="selectedPage" name="pageSize" id="selectpage" ng-change="changePageSize(selectedPage)">
+                                <option value="10">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                                <option value="ALL">Fetch All</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-8">
+                            <dir-pagination-controls max-size="5"  direction-links="true" boundary-links="true" ></dir-pagination-controls>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,74 @@
+// media queries
+/*@include MQ(L) {}*/
+@mixin MQ($canvas) {
+  @if $canvas == SC {
+   @media only screen and (max-width: $S) { @content; } 
+  }
+  @if $canvas == S {
+   @media only screen and (min-width: $S) { @content; } 
+  }
+  @else if $canvas == M {
+   @media only screen and (min-width: $M) { @content; } 
+  }
+  @else if $canvas == L {
+   @media only screen and (min-width: $L) { @content; } 
+  }
+  @else if $canvas == XL {
+   @media only screen and (min-width: $XL) { @content; } 
+  }
+}
+
+// super light grid system
+/*@include column(.48);*/
+@mixin column($percentage, $float-direction:left) {
+  width: 100% * $percentage;
+  float: $float-direction;
+}
+
+/*=== BACKGROUND IMAGE COVER ===*/
+/*@include background-cover(cover);*/ //usages of Background Cover
+@mixin background-cover($cover) {
+    -webkit-background-size: $cover;
+    -moz-background-size: $cover;
+    -o-background-size: $cover;
+    background-size: $cover;
+}
+
+/*=== BORDER RADIUS ===*/
+/*@include border-radius(10px);*/ //usages of Border radius
+@mixin border-radius($radius) {
+    -webkit-border-radius:$radius;
+    -moz-border-radius: $radius;
+    -o-border-radius: $radius;
+    border-radius: $radius;
+}
+
+/*=== ZOOM ===*/
+/*@include zoom(0.1);*/ //usages of Zoom
+@mixin zoom($scale) {
+    -ms-transform: scale($scale);
+    -webkit-transform: scale($scale);
+    transform: scale($scale);
+}
+
+/*=== TRANSFORM ROTATE ===*/
+/*@include transformRotate (45deg);*/ //usages of Transform Rotate
+@mixin transformRotate ($number) {
+    -ms-transform: rotate($number);
+    -webkit-transform: rotate($number);
+    transform: rotate($number);
+}
+
+/*=== BOX-SHADOW ===*/
+/*@include box-shadow(0px, 7px, 15px, 0px, rgba(0, 0, 0, 0.6));*/ //usages of Box Shadow
+@mixin box-shadow($left, $top, $blur, $Spread, $color, $inset: false) {
+  @if $inset {
+    -webkit-box-shadow:inset $left $top $blur $Spread $color;
+    -moz-box-shadow:inset $left $top $blur $Spread $color;
+    box-shadow:inset $left $top $blur $Spread $color;
+  } @else {
+    -webkit-box-shadow: $left $top $blur $Spread $color;
+    -moz-box-shadow: $left $top $blur $Spread $color;
+    box-shadow: $left $top $blur $Spread $color;
+  }
+}

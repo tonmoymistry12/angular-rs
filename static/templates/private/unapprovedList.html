@@ -1,0 +1,240 @@
+<div class="userDashboard container-fluid">
+	<div class="hasHeader">
+		<div class="userTabs clearfix settings">
+			<div class="tab-content formStyle">
+				<div class="pageHeading"><h5>Approve / Pending</h5></div>
+				<div class="tab-pane active searchUser" id="searchUser">
+					
+					<form name ="searchUser" novalidate>
+						<div class="clearfix row searchCriteria">					
+							<div class="col-sm-4">								
+				 				<div class="useruser">
+				 					<span class="textcell_reports">SEARCH CRITERIA:</span>
+				 					<select class="form-control" ng-model="status" ng-change="changeStatus()"  name="status" id="status">
+				 						<option ng-repeat="item in items" value="{{item.val}}">{{item.name}}</option> 
+				 					</select>			 					
+				 				</div>
+							</div>	
+							<div class="col-sm-8">
+								<div class="row">
+									<div class="col-sm-6" style="margin-top:.3%">
+										<span class="textcell_reports">Organisation:</span>
+					 					<select class="form-control" name="orgid" ng-disabled="isNpciOrgId != 'NPCI'" ng-model="filter">
+					 						<!-- <option  ng-if="isNpciOrgId == 'NPCI'" value="ALL"> All ORGANISATION</option> -->
+											<option class="upperCases" ng-repeat="data in orgarnisations" value="{{data.orgId}}">{{data.name}}</option>
+										</select>
+										
+									<!-- <ui-select 
+							           id="organisation_fld"
+							           name="organisation_fld"
+							           ng-model="filter" 
+							           uiSelectNoAnimate
+							           theme="selectize"  
+							           title="Choose a organisation"
+							           append-to-body="true" 
+							           close-on-select="true" 
+							           ng-disabled="isNpciOrgId != 'NPCI'"
+							           on-select="changedValueForOrganisation(filter)"
+							           ng-required="true"
+								   >
+	      	 						<ui-select-match placeholder="SELECT A ORGANISATION IN THE LIST...">{{$select.selected.name}}</ui-select-match>
+								     <ui-select-choices 
+								        repeat="option.orgId as option in orgarnisations | filter: $select.search | limitTo: 100 | uppercase"
+								        position="down" 
+								        limit="100"
+								        refresh-delay="300">
+								      <span ng-bind-html="option.name | highlight: $select.search"></span>
+								      <small ng-bind-html="option.orgId | highlight: $select.search"></small>
+								    </ui-select-choices>
+    							</ui-select> -->
+									</div>
+									<div class="col-sm-4 nopad-left">							
+								 		<button type="submit" id="search_user_submit" class="btn btn-lg btn-danger searchUserPaddingTop" ng-click="getList()">Submit</button>
+									</div>
+								</div>
+							</div>								
+						</div>							
+					</form>	
+					<span ng-if="unapprovedList.length != 0" class="showTotalRecords">
+							<strong>Total Records :{{unapprovedList.length}}</strong>
+					</span>	
+					<span ng-if="unapprovedList.length == 0" class="showTotalRecords">
+							<strong>Total Records :0</strong>
+					</span>								
+						<table  class="table  t-responsive table_adj" id="user_table" ng-if="userRole == 'users'">
+							<thead>
+								<tr>
+									<th scope="col" id="img" class="first_row"></th>								  	
+								  	<th scope="col">First Name <span class="fa fa-chevron-right calColor"  ng-click="sort('firstName')" ng-class="firstNameSort?'fa-rotate-90':'fa-rotate-270'"></span></th>							  	
+								  	<th scope="col">Last Name <span class="fa fa-chevron-right calColor"  ng-click="sort('lastName')" ng-class="lastNameSort?'fa-rotate-90':'fa-rotate-270'"></span></th>
+								  	<th scope="col">Organisation</th>
+								  	<th scope="col">Role</th>
+								  	<th scope="col">Email / User Id</th>
+								  	<th scope="col">Phone no</th>
+								  	<th scope="col" id="action" ng-class="authority == 'ROLE_NTS_MGMT'?'ntsMgm':''">Action</th>
+								</tr>
+							</thead>
+							<tbody  dir-paginate="data in unapprovedList|orderBy:sortKey:reverse|filter:searchData|itemsPerPage:selectedPage">
+							
+								<tr id="unassigned_table_expand_row" ng-class="data.select?'expandColorTr':''">
+									<td data-label="Expand to more info" id="data_select">
+										<h5><span class="fa" ng-class="!data.select?'fa-plus':'fa-minus'" ng-init="data.select=false" ng-model="data.select" ng-click="data.select=!data.select;isSessionValid()"></span></h5>
+									</td>
+								
+								 	<td data-label="First Name" id="first_name" class="fixWidth"><p class="Uname"><span popover-trigger="outsideClick" class='searchFnamefont' popover-class="my-notifications-popover" uib-popover="{{data.firstName}}"  popover-append-to-body="true" popover-placement="right" popover>{{ data.firstName }}</span></p></td>
+								  	<td data-label="Last Name" id="lastName"><span popover-trigger="outsideClick" class='searchFnamefont' popover-class="my-notifications-popover" uib-popover="{{data.lastName}}"  popover-append-to-body="true" popover-placement="right" popover>{{ data.lastName}}</span></td>
+								  	<td data-label="Organisation" id="unapprove_organisation" class="fixWidth"><p class="Uname"><span popover-trigger="outsideClick" class='searchFnamefont' popover-class="my-notifications-popover" uib-popover="{{data.orgName}}"  popover-append-to-body="true" popover-placement="right" popover>{{ data.orgName}}</span></p></td>
+								  	<td data-label="Role" id="role">{{ roleDisplay(data.loginUserRole)}}</td>
+								  	<td data-label="Email" id="unapprove_email">{{ data.email}}</td>
+								  	<td data-label="Phno" id="Phno">{{ data.phoneNo}}</td>	
+								  	<td data-label="Action" id="unapprove_action" ng-class="authority == 'ROLE_NTS_MGMT'?'ntsMgm':''">
+								  		<div class="dropdown" id="unapprove_action_dropdown" ng-if="checkStatus == 'users'">
+										  <button class="btn dropdown-toggle button-width" ng-disabled = "loggedInUserMail == data.createdBy" type="button" data-toggle="dropdown"><span class="fa fa-cog" aria-hidden="true"></span>
+										  </button>
+										  <ul class="dropdown-menu drop-downadj fa-eye-ul" ng-if="loggedInUserMail != data.createdBy" id="unapprove_info_action_dropdown_action">
+										    <li ng-click="decisionModel(data,'reject')"><a href="#" id="reject" ><span class="fa fa-close" aria-hidden="true" >Reject</span></a></li>
+										    <li  ng-click="decisionModel(data,'approve')"><a  id="approve" href="#" ><span class="fa fa-check" aria-hidden="true">Approve</span></a></li>
+										  </ul>										 
+										</div>
+										
+										<div class="dropdown" id="unapprove_action_dropdown" ng-if="checkStatus == 'editUser'">
+										  <button class="btn dropdown-toggle button-width" ng-disabled = "loggedInUserMail == data.lastEditedBy" type="button" data-toggle="dropdown"><span class="fa fa-cog" aria-hidden="true"></span>
+										  </button>
+										  <ul class="dropdown-menu drop-downadj fa-eye-ul" ng-if="loggedInUserMail != data.lastEditedBy" id="unapprove_info_action_dropdown_action">
+										    <li ng-click="decisionModel(data,'reject')"><a href="#" id="reject" ><span class="fa fa-close" aria-hidden="true" >Reject</span></a></li>
+										    <li  ng-click="decisionModel(data,'approve')"><a  id="approve" href="#" ><span class="fa fa-check" aria-hidden="true">Approve</span></a></li>
+										  </ul>										 
+										</div>
+										
+										<div class="dropdown" id="unapprove_action_dropdown" ng-if="checkStatus == 'deactive'">
+										  <button class="btn dropdown-toggle button-width" ng-disabled = "loggedInUserMail == data.lastDeactivatedBy" type="button" data-toggle="dropdown"><span class="fa fa-cog" aria-hidden="true"></span>
+										  </button>
+										  <ul class="dropdown-menu drop-downadj fa-eye-ul" ng-if="loggedInUserMail != data.lastDeactivatedBy" id="unapprove_info_action_dropdown_action">
+										    <li ng-click="decisionModel(data,'reject')"><a href="#" id="reject" ><span class="fa fa-close" aria-hidden="true" >Reject</span></a></li>
+										    <li  ng-click="decisionModel(data,'approve')"><a  id="approve" href="#" ><span class="fa fa-check" aria-hidden="true">Approve</span></a></li>
+										  </ul>										 
+										</div>
+										
+										<div class="dropdown" id="unapprove_action_dropdown" ng-if="checkStatus == 'active'">
+										  <button class="btn dropdown-toggle button-width" ng-disabled = "loggedInUserMail == data.lastReactivatedBy" type="button" data-toggle="dropdown"><span class="fa fa-cog" aria-hidden="true"></span>
+										  </button>
+										  <ul class="dropdown-menu drop-downadj fa-eye-ul" ng-if="loggedInUserMail != data.lastReactivatedBy" id="unapprove_info_action_dropdown_action">
+										    <li ng-click="decisionModel(data,'reject')"><a href="#" id="reject" ><span class="fa fa-close" aria-hidden="true" >Reject</span></a></li>
+										    <li  ng-click="decisionModel(data,'approve')"><a  id="approve" href="#" ><span class="fa fa-check" aria-hidden="true">Approve</span></a></li>
+										  </ul>										 
+										</div>
+								  	</td>		
+								  						  				  	
+								</tr>
+								
+								<tr ng-show="data.select" id="data_select_row" class="expandColor">
+									<td colspan="8" class="queueTable">
+										<!-- <div class="row clearfix">
+											<div class="col-sm-offset-1 col-sm-4" id="frist_name"><strong>First Name :</strong> <span class="firstName">{{ data.firstName }}</span> </div>
+											<div class="col-sm-3" id="user_select_mname" ng-if="isMiddleNamePresent(data.middleName)"><strong>Middle Name :</strong> <span class="lastName">{{data.middleName}}</span></div>
+											<div class="col-sm-4" id="last_name"><strong>Last Name :</strong> <span class="lastName">{{ data.lastName }}</span></div>
+										</div> -->
+										<!-- <div class="row clearfix">
+											<div class="col-sm-offset-1 col-sm-3" id="phoneNo"><strong>Phone No :</strong> {{ data.phoneNo}}</div>
+											<div class= "col-sm-3" id="lastCreateddBy" ng-if="checkStatus == 'users'"><strong>Created By:</strong> {{ data.createdBy}}</div>
+											<div class="col-sm-3" id="lastUpdatedBy" ng-if="checkStatus != 'users'"><strong ng-if="checkStatus == 'editUser'">Updated By:</strong><strong ng-if="checkStatus == 'deactive'">Deactivated By:</strong><strong ng-if="checkStatus == 'active'">Reactivated By:</strong> {{ data.lastUpdatedBy}}</div>
+										</div> -->
+										<div class="row clearfix">
+											
+											<div class="col-sm-4 col-sm-offset-1" id="created_by"><strong>Created By :</strong> {{data.createdBy}}</div>
+											<div class="col-sm-3" id="created_time"><strong>Creation Time :</strong> {{data.creationTS | GMT}}</div>
+										</div>
+										
+										<div class="row clearfix seacrhUserPadding" ng-if="data.lastEditedBy != null">
+											
+											<div class="col-sm-4 col-sm-offset-1" id="created_by"><strong>Last Edited By :</strong> {{data.lastEditedBy}}</div>
+											<div class="col-sm-3" id="created_time"><strong>Last Edited Time :</strong> {{data.lastEditedTs | GMT}}</div>
+										</div>
+										
+										<div class="row clearfix seacrhUserPadding" ng-if="data.lastDeactivatedBy != null">
+											
+											<div class="col-sm-4 col-sm-offset-1" id="deactivated_by"><strong>Last Deactivated By :</strong> {{data.lastDeactivatedBy}}</div>
+											<div class="col-sm-3" id="deactivated_time"><strong>Last Deactivated Time :</strong> {{data.lastDeactivatedTs | GMT}}</div>
+										</div>
+										
+										<div class="row clearfix seacrhUserPadding" ng-if="data.lastReactivatedBy != null">
+											
+											<div class="col-sm-4 col-sm-offset-1" id="reactivated_by"><strong>Last Reactivated By :</strong> {{data.lastReactivatedBy}}</div>
+											<div class="col-sm-3" id="deactivated_time"><strong>Last Reactivated Time :</strong> {{data.lastReactivatedTs | GMT}}</div>
+										</div>
+										
+										<div class="row clearfix seacrhUserPadding" ng-if="data.lastRejectedBy != null">
+											
+											<div class="col-sm-4 col-sm-offset-1" id="reactivated_by"><strong>Last Rejected By :</strong> {{data.lastRejectedBy}}</div>
+											<div class="col-sm-3" id="deactivated_time"><strong>Last Rejected Time :</strong> {{data.lastRejectedTs | GMT}}</div>
+										</div>
+										
+										<div class="row clearfix seacrhUserPadding" ng-if="data.lastRejectedBy != null">
+											
+											<div class="col-sm-4 col-sm-offset-1" id="reactivated_by"><strong>Last Reactivated By :</strong> {{data.lastReactivatedBy}}</div>
+											<div class="col-sm-3" id="deactivated_time"><strong>Last Reactivated Time :</strong> {{data.lastReactivatedTs | GMT}}</div>
+										</div>
+										
+										<div class="row clearfix seacrhUserPadding" ng-if="data.lastApprovedBy != null">
+											
+											<div class="col-sm-4 col-sm-offset-1" id="approved_by"><strong>Last Approved By :</strong> {{data.lastApprovedBy}}</div>
+											<div class="col-sm-3" id="approved_time"><strong>Last Approved Time :</strong> {{data.lastApprovedTs | GMT}}</div>
+										</div>
+										
+										<div class="row clearfix" ng-if="data.notes != null">
+											<div class= "col-sm-offset-1 col-sm-7" id="notes" ><strong>Notes:</strong> {{ data.notes}}</div>
+										</div>
+										
+										<div class="row clearfix" ng-if="data.createdByNotes != null">
+											<div class= "col-sm-offset-1 col-sm-7" id="notes" ><strong>Created Notes:</strong> {{ data.createdByNotes}}</div>
+										</div>
+										
+										<div class="row clearfix" ng-if="data.approvedNotes != null">
+											<div class= "col-sm-offset-1 col-sm-7" id="notes" ><strong>Approved Notes:</strong> {{ data.approvedNotes}}</div>
+										</div>
+										
+										<div class="row clearfix" ng-if="data.rejectedNotes != null">
+											<div class= "col-sm-offset-1 col-sm-7" id="notes" ><strong>Rejected Notes:</strong> {{ data.rejectedNotes}}</div>
+										</div>
+										
+										<div class="row clearfix" ng-if="data.deactivatedNotes != null">
+											<div class= "col-sm-offset-1 col-sm-7" id="notes" ><strong>Deactivated Notes:</strong> {{ data.deactivatedNotes}}</div>
+										</div>
+										
+										<div class="row clearfix" ng-if="data.reactivatedNotes != null">
+											<div class= "col-sm-offset-1 col-sm-7" id="notes" ><strong>Reactivated Notes:</strong> {{ data.reactivatedNotes}}</div>
+										</div>
+										
+										<div class="row clearfix" ng-if="data.editedNotes != null">
+											<div class= "col-sm-offset-1 col-sm-7" id="notes" ><strong>Edited Notes:</strong> {{ data.editedNotes}}</div>
+										</div>
+									</td>	
+																														  	
+								</tr>	
+																												
+							</tbody>
+						</table>
+										
+					<div  ng-show="(unapprovedList|filter:searchData).length==0 || unapprovedList.length == '0' || unapprovedList == undefined" class="text-center noData"><h6>No Records Found</h6></div>  
+					
+					
+					<div class="gridPagination clearfix" ng-show="unapprovedList.length != '0'">
+						<div class="col-sm-1" >
+							<select ng-show="unapprovedList.length > 5" ng-model="selectedPage" name="pageSize" id="selectpage">
+									<option value="5">5</option>
+									<option value="10">10</option>
+									<option value="25">25</option>
+									<option value="50">50</option>
+									<option value="100">100</option>
+							</select>
+						</div>
+						
+						<div class="col-sm-8">
+							<dir-pagination-controls max-size="5" direction-links="true" boundary-links="true" on-page-change="pageChanged(newPageNumber)" ></dir-pagination-controls>
+						</div>
+					</div>															
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

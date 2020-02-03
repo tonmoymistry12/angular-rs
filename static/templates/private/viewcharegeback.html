@@ -1,0 +1,100 @@
+<div class="userDashboard container-fluid" id="insertHotListValue">
+	<div class="hasHeader">
+		<!-- Tabs start -->	
+		<div class="userTabs clearfix">
+			<div class="tab-content formStyle">
+				<div class="row">
+					<div class="col-md-6"><h5>View Charge Back</h5></div>
+					
+				</div>
+			  	<div class="tab-pane active" id="viewChargeBckFrom">
+			  		<form name="viewchargebackform" ng-submit="viewchargebackform.$valid && onChargeBackViewSubmit()" novalidate accessible-form>
+						<div class="clearfix row">
+							<!-- <div class="col-xs-3 col-lg-4">
+										<span class="textcell_reports">Channel:</span> 
+										<select class="form-control" id="channel" name="channel" ng-change="changeChannel(selectedChannel)" ng-model="selectedChannel"   required>
+											<option style="display:none" value="">PLEASE SELECT THE CHANNEL</option>
+											<option  ng-repeat="data in channel_code|orderBy:'channelDesc'" value="{{data.channelCode}}">{{data.channelDesc}}</option>										
+										</select>
+										<div class="text-danger" id="firstname_required_msg" ng-show="chargebackform.channel.$error.required && submitted"><small>This is a required field.</small></div>							
+							</div> -->
+							
+							<div class="col-xs-3 col-lg-4">
+										<span class="textcell_reports">Status:</span> 
+										<select class="form-control" id="status" name="status"  ng-model="selectedstatus"   required>
+											<option style="display:none" value="">PLEASE SELECT THE STATUS</option>
+											<option  ng-repeat="data in statusList" value="{{data.val}}">{{data.name}}</option>										
+										</select>
+										<div class="text-danger" id="firstname_required_msg" ng-show="viewchargebackform.status.$error.required && submitted"><small>This is a required field.</small></div>							
+							</div>
+							
+							<div class="col-xs-3 col-lg-4">
+								<button type="submit"
+								class="btn btn-lg btn-danger" style="margin-top:6%"
+								ng-disabled="viewchargebackform.$invalid">Submit</button>
+							</div>
+						</div>
+					</form>
+					<div class="tab-pane active searchUser" id="searchUser" ng-if="showDatatable">
+						<div class="form-group col-sm-12 noPadding">
+							<span class="textcell_reports">Search By Card Number:</span>
+							<div class="col-sm-4 noPadding">
+								<input class="form-control" placeholder="Enter Card Number" ng-model="searchType.hotlistValue"/>
+							</div>
+							<div class="col-sm-8 noPadding">
+							 <button type="submit" id="search_user_submit" class="btn  btn-danger" style="float: right" ng-click="Export()"><i class="fa fa-file-excel-o"></i>Export</button>
+							</div>
+							
+						</div>
+						
+						<table  class="table  t-responsive table_adj" id="charge_back_table">
+							<thead>
+								<tr>
+									<!-- <th scope="col" id="img" class="noExport"></th> -->
+								  	<th scope="col">Type</th>
+								  	<th scope="col">Card Number</th>
+								  	<th scope="col">Created Time</th>
+									<th scope="col" >Created By</th>
+									<th scope="col">Deactivated By</th>
+									<th scope="col">Deactivated Time</th>
+								  	<th scope="col">Status</th>
+								</tr>
+							</thead>
+							<tbody  dir-paginate="data in chargebackdata|filter:searchType|itemsPerPage:50">
+								<tr id="hotlist_table_expand_row">
+									<!-- <td data-label="Expand to more info" id="user_select" class="noExport">
+										<h5><span class="fa" ng-class="!user.select?'fa-plus':'fa-minus'" ng-init="user.select=false" ng-model="user.select" ng-click="user.select=!user.select"></span></h5>
+									</td> -->
+									<td data-label="adjType" id="adjType" ><p>{{ data.code}}</p></td>
+									<td data-label="Card Number" id="cardnumber" class="fixWidth"><p class="Uname"><span popover-trigger="outsideClick" class='searchFnamefont' popover-class="my-notifications-popover" uib-popover="{{data.hotlistValue}}"  popover-append-to-body="true" popover-placement="top" popover>{{ data.hotlistValue }}</span></p></td>
+								 	<td data-label="adjDate Value" id="adjDate" ><p class="Uname">{{ data.creationTS | GMT }}</p></td>
+									<td data-label="shCRD" id="shCRD" ><p>{{ data.createdByUserId }}</p></td>
+									<td data-label="shCRD" id="deactvateById" ><p>{{ data.deActivatedByUserId }}</p></td>
+									<td data-label="shCRD" id="deactvateTime" ><p>{{ data.deActivationTS | GMT}}</p></td>
+									<td data-label="status" id="status">{{ data.status=='DEACTIVE'? 'DEACTIVATED' : data.status}}</td>
+								</tr>
+								<!-- <tr ng-if="user.select" id="user_select_row" class="expandColor">
+									<td colspan="8" >
+										<div class="row clearfix seacrhUserPadding">
+											
+											<div class="col-sm-6 col-sm-offset-1" id="user_select_cardno"><strong>Card Number:</strong> {{data.hotlistValue}}</div>
+											<div class="col-sm-5" id="user_select_organisation"><strong>Organisation :</strong> {{data.orgId}}</div>
+										</div>
+									</td>
+								</tr> -->
+							</tbody>
+						</table>
+						<div  ng-show="(chargebackdata.length==0 || chargebackdata.length == '0' || chargebackdata == undefined)" class="text-center noData"><h6>No Records Found</h6></div>  
+						<div class="gridPagination clearfix" ng-show="chargebackdata.length != '0'">
+						
+						<div class="col-sm-8">
+							<dir-pagination-controls max-size="5"  direction-links="true" boundary-links="true" ></dir-pagination-controls>
+						</div>
+					</div>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+</div>

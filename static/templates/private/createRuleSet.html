@@ -1,0 +1,104 @@
+<div class="ruleByEditor">
+   <div class="row">
+      <div class="col-md-6 pageHeading noPadding">
+         <h5>{{pageTitle}}</h5>
+      </div>
+   </div>
+   <form name="createRuleSet" class="form-validation" role="form" novalidate autocomplete="off">
+      <div class="row">
+         <div class="col-sm-3">
+            <div class="form-group">
+               <label for="ruleSet" class="textcell_reports">Rule Set Name  <span class="text-danger rule-mandatory">*</span></label>
+               <input ng-show="!isEdit" ng-space ng-blur="visitedNewRuleSet=true" type="text" placeholder="Enter Ruleset Name" ng-model="formParams.rulesetName" name="newRuleSet" id="newRuleSet "class="form-control" unique-rule-set-name autocomplete="off" ng-pattern="/^[a-zA-Z0-9_.-]*$/" ng-pattern-restrict required>
+               <h5 ng-if="isEdit">{{formParams.rulesetName}}</h5>
+               <div ng-messages="createRuleSet.newRuleSet.$error" ng-show="createRuleSet.newRuleSet.$error.required && visitedNewRuleSet">
+                  <div ng-message="required" class="text-danger">Please Enter Ruleset Name.</div>
+               </div>
+               <div ng-messages="createRuleSet.newRuleSet.$error" ng-show="createRuleSet.newRuleSet.$error.unique && visitedNewRuleSet">
+                  <div ng-message="unique" class="text-danger">Rulesetname already exists.</div>
+               </div>
+               <div ng-messages="createRuleSet.newRuleSet.$error" ng-show="createRuleSet.newRuleSet.$error.pattern && visitedNewRuleSet">
+                  <div ng-message="pattern" class="text-danger">No space and special characters are allowed except _-.</div>
+               </div>
+            </div>
+         </div>
+         <div class="col-sm-3">
+            <div class="form-group">
+               <label for="ruleSets" class="textcell_reports">Ruleset For <span class="text-danger rule-mandatory">*</span></label>
+               <select  ng-blur="visitedOrgIds=true" name="orgIds" id="orgIds" class="form-control" ng-model="formParams.orgId" ng-change="orgChange()" ng-disabled="isEdit" required >
+                  <option value="">SELECT ORGANISATION</option>
+                  <option class="upperCases" ng-repeat="bank in bankList" value="{{bank.orgId}}">{{bank.name}}</option>
+               </select>
+               <!-- <h5 ng-if="isEdit">{{formParams.orgId}}</h5> -->
+               <!-- <input type="hidden" ng-model="formParams.srcOrgId"/> -->
+               <div ng-messages="createRuleSet.orgIds.$error" ng-show="createRuleSet.orgIds.$error.required && visitedOrgIds">
+                  <div ng-message="required" class="text-danger">Please Select Organisation.</div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="row">
+         <div class="col-sm-3">
+            <div class="form-group">
+               <label for="ruleSet" class="textcell_reports">Organisation  <span class="text-danger rule-mandatory">*</span></label>
+               <select ng-blur="visitedOrgId=true" class="form-control" ng-model="formParams.parentRuleSet.orgId" ng-change="orgChange()" ng-disabled="(formParams.orgId.length>0)?false:true" required >
+                  <option value="">SELECT ORGANISATION</option>
+                  <option class="upperCases" ng-repeat="bank in bankList" value="{{bank.orgId}}">{{bank.name}}</option>
+               </select>
+               <input type="hidden" ng-model="formParams.srcOrgId"/>
+               <div ng-messages="createRuleSet.orgId.$error" ng-show="createRuleSet.orgId.$error.required && visitedOrgId">
+                  <div ng-message="required" class="text-danger">Please Select Organisation.</div>
+               </div>
+            </div>
+         </div>
+         <div class="col-sm-3" >
+            <div class="form-group">
+               <label for="ruleSet" class="textcell_reports">Available Rule Set</label>
+               <select class="form-control" ng-model="formParams.parentRuleSet.rulesetName" ng-change="getRulesFromSet();addRule();" ng-disabled="(formParams.parentRuleSet.orgId.length>0)?false:true">
+                  <option  value="">SELECT RULE SET</option>
+                  <option class="upperCases" ng-repeat="ruleSet in availableRuleSet" value="{{ruleSet.rulesetName}}">{{ruleSet.rulesetName}}</option>
+               </select>
+            </div>
+         </div>
+         <div class="col-sm-12 ">
+            <div class="row">
+               <div class="col-sm-4" ng-if="showAvailableRules">
+                  <div class="ruleset-header">All Available Rules </div>
+                  <multiselectruleset class="input-xlarge" multiple="true"
+                     ng-model="formParams.ruleIds"
+                     options="rule for rule in availableRules"
+                     change="selected()" ng-change="addRule(formParams.ruleIds,'AR')" ></multiselectruleset>
+               <!--    {{formParams.ruleIds}} -->
+               </div>
+               <div class="col-sm-4"  ng-if="showAvailableRulefromSet">
+                  <div class="ruleset-header">{{formParams.parentRuleSet.rulesetName}}</div>
+                  <multiselectruleset class="input-xlarge" multiple="true"
+                     ng-model="formParams.parentRuleSet.ruleIds"
+                     options="exrule for exrule in availableRulesFromSet"
+                     change="selected()" ng-change="addRule(formParams.parentRuleSet.ruleIds,'AS')"></multiselectruleset>
+               <!--   {{formParams.parentRuleSet.ruleIds}} -->
+                  
+               </div>
+               <div class="col-sm-4" ng-if="(formParams.parentRuleSet.ruleIds.length>0 || formParams.ruleIds.length>0)?true:false">
+                  <div class="ruleset-header" style="text-transform:uppercase">{{formParams.rulesetName}}</div>
+                  <!--  <div><input class="form-control" type="text" ng-model="searchText" autofocus="autofocus" placeholder="Filter" /></div> -->
+                  <div style="background-color:#fff;height:267px;overflow-y: scroll;box-shadow: 0 2px 1px -1px rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12);">
+                     <table style="width:100%; font-size:14px;">
+                        <tr ng-repeat="rule in newRuleSet track by $index" style="border-bottom:1px solid #ccc;">
+                           <td style="padding:5px;">{{rule}}</td>
+                           <td style="padding:5px; width:20px;"><i class="fa fa-times ruleeditorActionIcon cursor" ng-click="removeRule(rule)"></i></td>
+                        </tr>
+                     </table>
+                  </div>
+                 <!--  {{newRuleSet}} -->
+               </div>
+            </div>
+         </div>
+         <div class="col-sm-12">
+            <button  type="submit"  ng-click="submitForm();createRuleSet.$invalid" ng-disabled="(createRuleSet.$invalid || newRuleSet.length===0)?true:false" class="btn btn-lg btn-danger">Submit
+            </button>
+         </div>
+      </div>
+   </form>
+<!--    {{formParams}} -->
+</div>

@@ -1,0 +1,67 @@
+<div class="userDashboard container-fluid">
+	<div class="hasHeader">
+		<div class="userTabs clearfix settings">
+			<div class="tab-content formStyle">
+				<div class="pageHeading"><h5>Reset Role Approval</h5></div>
+				<div class="tab-pane active searchUser" id="searchUser">	
+											
+						<table  class="table  t-responsive" id="user_table">
+							<thead>
+								<tr>
+									<th scope="col" id="img"></th>
+								  	<th scope="col">Role</th>
+								  	<th scope="col">Organisation</th>
+								  	<th scope="col">Created Time</th>
+								  	<th scope="col">Created By</th>
+								  	<th scope="col" class="unapproveRuleTablehead" id="action" >Action</th>
+								</tr>
+							</thead>
+							<tbody  dir-paginate="data in unapprovedList|orderBy:sortKey:reverse|itemsPerPage:5">
+							
+								<tr id="unassigned_table_expand_row" ng-class="data.select?'expandColorTr':''">
+									<td data-label="Expand to more info" id="data_select">
+										<h5><span class="fa" ng-class="!data.select?'fa-plus':'fa-minus'" ng-init="data.select=false" ng-model="data.select" ng-click="data.select=!data.select;isSessionValid()"></span></h5>
+									</td>					 
+								 	<td data-label="Authority Type" id="authority_Type" ><p>{{ listroleDisplay(data.permission)}}</p></td>
+								  	<td data-label="Organisation" id="unapprove_organisation">{{ data.orgName}}</td>
+								  	<td data-label="CreatedTime" id="unapprove_organisation">{{ data.creationTs| GMT}}</td>
+								  	<td data-label="Createdby" id="Createdby">{{data.createdBy}}</td>		
+								  	<td data-label="Action" id="unapprove_action" ng-class="authority == 'ROLE_NTS_MGMT'?'ntsMgm':''">
+								  		<div class="dropdown" id="unapprove_action_dropdown" ng-if="data.createdBy != null">
+										  <button class="btn dropdown-toggle button-width"  ng-disabled = "loggedInUserMail == data.createdBy" type="button" data-toggle="dropdown"><span class="fa fa-cog" aria-hidden="true"></span>
+										  </button>
+										  <ul class="dropdown-menu drop-downadj fa-eye-ul" id="unapprove_info_action_dropdown_action">
+										    <li ng-click="decisionModel(data,'reject')" ><a href="#" id="reject" ><span   class="fa fa-close" aria-hidden="true" >Reject</span></a></li>
+										    <li ng-click="decisionModel(data,'approve')"><a  id="approve" href="#" ><span  class="fa fa-check" aria-hidden="true">Approve</span></a></li>
+										  </ul>										 
+										</div>
+										
+								  	</td>		
+								  						  				  	
+								</tr>
+								<tr ng-show="data.select" id="data_select_row"  class="expandColor">
+									<td colspan="8" class="queueTable" >
+										
+										<div class="row clearfix">
+											<div class="col-sm-4 col-sm-offset-1" id="user_select_email"><strong>Notes :</strong> {{data.creationNotes}}</div>
+										</div>
+									</td>
+								</tr>
+																																				
+							</tbody>
+						</table>
+						
+					<div  ng-show="unapprovedList.length==0 || unapprovedList.length == '0' || unapprovedList == undefined" class="text-center noData"><h6>No Records Found</h6></div>  
+					
+					
+					<div class="gridPagination clearfix" ng-show="unapprovedList.length != '0'">
+						
+						<div class="col-sm-8">
+							<dir-pagination-controls max-size="5"  direction-links="true" boundary-links="true" ></dir-pagination-controls>
+						</div>
+					</div>															
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

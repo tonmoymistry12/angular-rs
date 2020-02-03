@@ -1,0 +1,628 @@
+rule .form-group label,
+rule .checkbox-custom label,
+rule h6,
+rule h3,
+.rule .form-group label,
+.rule .checkbox-custom label,
+.rule h6,
+.rule h3 {
+	color: #1d2961;
+	font-size: 1.5rem;
+}
+.ruleset li {
+	list-style-type: none;
+}
+rule .ruleli, .rule .ruleli {
+	top: 0px!important;
+}
+.ruleCalender {
+	left: 310px;
+}
+.shortHdl {
+	cursor: pointer;
+}
+.ruleGrid{
+	display: block;
+  
+    padding: 0px;
+    margin: 0px;
+    list-style-type: none;
+    height:40px;
+    
+}
+.custMargin{
+	border-bottom:1px solid #dddddd;
+	padding-bottom:10px;
+	margin-bottom:10px;
+}
+.ruleGrid li{
+	display: inline-block;
+	border-bottom:1px solid #dddddd;
+	padding-bottom:5px;
+}
+.ruleGrid .ruleGridLabel{
+	
+	font-size: 1.25rem!important;
+    font-weight: bold!important;
+    text-transform: uppercase;
+    width: 200px;
+}
+.and-or-red{border:1px solid red}
+.and-or-white{border:1px solid white}
+.ruleset-header {
+	padding-top: 3px;
+	padding-bottom: 3px;
+	font-size: 1.4em;
+	background-color: #999;
+	color: #fff;
+	font-weight: bold;
+	padding: 5px 10px;
+	height: 26px;
+}
+.ruleset .rule {
+	border-bottom: 1px solid #ccc;
+	padding: 5px 0px;
+}
+.ruleset {
+	background-color: #fff;
+}
+.ruleset .move,
+.ruleset .moveall,
+.ruleset .remove,
+.ruleset .removeall {
+	background-color: #ccc!important;
+}
+.ruleImportExport .tab-content {
+	border: 1px solid #dee2e6;
+	background-color: #fff;
+	padding: 10px;
+}
+rule .ruleli.ui-select-choices, .rule .ruleli.ui-select-choices {
+	margin-top: -190px;
+}
+rule .ui-select-choices-row-inner , .rule .ui-select-choices-row-inner{
+	color: #fff!important;
+}
+.custom-rule-button-next {} .custom-rule-button-back {} .rule-top-nav-hide {
+	display: none;
+}
+.mccInNotIn .table-fixed thead {
+	width: 100%;
+}
+.mccInNotIn .table-fixed tbody {
+	height: 170px;
+	overflow-y: auto;
+	width: 100%;
+}
+rule .multiselect-info  {
+	font-size: .65em;
+	text-transform: uppercase;
+	font-weight: bold;
+	color: #28b779;
+}
+.rule .multiselect-info {
+
+	text-transform: uppercase;
+	font-weight: bold;
+	color: #28b779;
+}
+.multiselect-info-more{
+	white-space: nowrap; 
+	width: 90%; 
+	overflow: hidden; 
+	text-overflow: ellipsis;
+}
+.mccInNotIn .table-fixed thead,
+.mccInNotIn .table-fixed tbody,
+.mccInNotIn .table-fixed tr {
+	display: block;
+}
+rule table.ruleEditorTbl th , .rule table.ruleEditorTbl th {
+	font-size: 1.25rem!important;
+	font-weight: bold!important;
+	text-transform: uppercase;
+}
+.ruleEditorTbl tr {
+	background-color: transparent!important;
+}
+table.ruleEditorTbl th {
+	font-size: 1.25rem!important;
+	font-weight: bold!important;
+	text-transform: uppercase;
+}
+.abnormalDistancePopOver {
+	width: 200px;
+	text-transform: "capitalize";
+}
+rule .popover, .rule .popover {
+	border-color: #c1cfe6;
+}
+rule .popover-content, .rule .popover-content {
+	/*	text-transform:uppercase;*/
+	font-size: 1em;
+	color: #122c55;
+	background-color: #d3dded;
+	border-color: #c1cfe6;
+}
+rule .rule-mandatory,
+.rule .rule-mandatory,.rule-mandatory {
+	font-size: 1.5em;
+/* 	position: absolute;
+	padding: 0px 5px; */
+}
+rule .multiselectCnt, .rule .multiselectCnt {
+	top: 30px;
+	left: 140px;
+	position: absolute;
+}
+rule .multiselectCnt2, .rule .multiselectCnt2 {
+	top: 4px;
+	left: 140px;
+	position: absolute;
+}
+.no-margin {
+	margin: 0px;
+}
+.checkbox-inline {
+	font-weight: normal;
+}
+@media (max-width: 575.98px) {
+	.checkbox-inline.more {
+		display: block!important;
+		margin-left: 0px!important
+	}
+}
+rule div,
+rule table thead tr th {
+	color: #1d2961;
+	font-size: 1.5rem;
+	font-weight: normal;
+}
+.summary-header {
+	background-color: #999;
+	color: #fff;
+	font-weight: bold;
+	margin-top: 10px;
+	padding: 0px 10px
+}
+rule .dropdown .btn, .rule .dropdown .btn {
+	opacity: 1!important;
+	background-color: #fff!important;
+	background: #fff!important;
+}
+.ruleByEditor {
+	padding: 20px;
+}
+rule .btn-link, .rule .btn-link
+.ruleset .btn-link {
+	color: #000;
+}
+rule .form-control .ng-invalid {
+	border: 1px solid red;
+}
+rule .ruleEditorFieldset .ng-invalid {
+	border: 1px solid red;
+}
+rule .customValid.ng-invalid {
+	border: 1px solid red!important;
+}
+.mandatory-field {
+	font-size: .8em;
+	padding: 0px 15px;
+}
+.customValidPayer {
+	padding: 0.375rem 0.75rem;
+	line-height: 1.5;
+	color: #4F5467;
+	background-color: #fff;
+	background-clip: padding-box;
+	border: 1px solid #e9ecef;
+	border-radius: 2px;
+	width: 90px;
+}
+rule .ruleEditorFieldset {
+	padding: 0px;
+	margin: 0px;
+	border: 0px solid transparent
+}
+.ruleByEditor .caseSearch-Left-Arrow {
+	float: none!important;
+}
+.ruleByEditor .nav-tabs {
+	float: none!important;
+}
+.rule-tab-btn-container {
+	margin-top: 15px;
+}
+.multiselect-btn-container {
+	height: 65px!important;
+}
+.notGeneratedRules table thead tr th.action {
+	width: 100px;
+}
+.notGeneratedRules table thead tr th.ruleID {
+	width: 200px;
+}
+.lastBoxPadd {
+	padding-bottom: 100px!important;
+}
+multiselect .dropdown-menu li,
+.animate-switch-container select,
+.txnFieldTable tbody {
+	text-transform: uppercase!important;
+}
+multiselect,
+multiselect-json,
+multiselect-org {
+	display: block;
+}
+/* multiselect .btn,  multiselect-json .btn  {
+	width: 100%;
+	background-color: #FFF;
+} */
+
+multiselect .btn.error {
+	border: 1px solid #da4f49 !important;
+}
+multiselect .dropdown-menu,
+multiselect-json .dropdown-menu {
+	max-height: 300px;
+	overflow-y: auto;
+}
+multiselect .dropdown-menu,
+multiselect-json .dropdown-menu,
+multiselect-org .dropdown-menu {
+	width: 100%;
+	box-sizing: border-box;
+	padding: 2px;
+}
+multiselect .dropdown-menu>li>a,
+multiselect-json .dropdown-menu>li>a,
+multiselect-org .dropdown-menu>li>a {
+	padding: 3px 10px;
+	cursor: pointer;
+}
+multiselect,
+multiselect-json,
+multiselect-org {
+	display: block;
+}
+multiselect .btn,
+multiselect-json .btn,
+multiselect-org .btn {
+	width: 100%;
+	background-color: #FFF;
+}
+multiselect .btn.error {
+	border: 1px solid #da4f49 !important;
+}
+multiselect .dropdown-menu,
+multiselect-json .dropdown-menu,
+multiselect-org .dropdown-menu {
+	max-height: 300px;
+	overflow-y: auto;
+}
+multiselect .dropdown-menu,
+multiselect-json .dropdown-menu,
+multiselect-org .dropdown-menu {
+	width: 100%;
+	box-sizing: border-box;
+	padding: 2px;
+}
+multiselect .dropdown-menu>li>a,
+multiselect-json .dropdown-menu>li>a,
+multiselect-org .dropdown-menu>li>a {
+	padding: 3px 10px;
+	cursor: pointer;
+}
+.caret {
+	margin-top: 8px;
+}
+.checkbox-custom {
+	margin-top: 25px;
+}
+#tabs .form-group label {
+	font-size: 1.2em;
+}
+rule .form-group .btn, .rule .form-group .btn {
+	padding: 5px 15px;
+}
+.dropdown .btn {
+	padding: 9px 15px;
+}
+
+.dropdown-menu {
+	color: #000;
+}
+.dropdown-menu i {
+	color: #000;
+	font-size: 1em;
+}
+.dropdown-menu li a {
+	padding-left: 0px;
+}
+.dropdown-menu li {
+	display: block;
+	width: 100%;
+	text-align: left;
+}
+.ms-selectable li {
+	display: block;
+}
+.odd-row {
+	padding-top: 10px;
+	padding-bottom: 10px;
+	background-color: #fff;
+	/*border: 1px solid #ddd;*/
+}
+.rule-bottom-border {
+	border-bottom: 1px solid #ddd;
+}
+.rule-borders {
+	border: 1px solid #ddd;
+}
+.even-row {
+	padding-top: 10px;
+	padding-bottom: 10px;
+	background-color: #fff;
+}
+.summary-page {
+	padding-top: 22px!important;
+}
+.summary-page .tabBodyAlign {
+	margin-top: 0px;
+	background-color: #fff;
+}
+.summary-page .lastBoxPadd {
+	padding-bottom: 0px!important;
+}
+.rule-header {
+	overflow: hidden;
+	background-color: #1d2961;
+	color: #fff;
+	padding-left: 13px;
+	padding-right: 13px;
+	font-weight: bold;
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+}
+.rule-header .pull-left,
+.rule-header .pull-right {
+	color: #fff;
+}
+.rule-btn-container {
+	margin-top: 15px;
+}
+.tabBodyAlign {
+	margin-top: 35px;
+	border: 1px solid #ddd;
+}
+#tabs .ruleEditorFieldset {
+	padding: 0px;
+	margin: 0px 9px;
+	border: 0px solid transparent
+}
+.fade {
+	opacity: 0;
+	-webkit-transition: opacity 0.25s ease-in;
+	-moz-transition: opacity 0.25s ease-in;
+	-o-transition: opacity 0.25s ease-in;
+	-ms-transition: opacity 0.25s ease-in;
+	transition: opacity 0.25s ease-in;
+	transition-delay: 0.25s;
+}
+.fade.in {
+	opacity: 1;
+}
+.ruleByEditor .nav-tabs li a {
+	background-color: #fff;
+	padding: 10px;
+	font-size: 1em;
+	border: 0px;
+	border-bottom: 2px solid transparent;
+}
+.ruleByEditor .nav-tabs li a:hover {
+	background-color: #1d2961!important;
+	padding: 10px;
+	font-size: 1em;
+	color: #fff;
+	border: 0px;
+	border-bottom: 2px solid orange!important;
+}
+/* .ruleByEditor .nav-tabs li a:active{
+	background-color:#1d2961;
+	color:#fff;
+	border:0px;
+	border-bottom:2px solid orange;
+
+} */
+
+.ruleByEditor .nav-tabs li a {
+	color: #000;
+	background-color: #ccc!important;
+	border-bottom: 2px solid #999;
+}
+.ruleByEditor .nav-tabs .active a {
+	background-color: #1d2961!important;
+	color: #fff;
+	border: 0px;
+	border-bottom: 2px solid orange!important;
+}
+.animate-switch-container {
+	position: relative;
+	overflow: hidden;
+	border: solid 1px #1d2961;
+	box-shadow: 6px 6px 15px #fff;
+	padding: 10px;
+	padding-top: 0px;
+	background-size: 50px 50px;
+	min-height: 400px;
+}
+.animate-switch {
+	/* padding:10px;*/
+	width: 100%;
+}
+.animate-switch.ng-animate {
+	-webkit-transition: all 0.5s;
+	transition: all 0.5s;
+	position: absolute;
+}
+/* hide leaving slide  */
+
+/* show */
+
+.animate-switch.ng-leave {
+	left: 0;
+}
+/* hide */
+
+.forward .animate-switch.ng-leave.ng-leave-active {
+	left: -100%;
+}
+.backward .animate-switch.ng-leave.ng-leave-active {
+	left: 100%;
+}
+/* show entering slide  */
+
+/* hide */
+
+.forward .animate-switch.ng-enter {
+	left: 100%;
+}
+.backward .animate-switch.ng-enter {
+	left: -100%;
+}
+/* show */
+
+.animate-switch.ng-enter.ng-enter-active {
+	left: 0;
+}
+.lds-ellipsis {
+	display: inline-block;
+	position: relative;
+	width: 64px;
+	height: 64px;
+}
+.lds-ellipsis div {
+	position: absolute;
+	top: 27px;
+	width: 11px;
+	height: 11px;
+	border-radius: 50%;
+	background: #fff;
+	animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+.lds-ellipsis div:nth-child(1) {
+	left: 6px;
+	animation: lds-ellipsis1 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(2) {
+	left: 6px;
+	animation: lds-ellipsis2 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(3) {
+	left: 26px;
+	animation: lds-ellipsis2 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(4) {
+	left: 45px;
+	animation: lds-ellipsis3 0.6s infinite;
+}
+@keyframes lds-ellipsis1 {
+	0% {
+		transform: scale(0);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+@keyframes lds-ellipsis3 {
+	0% {
+		transform: scale(1);
+	}
+	100% {
+		transform: scale(0);
+	}
+}
+@keyframes lds-ellipsis2 {
+	0% {
+		transform: translate(0, 0);
+	}
+	100% {
+		transform: translate(19px, 0);
+	}
+}
+rule .ms-elem-selectable,
+rule .ms-elem-selection {
+	display: inline;
+	position: relative;
+}
+rule .ms-elem-selectable:hover:after,
+rule .ms-elem-selection:hover:after {
+	background: #333;
+	background: rgba(0, 0, 0, .8);
+	border-radius: 5px;
+	bottom: -34px;
+	color: #fff;
+	content: attr(data-title);
+	left: 20%;
+	padding: 5px 15px;
+	position: absolute;
+	z-index: 98!important;
+	width: 150px;
+	font-size: .7em;
+}
+rule .ms-elem-selectable:hover:before,
+rule .ms-elem-selection:hover:before {
+	border: solid;
+	border-color: #333 transparent;
+	border-width: 0 6px 6px 6px;
+	bottom: -4px;
+	content: "";
+	left: 50%;
+	position: absolute;
+	z-index: -99;
+}
+.ngdialog.ngdialog-theme-default.dialogwidth600 .ngdialog-content {
+	width: 890px;
+}
+.ngdialog.ngdialog-theme-default.dialogwidth600 .ngdialog-content {
+	width: 990px;
+}
+.ngdialog.ngdialog-theme-default.dialogwidth400 .ngdialog-content {
+	width: 700px;
+}
+.ng-dialog-content {
+	font-size: 1.5em;
+	line-height: 22px;
+}
+.rule-viewRule .textcell_reports {
+	display: block;
+	width: 100%;
+	color: #1d2961;
+	font-size: 1.2em!important;
+	font-weight: 600;
+	font-family: "Nunito Sans", sans-serif;
+	text-transform: uppercase;
+	margin-top: 10px;
+}
+.rule-viewRule .viewRuleData {
+	font-size: 1em;
+}
+.rule-viewRule .col-sm-2 {
+	padding-bottom: 10px;
+}
+.rule-viewRule .rule-border-bottom {
+	border-bottom: 1px solid #ccc;
+}
+.viewRuleTitleBAR {
+	background-color: #ccc;
+	padding: 0px 10px;
+	height: 24px;
+	padding-top: 5px;
+}
+.viewRuleTitle {
+	font-size: 1.5em;
+}

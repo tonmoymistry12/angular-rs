@@ -1,0 +1,79 @@
+html, body, #main {
+	height: 100%;
+}
+body {
+    background-color: $default-color;
+	color: $accent-color;
+	font-family: $primary-font;
+	font-size: 14px;    
+    @include MQ(L){
+        font-size: 16px;        
+    }
+}
+a {
+	color: $secondary-color;
+	text-decoration: none;
+	cursor: pointer;
+    
+    &:hover {        
+	   text-decoration: none;
+	   transition: all 0.20s linear 0s;
+    }
+    
+    &:focus {        
+	   outline: none;
+    }
+    
+    & img{
+        border: 0;   
+    }
+}
+/* Code for Select bg color with text color */
+::-moz-selection {
+    color: $default-color;
+    background: $warn-color;
+}
+::selection {
+    color: $default-color;
+    background: $warn-color;
+}
+p, ul, ol {
+	color: $accent-color;
+	font-family: $primary-font;
+	font-size: 1em;
+	margin: 0 0 30px 0;
+	line-height: 20px;
+}
+hr {
+	background-color: transparentize($accent-color, 0.4);
+	border: 0 none;
+	height: 1px;
+}
+.wrapper {
+	min-height: 100%;
+	width: 100%;
+	@include MQ(M) {
+		margin-bottom: -70px;
+	}	
+	
+	&:after {
+		content: "";
+		display: block;
+		@include MQ(M) {
+			height: 70px;
+		}
+		
+	}
+}
+.text-danger {
+	color: $danger-color;
+}
+.noMargin {
+	margin-bottom: 0px !important;
+}
+.grayBg {
+	background-color: transparentize($accent-color, 0.8);
+}
+.opacity {
+	color: transparentize($accent-color, 0.2);
+}

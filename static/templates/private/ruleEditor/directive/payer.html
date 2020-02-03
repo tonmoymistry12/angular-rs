@@ -1,0 +1,136 @@
+<div class="payerFilter tabBodyAlign">
+   <div class="row odd-row no-margin rule-bottom-border">
+      <div class="col-sm-3">
+         <!-- Jurisdiction CHECKBOX START -->
+         <div class="form-group">
+            <label for="channel">Juridiction</label><br>
+            <label class="checkbox-inline">
+            <input type="checkbox" ng-model="jurisdictionDomistic" ng-change="jurisdictionInternational=false;payerJuridictionChange('Domestic');">Domestic
+            </label>
+            <label class="checkbox-inline">
+            <input type="checkbox" ng-model="jurisdictionInternational" ng-change="jurisdictionDomistic=false;payerJuridictionChange('International');">International
+            </label>
+         </div>
+         <!-- Jurisdiction CHECKBOX END -->
+      </div>
+      <!-- ACCOUNT FIELDS DROPDOWN START -->
+      <div class="col-sm-2">
+         <div class="form-group">
+            <label for="account">Account</label>
+            <select class="form-control" ng-model="payerfilter.account">
+               <option value="">- Select -</option>
+               <option ng-repeat="account in getPayerAccounts | uniq: 'name'" value="{{account.value}}">{{account.name}}</option>
+              
+            </select>
+         </div>
+      </div>
+      <!-- ACCOUNT FIELDS END -->
+      <!-- CATEGORY DROPDOWN START -->
+      <div class="col-sm-2" ng-show="payerfilter.account==='card'">
+         <div class="form-group">
+            <label for="account">Category</label>
+            <multiselect class="input-xlarge" multiple="true" empty="true"
+               ng-model="category"
+               options="category for category in categories"
+               change="selected()" ng-change="categoryChange()"></multiselect>
+           <!--  <i class="fa fa-exclamation-circle text-info multiselectCnt" title="Category" data-toggle="popover" data-content="{{category}}" data-trigger="hover" ng-show="(category.length>0)? true : false"></i> -->
+         </div>
+          <div class="multiselect-info"><span ng-repeat="cat in category">{{cat}}, </span></div>
+      </div>
+      <!-- CATEGORY DROPDOWN END -->
+     <!--  <div class="col-sm-2" ng-show="payerfilter.account==='card'" >
+      <div class="form-group">
+            <label for="channel">EMV</label><br>
+            <label class="checkbox-inline">
+            <input type="checkbox" ng-model="payerfilter.emv" ng-change="emvChange()">EMV
+            </label>
+           
+         </div>
+      </div> -->
+      <div class="col-sm-6 checkbox-custom">
+         <label class="checkbox-inline">
+         <input type="checkbox" ng-model="payerfilter.isFirstUseInLast6Months">First Used in 6 months
+         </label>
+         <!-- <label class="checkbox-inline">
+         <input type="checkbox" ng-model="payerfilter.isUnknownBIN">Unknown BIN
+         </label> -->
+         <label class="checkbox-inline">
+         <input type="checkbox" ng-model="payerfilter.isHIN">HNI (BIN)
+         </label>
+      </div>
+   </div>
+   <div class="row even-row no-margin rule-bottom-border">
+      <div class="col-sm-1">
+         <div class="form-group">
+            <br>
+            <label>Used at</label>
+         </div>
+      </div>
+      <!-- OPERATOR DROPDOWN START -->
+      <div class="col-sm-2">
+         <div class="form-group">
+            <label for="exampleInputEmail1">Operator</label>
+            <select class="form-control transactionOperator" ng-model="payerfilter.usageAcrossDistinctEndpoint.operator1" ng-change=resetOptAndEpnt()>
+               <option value="">- Select -</option>
+               <option ng-repeat="operator in payerfilterOperators" value="{{operator.value}}">{{operator.name}} </option>
+            </select>
+         </div>
+      </div>
+      <!-- OPERATOR END -->
+      <!-- VALUE START -->
+      <div class="col-sm-2">
+         <div class="form-group">
+            <label for="value">Number of Accep. Points</label>
+            <input type="text" class="form-control" number ng-model="payerfilter.usageAcrossDistinctEndpoint.value1" ng-required="payerfilter.usageAcrossDistinctEndpoint.operator1.length>0" ng-disabled="(payerfilter.usageAcrossDistinctEndpoint.operator1.length>0) ? false : true" ng-required="payerfilter.usageAcrossDistinctEndpoint.operator1.length>0 || payerfilter.usageAcrossDistinctEndpoint.endPointType.length>0"/>
+         </div>
+      </div>
+      <!-- VALUE END -->
+      <!-- Usage Across Distinct  DROPDOWN START -->
+      <div class="col-sm-2">
+         <div class="form-group">
+            <label for="account">Usage Acr. Accep. Points </label>
+            <select class="form-control" ng-model="payerfilter.usageAcrossDistinctEndpoint.endPointType" ng-change="endpointChange()" ng-required="payerfilter.usageAcrossDistinctEndpoint.operator1.length>0 || payerfilter.usageAcrossDistinctEndpoint.value1.length>0" ng-disabled="(payerfilter.usageAcrossDistinctEndpoint.operator1.length>0) ? false : true">
+               <option value="">-Select-</option>
+               <option ng-repeat="getUsageAcrossEndpoint in getUsageAcrossEndpoints | uniq: 'name'" value="{{getUsageAcrossEndpoint.value}}">{{getUsageAcrossEndpoint.name}}</option>
+            </select>
+         </div>
+      </div>
+      <!-- Usage Across Distinct  DROPDOWN END -->
+      <!-- OPERATOR DROPDOWN START -->
+      <div class="col-sm-2">
+         <div class="form-group">
+            <label for="exampleInputEmail1">Operator</label>
+            <select class="form-control transactionOperator" ng-model="payerfilter.usageAcrossDistinctEndpoint.operator2" ng-disabled="(payerfilter.usageAcrossDistinctEndpoint.endPointType.length>0) ? false : true">
+               <option value="">- Select -</option>
+               <option ng-repeat="operator in payerfilterOperators" value="{{operator.value}}">{{operator.name}} </option>
+            </select>
+         </div>
+      </div>
+      <!-- OPERATOR END -->
+      <!-- VALUE START -->
+      <div class="col-sm-2">
+         <div class="form-group">
+            <label for="value">Number of TXN</label>
+            <input type="text" class="form-control" number ng-model="payerfilter.usageAcrossDistinctEndpoint.value2"  ng-disabled="(payerfilter.usageAcrossDistinctEndpoint.endPointType.length>0) ? false : true" ng-required="payerfilter.usageAcrossDistinctEndpoint.operator2.length>0"/>
+         </div>
+      </div>
+      <!-- VALUE END -->
+      <div class="col-sm-1">
+         <div class="form-group">
+            <br>
+            <label>Times</label>
+         </div>
+      </div>
+   </div>
+   <div class="row odd-row no-margin lastBoxPadd">
+      <div class="col-sm-12" >
+         <h6>Chargeback - Representment</h6>
+      </div>
+
+      <div class="col-sm-12">
+         <div class="form-group"> More than <input type="text" number class="customValidPayer" ng-model="payerfilter.chargebackRepresentment.noOfChargeBack"  ng-required="payerfilter.chargebackRepresentment.inPastMonths.length>0 || withRepresentment || withOutRepresentment"/> Chargebacks raised on this payment source ( <input type="checkbox" ng-model="withRepresentment" ng-change="withRepresentmentChange();withOutRepresentment=false;"> <strong>with representment  / <input type="checkbox" ng-model="withOutRepresentment" ng-change="withOutRepresentmentChange();withRepresentment=false;"> without representment</strong> ) in the last <input type="text" number ng-model="payerfilter.chargebackRepresentment.inPastMonths" class="customValidPayer" ng-required="payerfilter.chargebackRepresentment.noOfChargeBack.length>0 || withRepresentment || withOutRepresentment"/> months.</div>
+        
+      </div>
+   </div>
+   <div class="row odd-row no-margin"><span class="mandatory-field text-danger"> {{mandatory}}</span></div>
+</div>

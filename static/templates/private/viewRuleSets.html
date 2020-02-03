@@ -1,0 +1,75 @@
+<div class="ruleByEditor">
+   <div class="row">
+      <div class="col-md-6 pageHeading noPadding">
+         <h5>View Rulesets</h5>
+      </div>
+      <div class="col-md-6 text-right">
+         <!--  <i type="button" ng-click="goBackView()"
+            class="fa fa-arrow-circle-o-left caseSearch-Left-Arrow cursor">Back</i> -->
+      </div>
+   </div>
+   <div class="row">
+      <div class="col-sm-3">
+         <div class="form-group">
+            <label for="ruleSet" class="textcell_reports">Organisation  <span class="text-danger rule-mandatory">*</span></label>
+            <select ng-blur="visitedOrgId=true" class="form-control" ng-model="orgId" required>
+               <option  value="">SELECT ORGANISATION</option>
+               <option class="upperCases" ng-repeat="bank in bankList" value="{{bank.orgId}}">{{bank.name}}</option>
+            </select>
+            <div ng-messages="createRuleSet.orgId.$error" ng-show="createRuleSet.orgId.$error.required && visitedOrgId">
+               <div ng-message="required" class="text-danger">Please Select Organisation.</div>
+            </div>
+         </div>
+      </div>
+      <div class="col-sm-3" style="padding-top:30px;">
+         <button  type="button"  ng-click="getRuleSets()" class="btn btn-lg btn-danger">Submit
+         </button>
+      </div>
+   </div>
+   <div class="row" style="padding-bottom:10px;" ng-show="ruleSets.length >5">
+      <div class="col-sm-3 col-sm-offset-9">
+         <input type="text" class="form-control"  placeholder="Search" ng-model="search">
+      </div>
+   </div>
+ 
+   <div class="notGeneratedRules settings" id="searchUser">
+      <table class="table  t-responsive">
+         <thead>
+            <tr>
+               <!-- <th scope="col" id="img"></th> -->
+               <th scope="col" >RULE SET</th>
+               <th scope="col" >STATUS </th>
+               <th scope="col" class="text-center action">Action</th>
+            </tr>
+         </thead>
+         <tbody dir-paginate="ruleset in ruleSets|orderBy:sortKey:reverse|filter:search|itemsPerPage:5">
+            <tr >
+               <td>{{ruleset.rulesetName}}</td>
+               <td>{{ruleset.status}}</td>
+               <td class="text-center">
+                  <div class="dropdown" id="rule_action_dropdown">
+                     <button class="btn dropdown-toggle button-width text-center" type="button" data-toggle="dropdown"><span class="fa fa-cog" aria-hidden="true"></span>
+                     </button>
+                     <ul class="dropdown-menu drop-downadj fa-eye-ul" id="rule_info_action_dropdown_action">
+                        <li ng-click="viewRuleSetDetail(ruleset)" ><a href="#" id="view_rule"><span class="fa fa-eye" aria-hidden="true" > View Ruleset</span></a></li>
+                        <li ng-click="editRuleSetDetail(ruleset)" ng-if="ruleset.createdBy==loggedInUser"><a href="#" id="edit_rule"><span class="fa fa-edit" aria-hidden="true" > Edit Ruleset</span></a></li>
+                     	
+                        <li ng-click="decisionModel(ruleset,'ACTIVE')" ng-if="(ruleset.status=='PENDING_REVIEW' && ruleset.createdBy != loggedInUser) || (ruleset.status=='DEACTIVATE' && ruleset.createdBy != loggedInUser)"><a href="#" id="edit_rule"><span class="glyphicon" aria-hidden="true" >&#xe013; Activate</span></a></li>
+                        <li ng-click="decisionModel(ruleset,'DEACTIVATE')" ng-if="ruleset.status=='ACTIVE' && ruleset.createdBy!=loggedInUser"><a href="#" id="view_rule"><span class="glyphicon" aria-hidden="true" >&#xe014; Deactivate</span></a></li>
+                     	<li ng-click="decisionModel(ruleset,'REJECTED')" ng-if="ruleset.status=='PENDING_REVIEW' && ruleset.createdBy!=loggedInUser"><a href="#" id="edit_rule"><span class="glyphicon" aria-hidden="true" >&#xe014; Reject</span></a></li>
+                     </ul>
+                  </div>
+               </td>
+            </tr>
+         </tbody>
+      </table>
+      <div class="text-center noData" id="no_data_found" ng-show="!showPagination">
+         <h6>No Data Found</h6>
+      </div>
+      <div class="gridPagination clearfix" ng-show="showPagination">
+         <div>
+            <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true" ></dir-pagination-controls>
+         </div>
+      </div>
+   </div>
+</div>

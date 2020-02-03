@@ -1,0 +1,155 @@
+.formStyle{
+	background-color: $default-color;
+	border-bottom: none;
+	margin: 30px 0;
+	
+	@include MQ(S) {
+		padding: 30px 0;
+	}
+	@include MQ(M) {
+		padding: 50px 0;
+	}
+	@include MQ(L) {
+		padding: 90px 0;
+	}
+	
+	h2{
+		color: transparentize($accent-color, 0.3);
+		font-weight: $semi-bold-weight;
+		margin-bottom: 10px;
+	}
+	
+	h5{
+		color: transparentize($accent-color, 0.2);
+		font-weight: $bold-weight;
+		margin-bottom: 10px;
+	}
+	.form-group{
+		margin-bottom: 20px;
+		position: relative;
+		p{
+			margin: 10px 0 0 0;
+		}
+		.formHints {
+			position: absolute;
+			top: 14px;
+			right: 14px;
+		}
+	}
+	
+	.form-control{
+		padding: 14px 18px;
+		height: auto;
+		font-size: 1em;
+		box-shadow: none;
+	}
+	
+	.has-error{
+		border-color: $danger-color;
+		.form-control{
+			&:focus{
+				border-color: $danger-color;
+				@include box-shadow(0px, 0px, 0px, 0px, rgba(0, 0, 0, 0));
+			}
+		}
+	} 		
+			
+}
+.checkboxHolder{
+	display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    
+    :hover input ~ .checkmark {
+    	border: 1px solid transparentize($secondary-color, 0.7);
+	}
+    
+    input {
+    position: absolute;
+    opacity: 0;
+	    &:checked ~ .checkmark {
+	    	border: 1px solid transparentize($secondary-color, 0.7);
+	    	background-color: $secondary-color;
+		}
+		&:checked ~ .checkmark:after {
+    		display: block;
+			left: 6px;
+			top: 2px;
+			width: 5px;
+			height: 10px;
+			border: solid white;
+			border-width: 0 2px 2px 0;
+			-webkit-transform: rotate(45deg);
+			-ms-transform: rotate(45deg);
+			transform: rotate(45deg);
+		}
+	}
+	
+	.checkmark {
+	    position: absolute;
+	    top: 0;
+	    left: 0;
+	    height: 18px;
+	    width: 18px;
+	    background-color: transparent;
+	    border: 1px solid transparentize($accent-color, 0.7);
+		
+		&:after {
+	    	content: "";
+	    	position: absolute;
+	    	display: none;
+		}
+	}
+	
+}
+
+.signUpTermsWrap {	
+	padding: 30px 0;
+	
+	.tcHeading {
+		color: $secondary-color;
+		text-align: center;
+		text-decoration: underline;
+			@include MQ(M) {
+				text-align: left;
+			}
+	}
+	.tcPDFHeading{
+		font-weight: $regular-weight;
+		text-align: center;
+		text-decoration: underline;
+		small{
+				color: $secondary-color;
+		}		
+	}
+	
+	.signUpTermsBox {
+		border: 1px solid transparentize($accent-color, 0.2);
+		padding: 30px;
+		margin-bottom: 30px;
+		@include MQ(M) {
+			margin-bottom: 50px;
+		}
+		h5{
+				color: $secondary-color;
+		}	
+	}
+}
+
+.login {
+	max-width: 300px;
+	margin: 0 auto;
+	.top-gap{
+		margin-top:50px;
+	}
+	.forgotPasswordLink{
+		font-weight:$medium-weight;
+	}
+}

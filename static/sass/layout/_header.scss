@@ -1,0 +1,207 @@
+/* Header top */
+.hasHeader {
+	margin-top: 52px;
+	@include MQ(L) {
+		margin-top: 68px;
+	}
+}
+.headerWide {
+	@include border-radius(0px);	
+	background-color: $warn-color;
+	margin-bottom: 0px;
+	position: fixed;
+	top: 0px;
+	width: 100%;
+	z-index: 9;
+	
+	@include MQ(L) {
+		padding: 8px 0;
+	}
+	
+	.navbar-toggle {
+		position: absolute;
+		span {
+			background-color: $default-color;
+			transition: all 250ms ease 0s;
+		}
+	}
+	
+	.navbar-brand {
+		float: none;
+		display: block;
+		color: $default-color;
+		text-transform: uppercase;
+		font-weight: bold;
+		letter-spacing: 0.2em;
+		text-align: center;
+		padding: 6px 15px; 
+		img{
+			display: inline-block;
+			margin-right: 14px;
+			width: 30px;
+		}
+	}
+	
+	.headerApply {		
+		background-color: transparentize($default-color, 0.6);
+		color: $default-color !important;
+		font-size: 14px;
+		text-transform: none !important;
+		&:hover, &:focus{
+			background-color: transparentize($default-color, 0);
+			color: $primary-color !important;
+		}
+		@include MQ(L) {
+		    font-size: 18px;
+		    margin-bottom: 0px;
+			margin-top: 5px;
+			margin-right: 15px;	    	
+		}
+	}
+	
+	#sideNav{
+		height: 100%;
+	    width: 0px;
+	    position: fixed;
+	    z-index: 1;
+	    top: 0px;
+	    left: 0;
+	    background-color: $warn-color;
+	    overflow-x: hidden;
+	    transition: 0.5s;
+	    padding-top: 52px;
+	    @include MQ(M) {
+	    	width: auto !important;
+	    	position: static;
+	    	padding-top: 0px;	    	
+	    }
+	    
+	    ul{
+	    	margin: 0px;
+	    	> li {
+	    		> a {
+	    			@include MQ(L) {
+	    				padding-left: 25px;
+	    				padding-right: 25px;
+	    			}
+	    			&:hover, &:focus {
+	    				background-color: transparent;
+	    				color: transparentize($default-color, 0.2);
+	    			}
+	    		}
+	    	}
+	    }
+	    
+	    a {
+	    	font-family: $primary-font;
+	    	font-weight: $semi-bold-weight;
+	    	color: $default-color;
+	    	font-size: 18px;
+	    	transition: 0.3s;
+	    	@include MQ(M) {
+		    	font-size: 13px;	    	
+	    	}
+	    	@include MQ(L) {
+		    	font-size: 18px;	    	
+	    	}
+	    }
+	    .closebtn{
+		 	position: absolute;
+			top: 0;
+			right: 25px;
+			font-size: 36px;
+			margin-left: 50px;
+			z-index: 100000;
+	    }
+	}	
+}
+.headerSubNav{
+	@include MQ(SC) {
+		min-height: 40px;
+		height: 40px;
+	}
+	height: 60px;
+	background-image: linear-gradient(to bottom, #ffffff, #d8d8d8);
+	margin-bottom:0px;
+	.nav {
+		@include MQ(SC) {
+    		margin: 0px -10px;    	
+		}
+		.open{
+			a{
+				background-color: transparent;
+			}
+		}
+		 li {
+		 	@include MQ(SC) {
+	    		margin: 0;
+	    		width: auto;    	
+    		}
+		 	width: 190px;
+	    	margin: 10px 10px 0;	 	
+    		border-right: 1px solid #e0dddd;    		
+    		float:left;    			
+		 	 a {
+		 	 	float:left;
+		 	 	color: #2b2b2b;		 	 	
+		 	 	font-weight:$medium-weight;
+		 	 	&:hover, &:focus {
+	    			background-color: transparent;
+	    		}
+	    		@include MQ(SC) {
+		    		font-size: 11px;
+		    		padding: 10px 7px;	    	
+	    		}
+	    		padding-top: 10px;	
+		    	font-size: 18px;	    			    		
+		 	 }
+		 	 img{
+		 	 	float:left;
+		 	 }		 	
+			.dropdown-menu{
+				border-radius:0px;
+				padding-bottom: 20px;
+				@include MQ(SC) {
+		    		position: absolute;	
+		    		box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+    				background: white;
+    				top: 39px;
+    				padding-bottom: 0px;
+    				min-width: 120px;       	
+	    		}
+				li{
+					border-right: 0px solid #e0dddd;
+					@include MQ(SC) {
+		    			width: 120px;		    			 	
+		    		}
+		    		width:200px;
+					color: #2b2b2b;
+		 	 		font-size: 18px;
+		 	 		font-weight:$medium-weight;
+		 	 		padding: 3px 20px;
+					a{
+						transition: all 0.5s ease;
+						padding: 0px;
+						&:hover{
+							color:$secondary-color;
+						}
+						
+					}
+					
+				}
+			}
+			
+	 	 }
+	 	 .active{
+			border-bottom:3px solid #be112c;
+		}
+		.first{
+			@include MQ(M) {
+	    		margin: 10px 10px 0 0px;
+	    	}	
+		}
+		.last{
+			border-right: 0px solid #e0dddd;
+		}
+ 	 }
+}

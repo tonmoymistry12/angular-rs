@@ -1,0 +1,38 @@
+<div class="userDashboard container-fluid ng-scope">
+<div class="hasHeader">
+		<div class="userTabs clearfix ">
+			<div class="tab-content formStyle">
+	<h5 class="go_down">My Reports</h5>
+	    
+
+   <div class="tab-pane active searchUser" id="searchUser">
+ <table class="table  t-responsive" id="user_table">
+							<thead id="user_table_header">
+								<tr id="user_table_row">
+									
+									<th scope="col" id="user_id">REPORT ID</th>
+								  	<th scope="col" id="fname">FORMAT TYPE </th>							  	
+								  	<th scope="col" id="last_login">GENERATION TIME</th>
+								  	<th scope="col" id="acc_status">REPORT TYPE</th>
+								  	<th scope="col" id="action" >DOWNLOAD</th>
+								</tr>
+							</thead>
+							<!-- <tbody ng-repeat="user in searchUserData" id="user_table_body"> -->
+							<tbody  dir-paginate="user in searchUserData|orderBy:sortKey:reverse|filter:search|itemsPerPage:50" id="user_table_body">
+								<tr id="user_table_expand_row" ng-class="user.select?'expandColorTr':''">
+									<td data-label="Report Id" id="user_info_id">{{ user.reportId }}</td>									 
+								 	<td data-label="Report Type" id="user_info_fname" class="fixWidth"><p class="Uname">{{ user.reportMimetype }}</p></td>
+						            <td data-label="Time stamp" id="user_info_prevlogin">{{user.reportGenerationTime  | date: 'yyyy-MM-dd HH:mm:ss Z ' | GMT}}</td>
+								    <td data-label="Account Status" id="user_info_priority">{{ user.reportType }}</td>	
+								  	<td data-label="Action" class="textCenter"><a ng-href="#" ng-click="downloadReports(user)"><img ng-src="./img/pdf_icon.svg" alt="pdf" class="pdf_icon" ng-show="user.reportMimetype=='PDF' ||user.reportMimetype=='pdf' "><img ng-src="./img/excel.png" alt="Excel" class="pdf_icon" ng-show="user.reportMimetype=='EXCEL' ||user.reportMimetype=='excel' "></a></td>							  	
+								</tr>
+								
+							</tbody>
+</table>
+</div>
+  
+
+	</div>
+	</div>
+  </div>
+</div>

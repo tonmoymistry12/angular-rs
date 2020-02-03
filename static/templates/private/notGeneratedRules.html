@@ -1,0 +1,78 @@
+<div class="ruleByEditor">
+   <div class="row">
+      <div class="col-md-6 pageHeading noPadding">
+         <h5>My Draft Rules</h5>
+      </div>
+      <div class="col-md-6 text-right">
+         <!--  <i type="button" ng-click="goBackView()"
+            class="fa fa-arrow-circle-o-left caseSearch-Left-Arrow cursor">Back</i> -->
+      </div>
+   </div>
+   <div class="row" style="padding-bottom:10px;" ng-show="notGenRules.length >5">
+      <div class="col-sm-3 col-sm-offset-9">
+         <input type="text" class="form-control"  placeholder="Search" ng-model="search">
+      </div>
+   </div>
+   <div class="notGeneratedRules settings" id="searchUser">
+      <table class="table  t-responsive">
+         <thead>
+			<tr>
+				<th scope="col" class=" ruleID" >Rule Name</th>
+				<th scope="col">Org Id</th>
+				
+				<!-- <th scope="col">Rule Score</th>
+				<th scope="col">Priority</th> -->
+
+				<th scope="col" class="text-center">RULE EXPRESSION</th>
+				<th scope="col" class="text-right action">Action</th>
+			</tr>
+         </thead>
+         <tbody dir-paginate="rule in notGenRules|orderBy:sortKey:reverse|filter:search|itemsPerPage:pageSize">
+            <tr >
+               <td style="word-wrap: break-word;">{{rule.ruleName}}</td>
+               <td>{{rule.orgId}}</td>
+              <!--  <td>{{rule.ruleScore}}</td>
+                <td>{{rule.priority}}</td> -->
+               <td >{{rule.ruleExpr}}</td>
+
+               <td class="text-right">
+                  <div class="dropdown" id="rule_action_dropdown">
+                     <button class="btn dropdown-toggle button-width text-center" type="button" data-toggle="dropdown"><span class="fa fa-cog" aria-hidden="true"></span>
+                     </button>
+                     <ul class="dropdown-menu drop-downadj fa-eye-ul" id="rule_info_action_dropdown_action">
+                        <li ng-click="viewRuleDetail(rule)" ><a href="#" id="view_rule"><span class="fa fa-eye" aria-hidden="true" > View Rule</span></a></li>
+                        <li ng-click="editRuleDetail(rule)" ><a href="#" id="view_rule"><span class="fa fa-pencil" aria-hidden="true" > Edit Rule</span></a></li>
+                     </ul>
+                  </div>
+               </td>
+            </tr>
+         </tbody>
+      </table>
+      <div class="text-center noData" id="no_data_found" ng-show="notGenRules.length ===0">
+         <h6>No Data Found</h6>
+      </div>
+      <div class="gridPagination clearfix" ng-hide="notGenRules.length ===0 || angular.isUndefined(notGenRules)">
+         <div class="col-sm-1  padding-left-zero" ng-show="notGenRules!=undefined && notGenRules.length >50">
+            <select ng-model="pageSize" >
+               <!-- <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option> -->
+                        <option value="50">50</option>
+                        <option value="75">75</option>
+                        <option value="100">100</option>
+            </select>
+         </div>
+         <div class="col-sm-8">
+            <dir-pagination-controls max-size="pageSize" direction-links="true" boundary-links="true" ></dir-pagination-controls>
+         </div>
+      </div>
+      <!-- <div class="gridPagination clearfix" ng-hide="notGenRules.length ===0 || angular.isUndefined(notGenRules)">
+         <div>
+            <dir-pagination-controls max-size="50" direction-links="true" boundary-links="true" ></dir-pagination-controls>
+         </div>
+      </div> -->
+   </div>
+   <div class="row">
+      <div class="col-sm-12 text-center"><button class="btn btn-lg btn-danger" ng-click="goBackView()">Back</button></div>
+   </div>
+</div>

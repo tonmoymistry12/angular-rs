@@ -1,0 +1,288 @@
+<style>
+	/*#daButton {
+		position: absolute;
+		top: 50vh;
+		left: 40vw;
+		height: 2.5em;
+		border-radius: 1em;
+		background: smoke;
+		line-hieght: 1.2em;
+	}*/
+
+	
+	.ng-modal-overlay {
+		/* A dark translucent div that covers the whole screen */
+		position: absolute;
+		z-index: 9999;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: #000000;
+		opacity: 0.8;
+	}
+
+	.ng-modal-dialog {
+		/* A centered div above the overlay with a box shadow. */
+		z-index: 10000;
+		position: absolute;
+		width: 50%;
+		/* Default */
+		/* Center the dialog
+				background-color: #fff;
+
+		*/
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		-webkit-transform: translate(-50%, -50%);
+		-moz-transform: translate(-50%, -50%);
+		box-shadow: 4px 4px 80px #000;
+		-webkit-transition: all .6s ease-out;
+		-moz-transition: all .6s ease-out;
+		-ms-transition: all .6s ease-out;
+		-o-transition: all .6s ease-out;
+		transition: all .6s ease-out;
+	}
+
+	.ng-modal-dialog-content {
+		padding: 10px;
+		text-align: left;
+	}
+
+	.ng-modal-close {
+		height: 30px;
+		width: 30px;
+		position: absolute;
+		top: 15px;
+		right: 15px;
+		font-size: 18px;
+		display: inline-block;
+		font-weight: bold;
+		font-family: 'arial', 'sans-serif';
+		border: 1px solid;
+		color: #fff;
+		background: #bb0808;
+		z-index: 1;
+		padding-right: 5px;
+		padding-left: 8px;
+		padding-top: 2px;
+		cursor: pointer;
+	}
+	.progress {
+		margin: 0 auto;
+		height: 16px !important;
+		width: 75%;
+	}
+	.progress-bar {
+		width: 0;
+		color: #000 !important;
+		animation: progress 1.5s ease-in-out forwards;
+	}
+
+	.title {
+		opacity: 0;
+		animation: show 0.35s forwards ease-in-out 0.5s;
+	}
+
+
+	<!-- ends-->
+
+</style>
+<header class="topbar" data-navbarbg="skin5">
+	<nav class="top-navbar navbar-expand-md navbar-dark">
+		
+
+		<div id="navbarSupportedContent"
+			data-navbarbg="skin5">
+
+            
+
+			<ul class="navbar-nav navbar-nav_redsgn col-md-3  float-left ">
+            <img ng-src="{{imagePath}}/npci-logo_0.png" alt="npci" class="light-logo-menu2" />
+           </ul>
+			
+			<ul class="col-md-6">
+			<li class="header_msg">Enterprise Fraud & Risk Monitoring System</li>
+			</ul>
+			<ul class="navbar-nav col-md-3">
+
+				<li class="custom-item">
+				<div class="float-right">
+				<div style="vertical-align: middle;" class="loginStmp">Last
+				login : {{ lastLogin != '' && lastLogin != null ?lastLogin : 'N/A' | GMT}}</div>
+				<div class="dropdown" id="user_account_dropdown" >
+					<div class="col-md noPadding">
+				<span class="colorWhite">Welcome :</span>
+				<button class="btn dropdown-toggle button-width user_accn_btn cut-text" type="button" data-toggle="dropdown"><span class="fa user_settings" aria-hidden="true">&#xf2be</span><span class="nav-welcome"
+					style="font-size: 14px;" data-toggle="popover" data-trigger="hover" ng-click="isSessionValid()"
+					data-placement="top" data-container="body"> {{loggedInUser}} </span>
+
+					 <img ng-src="./img/down-arrow.png" alt="down" class="down_caret pull-right nav-btn-margin-top-carret">
+
+			    </button>
+				<ul class="dropdown-menu user_settings_drj drop-downadj2" id="user_info_action_dropdown_action">
+				    <!-- <li >
+				        <a ng-show="!sessionflag">
+                        <div class="lg_ot_btn"><i class="fa fa-edit m-r-5 m-l-5">  Customize settings</i></div>
+                       </a>
+                   </li> -->
+				    <li ng-show="!sessionflag">
+				        <a  ng-click="inAccoyntSettings()">
+                     		<div class="lg_ot_btn"><i class="fa fa-key m-r-5 m-l-5">  Change password</i></div>
+       					</a>
+                   </li>
+
+					<li ng-show="!sessionflag">
+						<a    ng-click="changePreferences()">
+							<div class="lg_ot_btn"><i class="fa  fa-cog m-r-5 m-l-5"> Preferences</i></div>
+						</a>
+					</li>
+					<li ng-show="!sessionflag">
+						<a    ng-click="updateSecurityQuestion()">
+							<div class="lg_ot_btn"><i class="fa fa-user-secret m-r-5 m-l-5"> Update Security Questions</i></div>
+						</a>
+					</li>
+					
+					<li ng-if="rolePermission.isPermissionGranted(1723019061) && chkOrgId == 'NPCI'">
+						<a  ng-show="!sessionflag"  ng-click="getMyReports()">
+							<div class="lg_ot_btn"><i class="fa  fa-file-text m-r-5 m-l-5"> My Reports</i></div>
+						</a>
+					</li>
+					
+					<li  ng-if="rolePermission.isPermissionGranted(1723019061)">
+						<a   ng-click="downloadRuleWiki()">
+							<div class="lg_ot_btn"><i class="fa  fa fa-book m-r-5 m-l-5"> Download Rule Wiki</i></div>
+						</a>
+					</li>
+					
+					<li ng-if="rolePermission.isPermissionGranted(1723019072) && chkOrgId=='NPCI'">
+						<a  ng-show="!sessionflag"  ng-click="simulateRules()">
+							<div class="lg_ot_btn"><i class="fa  fa-file-text m-r-5 m-l-5"> My Simulated Rules</i></div>
+						</a>
+					</li>
+					
+					<li ng-if="rolePermission.isPermissionGranted(1723019072) && chkOrgId=='NPCI'">
+						<a  ng-show="!sessionflag"  ng-click="notGeneratedRules()">
+							<div class="lg_ot_btn"><i class="fa  fa-file-text m-r-5 m-l-5"> My Draft Rules</i></div>
+						</a>
+					</li>
+					
+					<li ng-if="rolePermission.isPermissionGranted(1723019072)">
+						<a  ng-show="!sessionflag"  ng-click="getMyActivityReports()">
+							<div class="lg_ot_btn"><i class="fa  fa-file-text m-r-5 m-l-5"> My Activity Reports</i></div>
+						</a>
+					</li>
+					
+					<!-- <li ng-if="rolePermission.isPermissionGranted(1723019058)">
+						<a  ng-show="!sessionflag"  ng-click="resetRole()">
+							<div class="lg_ot_btn"><i class="fa  fa-undo m-r-5 m-l-5"> Reset Role</i></div>
+						</a>
+					</li> -->
+					
+					<!-- <li ng-if="rolePermission.isPermissionGranted(1723019058)">
+						<a  ng-show="!sessionflag"  ng-click="checkChargeBack()">
+							<div class="lg_ot_btn"><i class="fa  fa-undo m-r-5 m-l-5">Check Charge Back</i></div>
+						</a>
+					</li> -->
+
+					<li >
+						<a  ng-show="!sessionflag"  ng-click="doLogout()">
+							<div class="lg_ot_btn"><i class="fa fa-power-off m-r-5 m-l-5">  Sign out</i></div>
+						</a>
+					</li>
+
+				</ul>
+					</div>
+				</div>
+					
+					</div>
+				</li>
+
+
+
+			</ul>
+<div class="orgAlign colorWhite">Organisation : {{ organization}}</div>
+
+		</div>
+	</nav>
+</header>
+
+<modal-dialog show='modalShown' width='90%' height='95%'>
+	<div class="userDashboard container-fluid styleBorder" id="caseinQueue">
+		<div class="hasHeader">
+			<div class="userTabs clearfix settings">
+				<div class="tab-content formStyle noTopPad">
+					<div class="pageHeading"><h5 class="noMargin">Change Preferences</h5></div>
+					<div class="tab-pane active searchUser" id="assign">
+						<div class="clearfix row">
+							<div class="form-group col-sm-4 labelMargintop">
+								<span class="textcell_reports nopad noMargin">Channel*</span>
+								<select ng-model="obj.selectedChannel1" ng-change="changeChannel()" name="obj.selectedChannel1" id="obj.selectedChannel1"class="form-control"  required>
+									<option style="display:none" value=''>PLEASE SELECT THE CHANNEL</option>
+									<option class="upperCases" ng-repeat="item in channel_code | orderBy:'channelDesc'" value="{{item.channelCode}}">{{item.channelDesc}}</option>
+								</select>
+								<div ng-show="(obj.selectedChannel1=='' || angular.isUndefined(obj.selectedChannel1)) && submitted==true">
+									<div ng-message="required" class="text-danger">Please Select Channel.</div>
+								</div>
+
+							</div>
+						</div>
+						<div class="clearfix row" style="padding: 10px; padding-bottom: 0px; padding-top: 0px;">
+                        <span class="preferenceNotes">**Please drag one field from left column and drop it to right column to select fields.
+                            You can also arrange the order of the fields**</span>
+							<div class="panel panel_info col-sm-5">
+								<div class="panel_heading"><span class="panel-title"> All Preferences</span> </div>
+								<div class="panel_body">
+								<div class="col-md-12 adj_txt_danger nopad">
+						<!--<div ng-show="selectedMsg==true && obj.selectedChannel1!='' &&
+						!angular.isUndefined(obj.selectedChannel1) && submitted==true && list1.length!=0 &&
+						list2.length==0">
+							Please select at least one preference
+						</div>-->
+						<div ng-show="angular.isUndefined(obj.selectedChannel1)">
+							Please select a channel
+						</div>
+					</div>
+								
+									<ul  style="padding: 0px" ui-sortable="sortableOptions" ng-model="list1" class="apps-container list floatleft">
+										<li class="sortable_app" ng-repeat="name in list1 track by $index">{{ name}}</li>
+									</ul>
+								</div>
+							</div>
+
+							<div class="col-sm-2">
+								<div>
+									<div class="row">
+										<div class="select_box_arrow" ng-click="selectAllColumns()"><!--ng-disabled="$scope.list1.length!=0?false:true"-->
+											<div class="move_right"><span class="place_arrow">&#187;</span></div> </div>
+									</div>
+									<div class="row">
+										<div class="select_box_arrow" ng-click="removeAllColumns()" ><!--ng-disabled="$scope.list2.length!=0?false:true"-->
+											<div class="move_left"><span class="place_arrow">&#171;</span></div> </div>
+									</div>
+								</div>
+
+							</div>
+
+							<div class="panel panel_info col-sm-5">
+								<div class="panel_heading"><span class="panel-title"> Selected Preferences</span> </div>
+
+								<div class="panel_body">
+									<ul style="padding: 0px" ui-sortable="sortableOptions" ng-model="list2" class="apps-container list floatleft">
+										<li class="sortable_app" ng-repeat="name in list2 track by $index">{{ name}}</li>
+									</ul>
+								</div>
+
+							</div>
+						</div>
+					</div>
+					
+					<button type="submit" ng-disabled="(obj.selectedChannel1==undefined && list1.length==0)?true:false" id="pref_submit" class="btn btn-lg btn-danger" ng-click="updatePreferences()">Submit</button>
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+</modal-dialog>

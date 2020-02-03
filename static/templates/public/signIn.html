@@ -1,0 +1,56 @@
+<div class="displayTable">
+	<div class="verticalMiddle formStyle cardBg">
+		<div class="login">
+			<div class="logo text-center"><a ng-click="otpForm = false"><img ng-src="{{imagePath}}/npcilogo.png" alt="Npci Logo"></a></div>
+			<br>
+			<form ng-if="!otpForm" name="loginForm" ng-submit="loginForm.$valid && loginSubmit()" autocomplete="off" novalidate accessible-form>
+			   <div class="form-group errGap" ng-class="{true: 'has-error'}[submitted && loginForm.userId.$invalid]">
+				   <input id ="login_email" ng-class = "{im_active: login.id}" type="email" placeholder="E-mail address" name="userId" ng-model="login.id" ng-pattern="/^[_a-z-A-Z0-9]+(\.[_a-z-A-Z0-9]+)*@[a-z-A-Z0-9-]+(\.[a-z-A-Z0-9-]+)*(\.[a-z-A-Z]{2,4})$/" class="form-control" maxlength="50" required autofocus="autofocus"/>
+				   <p class="text-danger" ng-show="submitted && loginForm.userId.$error.required"><small id="login_val_text1">This is a required field.</small></p>
+			       <p class="text-danger" ng-show="submitted && loginForm.userId.$error.pattern"><small id="login_val_text2">Email is invalid.</small></p>
+			   </div>
+			   <div class="form-group errGap" ng-class="{true: 'has-error'}[submitted && loginForm.userPassword.$invalid]">
+			        <input id="login_password" ng-class = "{im_active: login.password}" type="password" placeholder="Password" name="userPassword" ng-model="login.password" class="form-control"  required/>
+			        <p class="text-danger" ng-show="submitted && loginForm.userPassword.$error.required"><small id="login_val_text3">This is a required field.</small></p>
+			        
+			   </div>			   
+			   <div class="form-group top-gap text-center">
+			   		<input id="login_submit" type="submit" class="btn btn-lg btn-block btn-danger" value="Sign In" ng-click="submitted=true">
+			   	</div>
+			   		<div class="form-group">
+			   			<small><a ui-sref="forgotPassword" class="forgotPasswordLink"  >Forgot Password?</a></small>
+			   		</div>
+			</form>
+			
+			<div ng-if="otpForm">
+			
+			
+			<form  name="otpForm" ng-submit="otpForm.$valid && otpFormSubmit()" autocomplete="off" novalidate accessible-form>
+			   <h4 class="text-center noMargin" ><strong id="login_val_text5">An OTP has been sent to your Email Id: </strong><strong class="text-info" id="login_val_text_email">{{email}}. </strong id="login_val_text6">Please enter it below.</h4><br>
+			   <div class="form-group" ng-class="{true: 'has-error'}[submitted && otpForm.otp.$invalid]">
+				   <input id ="login_otp1" ng-class = "{im_active: resetPass.otp1}"  type="{{inputType}}" placeholder="*" name="otp" ng-model="resetPass.otp1" class="otp-control" required autofocus="autofocus" focus  only-digits focusMe maxlength="1" />
+				   <input id ="login_otp2" ng-class = "{im_active: resetPass.otp2}"  type="{{inputType}}" placeholder="*" name="otp" ng-model="resetPass.otp2" class="otp-control" required focus  only-digits maxlength="1" />
+				   <input id ="login_otp3" ng-class = "{im_active: resetPass.otp3}" type="{{inputType}}" placeholder="*" name="otp" ng-model="resetPass.otp3" class="otp-control" required focus  only-digits maxlength="1" />
+				   <input id ="login_otp4" ng-class = "{im_active: resetPass.otp4}" type="{{inputType}}" placeholder="*" name="otp" ng-model="resetPass.otp4" class="otp-control" required focus  only-digits maxlength="1" />
+				   <input id ="login_otp5" ng-class = "{im_active: resetPass.otp5}" type="{{inputType}}" placeholder="*" name="otp" ng-model="resetPass.otp5" class="otp-control" required focus  only-digits maxlength="1" />
+				   <input id ="login_otp6" ng-class = "{im_active: resetPass.otp6}" type="{{inputType}}" placeholder="*" name="otp" ng-model="resetPass.otp6" class="otp-control" required focus  only-digits maxlength="1" />
+				   <p class="text-danger" ng-show="submitted && otpForm.otp.$error.required"><small id="login_val_text7">This is a required field.</small></p>
+				   <p class="text-danger" ng-show="submitted && otpForm.otp.$error.minlength"><small id="login_val_text8">Should be 6 characters.</small></p>
+				   <input type="checkbox" id="otp_checkbox" ng-model="passwordCheckbox" ng-click="hideShowPassword()" />
+ 				  <span  class="otp_show_text" for="checkbox" ng-if="passwordCheckbox">Hide OTP</span>
+ 			       <span class="otp_show_text" for="checkbox" ng-if="!passwordCheckbox">Show OTP</span>
+			   </div>
+			   
+			   <h4 class="text-center noMargin" ng-show="resendOTp"><strong class="text-danger noMargin" id="login_val_text9">Your OTP has expired. Please click on RESEND OTP link to receive new OTP.</strong></h4>
+			<h4 class="text-center noMargin" ng-hide="resendOTp"><strong id="login_val_text10">Your OTP will expire in <timer notify-when-stop="timerStopped" interval="1000" countdown="timer"></timer></strong></h4>
+			<br>
+			   		   
+			   <input id="forgotPass" type="submit" class="btn btn-block btn-lg btn-danger" value="Submit" ng-click="submitted=true" >
+			   <br>			
+				<p class="text-center"><small>Didn't receive OTP? <a id="resendOTP" ng-click="resendOtp();submitted=false" > RESEND OTP</a><a id="reLogin" ng-click="chnageEmail()" > SWITCH USER</a></small></p>
+				
+			</form>
+			</div>
+		</div>
+	</div>	
+</div>

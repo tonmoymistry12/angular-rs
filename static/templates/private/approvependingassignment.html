@@ -1,0 +1,143 @@
+<div class="userDashboard container-fluid">
+	<div class="hasHeader">
+		<div class="userTabs clearfix settings">
+			<div class="tab-content formStyle">
+				<div class="pageHeading"><h5>Approve Assignment</h5></div>
+				<div class="tab-pane active searchUser" id="searchQueue">	
+						<form name ="searchQueueForm" autocomplete="off" novalidate>
+						<div class="clearfix row searchCriteria">
+													
+													
+							<div class="col-sm-12">
+								<div class="row">
+									<div class="col-xs-3 col-lg-4" >
+										<span class="textcell_reports">ORGANISATION:</span> 
+										<select class="form-control" ng-disabled="loggedInOrgID != 'NPCI'" ng-change="changeOrgaisation(selectedOrgid)" ng-model="selectedOrgid"  required>
+						 						<option style="display:none" value="">PLEASE SELECT THE ORGANISATION</option>
+												<option class="upperCases" ng-repeat="data in orgarnisations" value="{{data.orgId}}">{{data.name}}</option>
+										</select> 
+											<!-- <ui-select 
+							           id="selectedOrgID"
+							           name="selectedOrgID"
+							           ng-model="selectedOrgid" 
+							           uiSelectNoAnimate
+							           theme="selectize"  
+							           title="Choose a organisation"
+							           append-to-body="true" 
+							           close-on-select="true" 
+							           ng-disabled = "loggedInOrgID != 'NPCI'"
+							           on-select="changeOrgaisation(selectedOrgid.orgId)"
+							           ng-required="true"
+								   >
+      	 						<ui-select-match placeholder="SELECT A ORGANISATION IN THE LIST...">{{$select.selected.name}}</ui-select-match>
+							     <ui-select-choices 
+							        repeat="option in orgarnisations | filter: $select.search | limitTo: 100 | uppercase"
+							        position="down" 
+							        limit="100"
+							        refresh-delay="300">
+							      <span ng-bind-html="option.name | highlight: $select.search"></span>
+							      <small ng-bind-html="option.orgId | highlight: $select.search"></small>
+							    </ui-select-choices>
+    						</ui-select> -->
+										<div class="text-danger" id="assignqueue_required_msg" ng-if="showErrMsg"><small>Select a organisation.</small></div>
+									</div>	
+								</div>								
+							</div>									
+						</div>	
+						<!-- <div class="clearfix row" ng-show="viewQueueData.length != '0'">
+							<div class="col-sm-12 ">
+								<span class="textcell_reports" style="text-decoration: underline;">FILTER CRITERIA</span>
+							</div>
+							<div class="form-group col-sm-4 ">
+		                        <span class="textcell_reports">QUEUE CODE:</span>
+								<input type="text" name="queueCode" autocomplete="off" class="form-control" ng-pattern-restrict="^[A-Z a-z - ' @ 0-9]*$" placeholder="Enter Queue Code" ng-model="searchData.queueCode" maxlength='50' autocomplete="off"/>
+							</div>
+							<div class="form-group col-sm-4 ">
+								<span class="textcell_reports">QUEUE NAME:</span>
+								<input type="text" name="queueName" autocomplete="off" class="form-control" ng-pattern-restrict="^[A-Z a-z - ' @ 0-9]*$" placeholder="Enter Queue Name" ng-model="searchData.queueName" maxlength='50' autocomplete="off"/>
+							</div>
+						</div>	 -->						
+					</form>					
+					<span ng-if="viewQueueData.length != 0" class="showTotalRecords">
+							<strong>Total Records :{{viewQueueData.length}}</strong>
+					</span>	
+					<span ng-if="viewQueueData.length == 0" class="showTotalRecords">
+							<strong>Total Records :0</strong>
+					</span>					
+						<table  class="table  t-responsive table_adj" id="user_table">
+							<thead>
+								<tr>
+									
+								  	<th scope="col">Queue Code<span class="fa fa-chevron-right calColor"  ng-click="sort('listTaskQueue[0].queueCode')" ng-class="queueCodeSort?'fa-rotate-90':'fa-rotate-270'"></span></th>
+								  
+								  	<th scope="col">Assigned Date <span class="fa fa-chevron-right calColor"  ng-click="sort('assignedTime')" ng-class="createdDateSort?'fa-rotate-90':'fa-rotate-270'"></span></th>	
+								  	<th scope="col">Assigned By <span class="fa fa-chevron-right calColor"  ng-click="sort('assignedBy')" ng-class="createdBySort?'fa-rotate-90':'fa-rotate-270'"></span></th>	
+								  	<th scope="col">Assigned To <span class="fa fa-chevron-right calColor"  ng-click="sort('users[0].firstName')" ng-class="assignedToSort?'fa-rotate-90':'fa-rotate-270'"></span></th>	
+								  								  	
+								  	<th scope="col">Status <span class="fa fa-chevron-right calColor"  ng-click="sort('actionType')" ng-class="statusSort?'fa-rotate-90':'fa-rotate-270'"></span></th>	
+								    <th scope="col">Channel</th>	
+								  	<!-- <th scope="col">Action Type</th> -->
+								  	<th scope="col" id="action">Action</th>
+								</tr>
+							</thead>
+							<!--  <tbody ng-repeat="queue in viewQueueData"> -->
+							<tbody  dir-paginate="queue in viewQueueData|orderBy:sortKey:reverse|filter:searchData|itemsPerPage:selectedPage">
+							
+								<tr id="queue_table_expand_row">
+									
+																 
+								 	<td data-label="Queue Code" id="queue_code" class="fixWidth"><p class="Uname">{{ queue.listTaskQueue[0].queueCode}}</p></td>
+								 	
+									<td data-label="Created_Date" id="assigned_time">{{ queue.assignedTime==null?'NA':queue.assignedTime | GMT}}</td>
+									<td data-label="Created_BY">{{ queue.assignedBy}}</td>
+									<td data-label="Assigned To">{{ queue.users[0].firstName}}({{ queue.users[0].email}})</td>	
+									
+									<td data-label="Status" ng-if="queue.actionType == 1">Assignment Requested</td>	
+									<td data-label="Status" ng-if="queue.actionType == 2">Assignment Removal Requested</td>	
+									<td data-label="Queue Code" id="queue_code" class="fixWidth"><p class="Uname">{{channelDisplay(queue.listTaskQueue[0].channel) }}</p></td>									  	
+								  	<td data-label="Action" id="queue_action" ng-class="authority == 'ROLE_NTS_MGMT'?'ntsMgm':''">
+								  		<div class="dropdown" id="queue_action_dropdown" ng-if="rolePermission.isPermissionGranted(1723019063)">
+										  <button class="btn dropdown-toggle button-width"   type="button" ng-disabled="(queue.updatedBy == loggedInUserId || queue.users[0].email == loggedInUserMail)" data-toggle="dropdown"><span class="fa fa-cog" aria-hidden="true"></span>
+										  </button>
+										  <ul class="dropdown-menu drop-downadj fa-eye-ul" ng-if="queue.updatedBy != loggedInUserId" style = "margin-left:-33px" id="queue_info_action_dropdown_action">
+									   
+										   
+										    <li  ng-click="queueModel(queue,'rejectqueue')"><a href="#" id="reject_queue" ><span    class="fa fa-close" aria-hidden="true" >Reject</span></a></li>
+										    <li   ng-click="queueModel(queue,'approvequeue')"><a  id="approve_queue" href="#" ><span class="fa fa-check" aria-hidden="true"  data-toggle="tooltip"   > Approve</span></a></li>
+										    
+										    
+								  			</ul>										 
+										</div>
+								  	</td>		
+								  						  				  	
+								</tr>
+								
+			
+																												
+							</tbody>
+						</table>
+					<div  ng-show="(viewQueueData|filter:searchData).length==0 || viewQueueData.length == '0' || viewQueueData == undefined" class="text-center noData"><h6>No Records Found</h6></div>  
+					<!-- <div class="text-center noData" ng-show="viewQueueData.length == '0' || viewQueueData == undefined"> <h6>No Data Found</h6></div> -->
+					
+					
+					<div class="gridPagination clearfix" ng-show="viewQueueData.length != '0'">
+					
+						<div class="col-sm-1" >
+							<select ng-show="viewQueueData.length > 5" ng-model="selectedPage" name="pageSize" id="selectpage">
+									<option value="5">5</option>
+									<option value="10">10</option>
+									<option value="25">25</option>
+									<option value="50">50</option>
+									<option value="100">100</option>
+							</select>
+						</div>
+						
+						<div class="col-sm-8">
+							<dir-pagination-controls max-size="5"  direction-links="true" boundary-links="true" ></dir-pagination-controls>
+						</div>
+					</div>															
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

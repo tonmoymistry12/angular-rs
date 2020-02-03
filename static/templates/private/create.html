@@ -1,0 +1,155 @@
+<div class="userDashboard container-fluid" id="createUser">
+	<div class="hasHeader">
+		<!-- Tabs start -->	
+		<div class="userTabs clearfix">
+			<div class="tab-content formStyle">
+				
+
+				<div class="pageHeading"><h5>{{isEditable?'Update User':'Create User'}}</h5></div>
+			  	<div class="tab-pane active" id="createUser">
+					<form ng-submit="createUserForm.$valid && createUserSubmit()" autocomplete="off" name="createUserForm" novalidate accessible-form>
+						<div class="clearfix row">
+							<div class="form-group col-sm-4" ng-class="{true: 'has-error'}[submitted && createUserForm.firstname.$invalid]">
+								<span class="textcell_reports">FIRST NAME:</span>
+								<input type="text" class="form-control capitalize" id="firstname" name="firstname" ng-model="createUser.firstName" placeholder="Enter First Name*" ng-pattern-restrict="^[A-Za-z']*$" autocomplete="off"  maxlength="50" required/>
+								<div class="text-danger" id="firstname_required_msg" ng-show="createUserForm.firstname.$error.required && submitted"><small>This is a required field.</small></div>							
+							</div>
+							<div class="form-group col-sm-4">
+								<span class="textcell_reports">MIDDLE NAME:</span>
+								<input type="text" class="form-control capitalize" id="middlename" name="middlename" ng-model="createUser.middleName" ng-pattern-restrict="^[A-Za-z ']*$"  autocomplete="off" placeholder="Middle Name" maxlength="20"/>
+							</div>
+							<div class="form-group col-sm-4" ng-class="{true: 'has-error'}[submitted && createUserForm.lastname.$invalid]">
+								<span class="textcell_reports">LAST NAME:</span>
+								<input type="text" class="form-control capitalize" id="lastname" name="lastname" ng-model="createUser.lastName" placeholder="Enter Last Name*" ng-pattern-restrict="^[A-Za-z']*$" autocomplete="off" maxlength="50" required/>
+								<div class="text-danger" id="lastname_required_msg" ng-show="createUserForm.lastname.$error.required && submitted"><small>This is a required field.</small></div>							
+							</div>				
+						</div>
+						<div class="clearfix row">
+							<div class="form-group col-sm-4" ng-class="{true: 'has-error'}[submitted && createUserForm.username.$invalid]">	
+								<span class="textcell_reports">E-Mail/User Id:</span>								
+								<input ng-readonly="isEditable" type="text" class="form-control" id="username" name="username" ng-pattern="/^[_a-z-A-Z-0-9]+(\.[_a-z-A-Z0-9]+)*@[a-z-A-Z0-9-]+(\.[a-z-A-Z0-9-]+)*(\.[a-z-A-Z]{2,4})$/" ng-model="createUser.username"  placeholder="Enter Email*" autocomplete="off" required maxlength="50"/>
+								<div class="text-danger" id="email_required_msg" ng-show="createUserForm.username.$error.required && submitted"><small>This is a required field.</small></div>	
+								<div class="text-danger text-left" id="email_validation_msg" ng-show="createUserForm.username.$error.pattern && submitted"><small>Email is invalid.</small></div>						
+							</div>
+							
+							<div class="form-group col-sm-4" ng-class="{true: 'has-error'}[  submitted && createUserForm.contact.$invalid]">
+								<span class="textcell_reports">PHONE NO:</span>
+	                       		<input type="text" placeholder="Enter Phone Number*" phone-input ng-model="createUser.phoneNo"  autocomplete="off"" name="contact" class="form-control" maxlength="11" minlength="11" ng-keyup="PfirstLetter()" required id="contact" />
+	                       		<div class="text-danger" id="phone_required_msg" ng-show="createUserForm.contact.$error.required && submitted"><small>This is a required field.</small></div>	                       		
+			 					<div class="text-danger" id="phone_validation_msg" ng-show="createUserForm.contact.$error.minlength && submitted"><small>Minimum length required is 10</small></div>			 							
+                        	</div>		                    	
+							
+							<div class="form-group col-sm-4" ng-class="{true: 'has-error'}[submitted && createUserForm.userrole.$invalid]">					 				
+			 					<!-- <select ng-model="userRole"  ng-change="changedValue(userRole)"   name="userrole" class="form-control" id="userRole" ng-options="item as item for item in items" required>
+			 					</select> -->
+			 					<span class="textcell_reports">USER ROLE:</span>
+			 					<select class="form-control"  ng-model="userRole" ng-change="changedValue(userRole)" name="userrole" class="form-control">
+			 						<option style="display:none" value="0">PLEASE SELECT THE ROLE</option>
+			 						<option  value="ROLE_EFRM_REPORT_USER">EFRM REPORT USER</option>
+									<option ng-repeat="item in items|orderBy:roleDisplay" value="{{item}}">{{roleDisplay(item)}}</option>
+								</select>
+								<span  class="transaction-text text-warning" ng-if="userRole == 'ROLE_EFRM_REPORT_USER'" ><i style="font-size:15px" class="fa">&#xf071;</i>Created user will not have access to EFRM Portal. </span>
+			 					<div class="text-danger" id="userRole_required_msg" ng-show="submitted && userRole == '0'"><small>This is a required field.</small></div>	 					
+							</div>
+						</div>
+						
+						<div class="clearfix row"  ng-if="!showBanknameDropdown && showNPCI">
+							<div class="form-group col-sm-12 noBottomMargin" ng-class="{true: 'has-error'}[submitted && createUserForm.selectedPerspective.$invalid]">
+
+								<span class="textcell_reports" value="">PERSPECTIVE:<a  style="top:0px !important;position: absolute;" popover data-placement="right" data-container="body"
+										   data-html="true"
+										   data-content="<div id='my-data-content'><p>For IMPS/UPI Issuer refers to Remitter Perspective and Acquirer refers to Beneficiary perspective.</p></div>"><img style="height: 14px" src="../img/info.png" alt="password criteria"></a></span>
+								<div class="form-group col-md noBottomMargin">
+								<label class="checkbox-inlineBlock checkPers" ng-repeat="item in npciPerspective">
+									<input ng-disabled="amlSelected && item.value!='AML' || disableAml && item.value=='AML'"
+										   type="checkbox" ng-model="selectedPerspective" ng-checked="item.checked" ng-click="changePerspective(selectedPerspective,item)"
+										   name="npciPerspective" id="npciPerspective" class="form-control"
+										   ng-required="requiredperspective=='true'?true:false">
+									{{item.name}}
+								</label>
+								</div>
+								
+								<div class="text-danger" id="NPCIPerspective_msg" ng-show="requiredperspective && submitted"><small>Please select at least one</small></div>
+							</div>
+							
+							<!-- <div class="form-group col-sm-12 noBottomMargin">
+								<span  class="transaction-text" style = "margin-left: -1%;color:#16bfc7"><i style="font-size:15px;color:#16bfc7;font-weight: 700;" class="fa">&#xf05a;</i>For IMPS/UPI Issuer refers to Remitter Perspective and Acquirer refers to Beneficiary perspective. </span>
+							</div> -->
+						</div>
+						
+						 <div class="clearfix row"  ng-if="showBanknameDropdown">
+						 
+						 	 <div class="form-group col-sm-4 noBottomMargin" ng-class="{true: 'has-error'}[submitted && createUserForm.selectedPerspective.$invalid]">
+								 <span class="textcell_reports">PERSPECTIVE:<a  style="top:0px !important;position: absolute;" popover data-placement="right" data-container="body"
+										   data-html="true"
+										   data-content="<div id='my-data-content'><p>For IMPS/UPI Issuer refers to Remitter Perspective and Acquirer refers to Beneficiary perspective.</p></div>"><img style="height: 14px" src="../img/info.png" alt="password criteria"></a></span>
+								 <div class="form-group col-md noBottomMargin">
+									 <label class="checkbox-inlineBlock checkPers" ng-repeat="item in bankPerspective">
+									 <input class="topMargin" type="checkbox" ng-model="selectedPerspective" ng-checked="item.checked" ng-click="changePerspective(selectedPerspective,item)"
+											name="bankPerspective" id="bankPerspective" class="form-control" ng-required="requiredperspective=='true'?true:false"> {{item.name}}
+								 </label>
+								 </div>
+								 <div class="text-danger" id="bank_default_perspective_msg" ng-show="requiredperspective && submitted"><small>Please select at least one</small></div>
+								 <!-- <div class="form-group col-sm-12 noBottomMargin">
+									<span  class="transaction-text" style = "margin-left: -3%;color:#16bfc7;font-weight: 700;"><i style="font-size:15px" class="fa">&#xf05a;</i>For IMPS/UPI Issuer refers to Remitter Perspective and Acquirer refers to Beneficiary perspective. </span>
+								</div> -->
+							 </div>
+							 
+							<div class="form-group col-sm-4 noBottomMargin" ng-if = "loggedUserOrgId == 'NPCI' && !isEditable"  ng-class="{true: 'has-error'}[submitted && createUserForm.bankName.$invalid]">
+			 					<span class="textcell_reports">ORGANISATION NAME:</span>
+			 					<select class="form-control"  ng-model="createUser.orgId" ng-disabled="disabledBanknameDropdown" name="bankName" id="bankName" class="form-control" required>
+			 						<option style="display:none" value="">PLEASE SELECT THE ORGANISATION</option>
+									<option ng-repeat="item in banknNames" value="{{item.orgId}}">{{item.name}}</option>
+								</select>
+								<!--  <ui-select 
+							           id="organisation_fld"
+							           name="organisation_fld"
+							           ng-model="createUser.orgId" 
+							           uiSelectNoAnimate
+							           theme="selectize"  
+							           title="Choose a organisation"
+							           append-to-body="true" 
+							           close-on-select="true" 
+							           ng-disabled = "organisationDisabled"
+							           
+							           ng-required="true"
+								   >
+      	 						<ui-select-match placeholder="SELECT A ORGANISATION IN THE LIST...">{{$select.selected.name}}</ui-select-match>
+							     <ui-select-choices 
+							        repeat="option.orgId as option in banknNames | propsFilter:{name:$select.search} | uppercase"
+							        position="down" 
+							        >
+							      <span ng-bind-html="option.name | highlight: $select.search"></span>
+							      
+							    </ui-select-choices>
+    						</ui-select> -->
+			 					<div class="text-danger" id="bankName_required_msg" ng-show="createUserForm.bankName.$error.required && submitted"><small>This is a required field.</small></div>	 					
+							</div>
+							<div class="form-group col-sm-4 noBottomMargin" ng-if = "loggedUserOrgId != 'NPCI'">
+			 					<span class="textcell_reports">ORGANISATION NAME:</span>
+			 					<input type="text" class="form-control capitalize" ng-disabled="true" id="firstname" name="firstname" ng-model="orgName"  autocomplete="off"  maxlength="50" />
+			 					
+							</div>
+							
+						</div>
+
+						
+
+						<div class="clearfix row userRole">
+							<div class="form-group col-sm-6">
+								<span class="textcell_reports">NOTES:</span>
+				 				<textarea class="form-control" placeholder="Add Notes" autocomplete="off"  ng-model="createUser.createdByNotes" name="notes" id="notes" maxlength="250"></textarea>
+							</div>
+						</div>
+						<button type="submit" id="craete_user_submit" class="btn btn-lg btn-danger" ng-click="submitted=true">Submit</button>
+						
+
+							<button ng-if="isEditable" class="btn btn-lg btn-danger" type="button" ng-click="backToSearch()">Back</button>
+
+						
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

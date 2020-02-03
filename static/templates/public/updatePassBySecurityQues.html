@@ -1,0 +1,34 @@
+
+
+<div  class="verticalCenter formStyle">
+	<div class="login">
+	   <div class="logo text-center"><a ui-sref="signIn"><img ng-src="{{imagePath}}/npcilogo.png" alt="Npci Logo"></a></div>
+	   
+	   <br>
+	   <div>
+	   		<form name="otpForm" ng-submit="otpForm.$valid && submitPassword()" autocomplete="off" novalidate accessible-form>
+	   		  <h4 class="text-center noMargin" ><strong id="frg_text4">Email Id: </strong><strong class="text-info" id="login_val_text_email">{{readOnlyEmail}} </strong id="login_val_text6"></h4><br>
+	   		 <div class="form-group" ng-class="{true: 'has-error'}[submitted && otpForm.resetPassword.$invalid]"> 
+	   		 	 <input id="frg_pass1" ng-class = "{ im_active: resetPass.password }" type="password" placeholder="create password" name="resetPassword" ng-model="resetPass.password"  ng-pattern="/^(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,20}$/" class="form-control" required/>
+	   		      <p class="text-danger" ng-show="submitted && otpForm.resetPassword.$error.required"><small id="frg_text11">This is a required field.</small></p>
+				    <a class="formHints" popover data-placement="top" data-container="body"
+					  data-html="true"   data-content="<div id='my-data-content'><p>The password must have at least 8 character(s).<br>
+					  At least 1 digit(s).<br>
+					  At least 1 lower case letter(s).<br>
+					  At least 1 upper case letter(s).<br>
+					  At least 1 non-alphanumeric character(s).<br></p></div>">
+					   <img src="../img/info.png" alt="password criteria"></a>
+				   <p class="text-danger" ng-show="submitted && otpForm.resetPassword.$error.pattern"><small id="frg_text12">Minimum eight characters, at least one letter, one number and one special character.</small></p>
+	   		 
+	   		 </div>
+	   		  <div class="form-group" ng-class="{true: 'has-error'}[submitted && otpForm.resetRePassword.$invalid]">
+			        <input id="frg_pass2" ng-class = "{im_active: resetPass.reTypePassword }" type="password" placeholder="confirm password" ng-model="resetPass.reTypePassword" name="temporaryPassword" minlength="8" maxlength="20" password-verify="{{resetPass.password}}" class="form-control" required/>
+					<p class="text-danger" ng-show="submitted && otpForm.temporaryPassword.$error.required"><small id="frg_text13">This is a required field.</small></p>
+					<p class="text-danger" ng-show="submitted && otpForm.temporaryPassword.$error.minlength"><small id="frg_text14">Should be at least 8 characters.</small></p>
+					<p class="text-danger" ng-show="otpForm.temporaryPassword.$error.passwordVerify && !otpForm.temporaryPassword.$error.required && !otpForm.temporaryPassword.$error.minlength"><small>Password and confirm password is not same!</small></p>
+			   </div>	
+	   		 <input id="frg_button1" type="submit" class="btn btn-block btn-lg btn-danger" value="Submit" ng-click="submitted=true" id="forgotPass">
+	   		</form>
+	</div>
+   </div>
+</div>

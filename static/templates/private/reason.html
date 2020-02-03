@@ -1,0 +1,13 @@
+<form name="reasonForm" ng-submit="submit($event)" id="reasonForm"  autocomplete="off" novalidate accessible-form>
+	<div class="form-group">
+ 		<select id="reasonCode" ng-model="reasonCode" name="reasonCode" ng-valid="{{reasonCode == ''?false:true}}" required class="form-control" ng-change="showErr()">
+			<option style="display:none" value="0" selected>Select Reason</option>
+			<option ng-repeat="r in reasons" value="{{r.domainCode}}">{{r.domainDescription}}</option>
+		</select>
+		<div class="text-danger" ng-show="showMsg"><small>This is a required field</small></div>		
+	</div>
+	<div class="form-group">
+		<textarea type="text" class="form-control" placeholder="Notes" ng-model="reason" name="reason" maxlength="250"></textarea>
+		<!-- <span>&nbsp;</span><span ng-show="reasonForm.reason.$invalid || reason == undefined || reason == ''">Some Reason Verbiage is required.</span> -->
+	</div>
+</form>

@@ -1,0 +1,20 @@
+<div class="displayTable hasHeader">
+
+	<div class="verticalMiddle architectureBg congratulations">
+	
+		<div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3 text-center">
+			<h1>Congratulations, Alex!</h1> 
+			
+			<div class="congratulationsImg animated bounceIn">
+				<img ng-src="{{imagePath}}/virtual-card.png" class="img-responsive" alt="virtual card">
+			</div>
+			
+			<h2>{{congratulationsMsg}}</h2>
+			<h6>Please review your card holder agreement and verify that your contact information and mailing address is accurate and upto date and start using your card right away.</h6>
+			<button type="button" class="btn btn-danger btn-lg" ng-click=viewAccount()>View Account</button>
+			<input type="hidden" ng-model="response" ng-value="response.email"/>
+		</div>
+		
+	</div>	
+
+</div>

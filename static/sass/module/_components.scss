@@ -1,0 +1,206 @@
+.displayTable {
+    display: table;
+    height: 100vh;
+    width: 100%;
+}
+.verticalMiddle {
+    display: table-cell;
+    vertical-align: middle;
+    height: 100%;
+}
+.verticalCenter {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+.sprite {
+    background-image: url(#{$imgpath}/sprite.png);
+    background-repeat: no-repeat;
+}
+.flipImg {
+    -moz-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: FlipH;
+    -ms-filter: "FlipH";
+}
+.flex-container {
+    display: -webkit-flex;
+    display: flex;    
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-justify-content: left;
+    justify-content: left;
+    width: 100%;
+    
+    &.full-height{
+    	height: 100vh
+	}
+}
+.blendImg {
+    background-blend-mode: multiply;
+    background-position: center center;
+    background-repeat: no-repeat;
+    position: absolute;
+    padding: 10px;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    -webkit-transition: all .4s linear;
+    transition: all .4s linear;
+}
+i {
+    border: 2px solid #d0021b;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+    font-size:22px;
+    position:absolute;
+    top:13px;
+    margin-left:10px;
+}
+.down {
+
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+}
+
+.accountSummaryBack{
+	background:$warm-gray;
+	@include MQ(SC) {
+		background:$default-color;
+	}
+	.topHeader{
+		box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);	
+		background:$default-color;
+	}	
+	.userView{
+		box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);	
+		@include MQ(SC) {
+			box-shadow:none;
+		}		
+	}
+}
+
+.blurElm{
+	-webkit-filter: blur(2px);
+  	filter: blur(2px);
+}
+.spinnerWrap {
+	background-color: transparentize($accent-color, 0.4); 	
+  	position: fixed;
+  	width: 100%;
+  	height: 100%;
+  	left: 0;
+  	top: 0;
+  	z-index: 99;
+}
+.spinnerWrap p {
+	color: $default-color;
+	letter-spacing: 0.1em;
+}
+svg path,
+svg rect{
+  fill: $warn-color;
+}
+#spinner {
+	position: absolute;
+	 top: 50%;
+	 left: 50%;
+	 margin: -50px 0 0 -50px;
+}
+.badge {
+	@include border-radius(50%);
+	color: $default-color;
+	display: inline-block;	
+	font-weight: $light-weight;
+	&.red{
+		background-color: $warn-color;
+		height: 50px;
+		width: 50px;
+		padding: 12px 10px;
+		margin-top: 20px;
+		font-size: 24px;
+	}
+	&.black{
+		background-color: transparentize($primary-color, 0.3);
+		height: 30px;
+		width: 30px;
+		padding: 9px 6px;
+		margin-top: 10px;
+		font-size: 12px;
+	}
+}
+
+table.t-responsive {
+  border: 1px solid #ccc;
+  border-collapse: collapse;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  table-layout: fixed;
+}
+table.t-responsive caption {
+  font-size: 1.5em;
+  margin: .5em 0 .75em;
+}
+table.t-responsive tr {
+  background-color: transparentize($accent-color, 0.95);
+  border: 1px solid #ddd;
+  padding: .35em;
+}
+table.t-responsive th,
+table.t-responsive td {
+  padding: .625em;
+  text-align: center;
+}
+table.t-responsive th {
+  font-size: .85em;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+@media screen and (max-width: 600px) {
+  table.t-responsive {
+    border: 0;
+  }
+  table.t-responsive caption {
+    font-size: 1.3em;
+  }
+  table.t-responsive thead {
+    border: none;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+  }
+  table.t-responsive tr {
+    border-bottom: 3px solid #ddd;
+    display: block;
+    margin-bottom: .625em;
+  }
+  table.t-responsive td {
+    border-bottom: 1px solid #ddd;
+    display: block;
+    font-size: .8em;
+    text-align: right;
+  }
+  table.t-responsive td:before {
+    /*
+    * aria-label has no advantage, it won't be read inside a table
+    content: attr(aria-label);
+    */
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  table.t-responsive td:last-child {
+    border-bottom: 0;
+  }
+}

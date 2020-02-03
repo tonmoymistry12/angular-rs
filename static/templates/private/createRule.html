@@ -1,0 +1,283 @@
+<div class="ruleByEditor">
+   <div class="row">
+      <div class="col-md-6 pageHeading noPadding">
+         <h5>Create Rule</h5>
+      </div>
+      <div class="col-md-6 text-right">
+         <!--  <i type="button" ng-click="goBackView()"
+            class="fa fa-arrow-circle-o-left caseSearch-Left-Arrow cursor">Back</i> -->
+      </div>
+   </div>
+   <tabset>
+      <tab heading="Rule by Editor"  ng-click="resetTab()">
+         <rule></rule>
+      </tab>
+      <tab heading="Rule by Script" ng-click="resetTab()">
+      	<rule-script></rule-script>
+         <!-- <div ng-controller="createRuleController" class="animate-switch-container">
+            <form name="createRule"  class="form-validation rule" ng-submit="createRule.$valid && createNewRule()" novalidate>
+               <div class="clearfix row">
+                  <div class="form-group col-md-3">
+                     <span class="textcell_reports">Rule Name<span class="text-danger rule-mandatory">*</span></span>
+                     <input placeholder="Enter Rule Name" unique-rule-name-script ng-space class="form-control" type="text" name="ruleId" ng-model="ruleId" ng-disabled="disableTrue || editDisabled" autocomplete="off" ng-pattern="/^[a-zA-Z0-9_.-]*$/" ng-pattern-restrict data-toggle="popover" data-content="Rule Name can only consist of alphabet, number, underscore, dot and hyphen" data-trigger="focus" data-placement="bottom"  required>(RuleService.getCopyFlag()=='true')?false:true
+                     <div ng-messages="createRule.ruleId.$error" ng-show="createRule.ruleId.$error.required && submitted">
+                        <div ng-message="required" class="text-danger">Please Enter Rule Name.</div>
+                     </div>
+                     <div ng-messages="createRule.ruleId.$error" ng-show="createRule.ruleId.$error.pattern && submitted">
+                        <div ng-message="pattern" class="text-danger">No space and special characters are allowed except _-.</div>
+                     </div>
+                     <div ng-messages="createRule.ruleId.$error" ng-show="createRule.ruleId.$error.unique && submitted">
+                        <div ng-message="unique" class="text-danger">Rule name already exists.</div>
+                     </div>
+                  </div>
+                  <div class="form-group col-md-3">
+                     <span class="textcell_reports">Channel<span class="text-danger rule-mandatory">*</span></span>
+                     <select ng-model="selectedChannel" name="selectedChannel" id="selectedChannel" ng-disabled="disableTrue || editDisabled" class="form-control" id="selectedChannel" ng-change="onChannelChange()" required>
+                        <option style="display:none" label="PLEASE SELECT THE CHANNEL"></option>
+
+                        <option label="ALL" value="ALL"></option>
+
+                        <option class="upperCases" ng-repeat="item in channel_code|orderBy:'channelDesc'" value="{{item.channelCode}}">{{item.channelDesc}}</option>
+                     </select>
+                     <div ng-messages="createRule.selectedChannel.$error" ng-show="createRule.selectedChannel.$error.required && submitted">
+                        <div ng-message="required" class="text-danger">Please Select Channel.</div>
+                     </div>
+                  </div>
+                  <div class="form-group col-md-3">
+                     <span class="textcell_reports">Rule Description<span class="text-danger rule-mandatory">*</span></span>
+                     <textarea ng-disabled="disableTrue" pattern="^([a-zA-Z0-9\/'<>=_.\-@,\(\)]+\s)*[a-zA-Z0-9\/'<>=_.\-@,\(\)]*$" type="text" class="form-control ruleDesc" name="ruleDesc" ng-model="ruleDesc" placeholder="Enter Rule Description" data-toggle="popover" data-content="Maximum one space is allowed between two words.No Special characters allowed except ' . - <>=_ / @()'" data-trigger="focus" data-placement="bottom" required></textarea>
+                     <div ng-messages="createRule.ruleDesc.$error" ng-show="createRule.ruleDesc.$error.required && submitted">
+                        <div ng-message="required" class="text-danger">Please Enter Rule Description.</div>
+                     </div>
+                  </div>
+                  <div class="form-group col-md-3">
+                     <span class="textcell_reports">Rule Expression<span class="text-danger rule-mandatory">*</span></span>
+                     <textarea ng-disabled="disableTrue" class="form-control ruleDesc" type="text" name="ruleTextJson" ng-model="ruleTextJson" placeholder="Enter Text" data-toggle="popover" data-content="Enter Rule Expression" data-trigger="focus" data-placement="bottom" autocomplete="off" required></textarea>
+                     <div ng-messages="createRule.ruleTextJson.$error" ng-show="createRule.ruleTextJson.$error.required && submitted">
+                        <div ng-message="required" class="text-danger">Please Enter Rule Text.</div>
+                     </div>
+                  </div>
+
+               </div>
+               GRID START
+               <div class="clearfix row">
+                     <div class="col-md-6">
+                        <table class="table ruleEditorTbl">
+                           <tbody>
+                           <tr ng-if="(selectedChannel=='IMPS' && hasISSUER || selectedChannel=='UPI' && hasISSUER)">
+                                 <th>Remitter<span class="text-danger rule-mandatory">*</span></th>
+                                 <td><input ng-disabled="disableTrue || (hasISSUER==true && hasACQUIRER==false)" type="radio" name="remitter" ng-value="true" ng-model="remitter.value" ng-checked="remitter.value" ng-click="cahngeRemitter(remitter.value)"/><span class="ruleRadio">Yes</span>  </td>
+                                 <td><input ng-disabled="disableTrue || (hasISSUER==true && hasACQUIRER==false)" type="radio" name="remitter" ng-value="false" ng-model="remitter.value" ng-checked="remitter.value" ng-click="cahngeRemitter(remitter.value)"/><span class="ruleRadio">No</span> </td>
+								<td>&nbsp;</td>
+                           </tr>
+                           <tr ng-if="(selectedChannel=='IMPS' && hasACQUIRER || selectedChannel=='UPI' && hasACQUIRER)">
+                                 <th>Beneficiary<span class="text-danger rule-mandatory">*</span></th>
+                                 <td><input ng-disabled="disableTrue || (hasISSUER==false && hasACQUIRER==true)" type="radio" name="beneficiary" ng-value="true" ng-model="beneficiary.value" ng-checked="beneficiary.value" ng-click="cahngeBeneficiary(beneficiary.value)"/><span class="ruleRadio">Yes</span>  </td>
+                                 <td><input ng-disabled="disableTrue || (hasISSUER==false && hasACQUIRER==true)" type="radio" name="beneficiary" ng-value="false" ng-model="beneficiary.value" ng-checked="beneficiary.value" ng-click="cahngeBeneficiary(beneficiary.value)"/><span class="ruleRadio">No</span> </td>
+								<td>&nbsp;</td>
+                           </tr>
+                           <tr ng-if="(selectedChannel=='RuPayPos' && hasISSUER || selectedChannel.startsWith('RuPayAtm') && hasISSUER ) || (selectedChannel=='' && hasISSUER)">
+                                 <th>Issuer<span class="text-danger rule-mandatory">*</span></th>
+                                 <td><input ng-disabled="disableTrue || (hasISSUER==true && hasACQUIRER==false)" type="radio" name="issuer.value" ng-value="true" ng-model="issuer.value" ng-required="!issuer.value" ng-checked="issuer.value"  ng-click="cahngeIssuer(issuer.value)"/><span class="ruleRadio">Yes</span>  </td>
+                                 <td><input ng-disabled="disableTrue || (hasISSUER==true && hasACQUIRER==false)" type="radio" name="issuer.value" ng-value="false" ng-model="issuer.value" ng-required="!issuer.value" ng-checked="issuer.value" ng-click="cahngeIssuer(issuer.value)"/><span class="ruleRadio">No</span> </td>
+                          		<td>&nbsp;</td>
+                           </tr>
+                           <tr ng-if="(selectedChannel=='RuPayPos' && hasACQUIRER || selectedChannel.startsWith('RuPayAtm') && hasACQUIRER) || (selectedChannel=='' && hasACQUIRER)">
+                                 <th>Acquirer<span class="text-danger rule-mandatory">*</span></th>
+                                 <td><input ng-disabled="disableTrue || (hasISSUER==false && hasACQUIRER==true)" type="radio" name="acquirer.value" ng-value="true" ng-model="acquirer.value" ng-required="!acquirer.value" ng-checked="acquirer.value" ng-click="cahngeAcquirer(acquirer.value)"/><span class="ruleRadio">Yes</span>  </td>
+                                 <td><input ng-disabled="disableTrue || (hasISSUER==false && hasACQUIRER==true)" type="radio" name="acquirer.value" ng-value="false" ng-model="acquirer.value" ng-required="!acquirer.value" ng-checked="acquirer.value" ng-click="cahngeAcquirer(acquirer.value)"/><span class="ruleRadio">No</span> </td>
+                           		<td>&nbsp;</td>
+                           </tr>
+                           <tr ng-if="hasAML && orgId==='NPCI'">
+                              <th>AML<span class="text-danger rule-mandatory">*</span></th>
+                              <td><input disabled type="radio" name="aml" ng-value="true" ng-model="aml" ng-required="!aml" ng-checked="aml"/><span class="ruleRadio">Yes</span>  </td>
+                              <td><input disabled type="radio" name="aml" ng-value="false" ng-model="aml" ng-required="!aml" ng-checked="aml"/><span class="ruleRadio">No</span> </td>
+                              <td>
+                               <span ng-messages="createRule.aml.$error" ng-show="createRule.aml.$error.required && submitted">
+                                 <div ng-message="required" class="text-danger">Please Select AML Status.</div>
+                               </span>
+                              </td>
+                           </tr>
+                           <tr>
+                              <th>Alert Required<span class="text-danger rule-mandatory">*</span></th>
+                              <td><input ng-disabled="disableTrue" type="radio" name="alertRequired" ng-value="true" ng-model="alertRequired" ng-required="!alertRequired" ng-checked="alertRequired"/><span class="ruleRadio">Yes</span>  </td>
+                              <td><input ng-disabled="disableTrue" type="radio" name="alertRequired" ng-value="false" ng-model="alertRequired" ng-required="!alertRequired" ng-checked="alertRequired"/><span class="ruleRadio">No</span> </td>
+                              <td>
+                                 <span ng-messages="createRule.alertRequired.$error" ng-show="createRule.alertRequired.$error.required && submitted">
+                                 <div ng-message="required" class="text-danger">Please Select Alert Type.</div>
+                                 </span>
+                              </td>
+                           </tr>
+                           <tr>
+                              <th>Auto-closable<span class="text-danger rule-mandatory">*</span></th>
+                              <td><input ng-disabled="disableTrue" type="radio" name="autoClosable" ng-value="true" ng-model="autoClosable" ng-required="!autoClosable" ng-checked="autoClosable"/><span class="ruleRadio">Yes</span>  </td>
+                              <td><input ng-disabled="disableTrue" type="radio" name="autoClosable" ng-value="false" ng-model="autoClosable" ng-required="!autoClosable" ng-checked="autoClosable"/><span class="ruleRadio">No</span> </td>
+                              <td>
+                                 <span ng-messages="createRule.autoClosable.$error" ng-show="createRule.autoClosable.$error.required && submitted">
+                                 <div ng-message="required" class="text-danger">Please Select Auto Closable.</div>
+                                 </span>
+                              </td>
+                           </tr>
+                           <tr>
+                              <th>Exclude Current Transaction<span class="text-danger rule-mandatory">*</span></th>
+                              <td><input ng-disabled="disableTrue" type="radio" name="excludeCurrentTxn" ng-value="true" ng-model="excludeCurrentTxn" ng-required="!excludeCurrentTxn" ng-checked="excludeCurrentTxn"/><span class="ruleRadio">Yes</span>  </td>
+                              <td><input ng-disabled="disableTrue" type="radio" name="excludeCurrentTxn" ng-value="false" ng-model="excludeCurrentTxn" ng-required="!excludeCurrentTxn" ng-checked="excludeCurrentTxn"/><span class="ruleRadio">No</span> </td>
+                              <td>
+                                 <span ng-messages="createRule.excludeCurrentTxn.$error" ng-show="createRule.excludeCurrentTxn.$error.required && submitted">
+                                 <div ng-message="required" class="text-danger">Please Select Current Transaction.</div>
+                                 </span>
+                              </td>
+                           </tr>
+
+                           <tr>
+                              <td>
+                                 <span
+                                         ng-show="copyFlag!=='false' &&((selectedChannel=='RuPayPos' && hasISSUER && hasACQUIRER && issuerAcqr)||
+                                        (selectedChannel.startsWith('RuPayAtm') && hasISSUER && hasACQUIRER && issuerAcqr))">
+                                 <div class="text-danger">For channel ATM & POS and ECOM, please select either Issuer Or Acquirer as 'True'.</div>
+                                 </span>
+                                 <span
+                                         ng-show="copyFlag!=='false' &&((selectedChannel=='IMPS' && hasISSUER && hasACQUIRER && beneficiaryRemtr)||
+                                        (selectedChannel=='UPI' && hasISSUER && hasACQUIRER && beneficiaryRemtr))">
+                                 <div class="text-danger">For channel IMPS & UPI, please select either Remitter Or Beneficiary as 'True'.</div>
+                                 </span>
+                              </td>
+                           </tr>
+
+                           <tr style="display:none;">
+                              <th>Decline Flag<span class="text-danger rule-mandatory">*</span></th>
+                              <td><input ng-disabled="disableTrue" type="radio" name="declineFlag" ng-value="true" ng-model="declineFlag" ng-required="!declineFlag" ng-checked="declineFlag"/><span class="ruleRadio">Yes</span>  </td>
+                              <td><input ng-disabled="disableTrue" type="radio" name="declineFlag" ng-value="false" ng-model="declineFlag" ng-required="!declineFlag" ng-checked="declineFlag"/><span class="ruleRadio">No</span> </td>
+                              <td>
+                                 <span ng-messages="createRule.declineFlag.$error" ng-show="createRule.declineFlag.$error.required && submitted">
+                                 <div ng-message="required" class="text-danger">Please Select Decline Flag.</div>
+                                 </span>
+                              </td>
+                           </tr>
+                           </tbody>
+                        </table>
+                     </div>
+               </div>
+               <div class="clearfix row">
+                  <div class="form-group col-sm-4">
+                     <span class="textcell_reports">Organisation<span class="text-danger rule-mandatory">*</span></span>
+                     <div class="userRole">
+                        <select ng-disabled="disableTrue" class="form-control" ng-model="selectedOrgId" name="selectedOrgId" id="selectedOrgId" required ng-change="uniqueChk(selectedOrgId)">
+                           <option style="display:none" value="">SELECT ORGANISATION</option>
+                           <option class="upperCases" ng-repeat="bank in bankList" value="{{bank.orgId}}">{{bank.name}}</option>
+                        </select>
+                     </div>
+                     <div ng-messages="createRule.selectedOrgId.$error" ng-show="createRule.selectedOrgId.$error.required && submitted">
+                        <div ng-message="required" class="text-danger">Please Select ORGANISATION.</div>
+                     </div>
+                  </div>
+                  <div class="form-group col-sm-4">
+                     <span class="textcell_reports">Rule Online Status<span class="text-danger rule-mandatory">*</span></span>
+                     <select ng-disabled="disableTrue" ng-model="online" name="online" id="online" class="form-control" id="online" required>
+                        <option style="display:none" label="SELECT RULE APPLICABLE"></option>
+                        <option class="upperCases" ng-repeat="item in onlineList" ng-value="item.value">{{item.name}}</option>
+                     </select>
+                     <div ng-messages="createRule.online.$error" ng-show="createRule.online.$error.required && submitted">
+                        <div ng-message="required" class="text-danger">Please Select Online Status.</div>
+                     </div>
+                  </div>
+                  <div class="form-group col-sm-4">
+                     <span class="textcell_reports">Rule Score<span class="text-danger rule-mandatory">*</span></span>
+                     <input ng-disabled="disableTrue" class="form-control" type="text" placeholder="ENTER RULE SCORE" minlength="3" maxlength="3" name="ruleScore" ng-model="ruleScore" only-digits="true" autocomplete="off" required>
+                     <div ng-messages="createRule.ruleScore.$error" ng-show="createRule.ruleScore.$error.required && submitted">
+                        <div ng-message="required" class="text-danger">Please Enter Rule Score.</div>
+                     </div>
+                     <div ng-messages="createRule.ruleScore.$error" ng-show="(createRule.ruleScore.$error.minlength<3) && submitted">
+                        <div ng-message="required" class="text-danger">Please Enter Rule Score of 3 digits.</div>
+                     </div>
+                  </div>
+               </div>
+               <div class="clearfix row">
+                  <div class="form-group col-md-4">
+                     <span class="textcell_reports">Priority<span class="text-danger rule-mandatory">*</span></span>
+                     <select ng-disabled="disableTrue" ng-model="priority" name="priority" id="priority" class="form-control" id="priority" required>
+                        <option label="SELECT PRIORITY"></option>
+                        <option ng-repeat="item in priorityList" ng-value="item.value">{{item.name}}</option>
+                        </select>
+                     <input ng-disabled="disableTrue" class="form-control" type="text" placeholder="ENTER RULE PRIORITY"  maxlength="10" name="priority" ng-model="priority" only-digits="true" autocomplete="off" required>
+                     <div ng-messages="createRule.priority.$error" ng-show="createRule.priority.$error.required && submitted">
+                        <div ng-message="required" class="text-danger">Please Enter Rule Priority.</div>
+                     </div>
+                  </div>
+                  <div class="form-group col-md-4">
+                     <span class="textcell_reports">Rule Type<span class="text-danger rule-mandatory">*</span></span>
+                     <select ng-disabled="disableTrue" ng-model="ruleType" name="ruleType" id="ruleType" class="form-control" id="ruleType" required>
+                        <option style="display:none" label="SELECT RULE TYPE"></option>
+                        <option ng-repeat="item in ruleTypeList" value="{{item.value}}" title="{{item.title}}" >{{item.name}}</option>
+                     </select>
+                     <div ng-messages="createRule.ruleType.$error" ng-show="createRule.ruleType.$error.required && submitted">
+                        <div ng-message="required" class="text-danger">Please Select Rule Type.</div>
+                     </div>
+                  </div>
+                  <div class="form-group col-md-4">
+                     <span class="textcell_reports">Notes<span class="text-danger rule-mandatory"></span></span>
+                     <input ng-disabled="disableTrue" type="text" class="form-control" name="notes" pattern="^([a-zA-Z0-9\/'<>=_.\-@,\(\)]+\s)*[a-zA-Z0-9\/'<>=_.\-@,\(\)]*$" ng-model="notes "placeholder="Enter Notes" data-toggle="popover" data-content="Maximum one space is allowed between two words.No Special characters allowed except ' . -<>= _ / @()'" data-trigger="focus" data-placement="bottom" autocomplete="off"></input>
+                     <div ng-messages="createRule.notes.$error" ng-show="createRule.notes.$error.required && submitted">
+                        <div ng-message="required" class="text-danger">Please Add Notes.</div>
+                     </div>
+                  </div>
+               </div>
+               <div class="clearfix row">
+                  <div class="form-group col-md-4">
+                     <span class="textcell_reports">From Date<span class="text-danger rule-mandatory">*</span></span>
+                     <div class="ruleDate">
+                        <input ng-disabled="disableTrue" type="text" name="fromDate1" id="fromDate1" date-picker2="" placeholder="MM/DD/YYYY" maxlength="10" ng-change="fromDateChanged()"
+                           class="form-control2" ng-model="fromDate1" min-date="0" required readonly="" />
+                        <input ng-disabled="disableTrue" type="time" step="1" class="ruleTime" id="fromTime" name="input" ng-model="fromTime"
+                           placeholder="HH:mm:ss" min="00:00:00" value = "{{fromTime | date:'HH:mm:ss'}}"
+                           ng-change="changeFromTime(fromTime | date:'HH:mm:ss')" />
+                     </div>
+                     <div ng-messages="createRule.fromDate1.$error" class="text-danger" ng-show="createRule.fromDate1.$error.required && submitted">
+                        <small>Please Select From Date.</small>
+                     </div>
+                  </div>
+                  <div class="form-group col-md-4">
+                     <span class="textcell_reports">To Date<span class="text-danger rule-mandatory"></span></span>
+                     <div class="date_cell ruleDate">
+                        <input ng-disabled="disableTrue" type="text" name="toDate1" id="toDate1" date-picker2="" placeholder="MM/DD/YYYY" maxlength="10"
+                           class="form-control2 " ng-model="toDate1" min-date="{{fromDate=='set'?fromDate1:0}}" readonly="" />
+                        <input ng-disabled="disableTrue" type="time" step="1" class="ruleTime" id="toTime" name="input" ng-model="toTime"
+                           placeholder="HH:mm:ss" min="00:00:00" value = "{{toTime | date:'HH:mm:ss'}}"
+                           ng-change="changeToTime(toTime | date:'HH:mm:ss')" />
+                     </div>
+                     <div ng-messages="createRule.toDate1.$error" class="text-danger" ng-show="createRule.toDate1.$error.required && submitted">
+                        <small>Please Select To Date.</small>
+                     </div>
+                  </div>
+               </div>
+               <div class="clearfix row">
+                  <div class="form-group col-md-4">
+                     <span class="textcell_reports inline_block pull-left">Overriding Rules</span>
+                     <ui-select style="margin-bottom: 30px;" ng-disabled="disableTrue || selectedChannel==='' || angular.isUndefined(selectedChannel)?true:false" class="col-md-12 ruleUiSelecet" style="border: 1px solid #e9ecef !important;margin: 0px;;" multiple ng-model="overridingRules" theme="bootstrap"
+                        on-select="changeOverridingRules(overridingRules)"
+                        on-remove="changeOverridingRules(overridingRules)"
+                        remove-selected="false"
+                        close-on-select="true"
+                        title="Select Rules">
+                        <ui-select-match placeholder="Select Fields...">{{$item}}</ui-select-match>
+                        <ui-select-choices
+                           style="max-height: 150px;
+                           overflow: auto;"
+                           repeat="person in overridingRulesList | filter:$select.search" class="ruleli">
+                           <div ng-bind-html="person | highlight: $select.search"></div>
+                        </ui-select-choices>
+                     </ui-select>
+                  </div>
+               </div>
+               <div><button ng-disabled="disableTrue" type="submit" id="createRule_Submit" class="btn btn-lg btn-danger" ng-click="submitted=true">Submit
+                  </button>
+               </div>
+            </form>
+         </div> -->
+      </tab>
+
+   </tabset>
+<!--    <div class="row">
+      <div class="col-sm-12 text-center"><button class="btn btn-lg btn-danger" ng-click="goBackView()">Back to Manage Rules</button></div>
+   </div> -->
+</div>

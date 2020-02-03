@@ -1,0 +1,274 @@
+<div class="userDashboard container-fluid">
+	<div class="hasHeader">
+		<div class="userTabs clearfix settings">
+			<div class="tab-content formStyle">
+				<div class="pageHeading"><h5>View User</h5></div>
+				<div class="tab-pane active searchUser" id="searchUser">					
+					<form  name ="searchUserForm" ng-submit="searchUserForm.$valid && newSearchUserSubmit()" autocomplete="off" novalidate accessible-form>
+						<div class="clearfix row searchCriteria">
+							<div class="col-sm-12">
+							  <div class="row">
+									<div class="col-sm-4">
+						 				<div class="useruser">
+						 					<span class="textcell_reports">ROLE:</span>
+						 					<select class="form-control" ng-model="userRole" name="userRole" id="userRole">
+						 						<option  value="ROLE_ALL"> ALL ROLE</option>
+						 						<option value="ROLE_EFRM_REPORT_USER">EFRM REPORT USER</option>
+						 						<option ng-repeat="item in items" value="{{item}}">{{roleDisplay(item)}}</option> 
+						 					</select>			 					
+						 				</div>
+									</div>
+								
+									<div class="col-sm-4 useruser">
+										<span class="textcell_reports">ORGANISATION:</span>
+										<select class="form-control" name="selectedOrgID" id="selectedOrgID" ng-model="selectedOrgID" ng-disabled="bankDisabled"  ng-change="changeOrgId(selectedOrgID)" required>
+											<option style="display:none" value="">PLEASE SELECT THE ORGANISATION</option>
+											<!-- <option ng-if="isNpciOrgId == 'NPCI'" value="ALL">ALL</option> -->
+											<option class="upperCases" ng-repeat="data in orgarnisations" value="{{data.orgId}}">{{data.name}}</option>
+										</select>
+										
+										<!-- <ui-select 
+							           id="organisation_fld"
+							           name="organisation_fld"
+							           ng-model="selectedOrgID" 
+							           uiSelectNoAnimate
+							           theme="selectize"  
+							           title="Choose a organisation"
+							           append-to-body="true" 
+							           close-on-select="true" 
+							           ng-disabled="bankDisabled"
+							           on-select="changeOrgId(selectedOrgID)"
+							           ng-required="true"
+								   >
+	      	 						<ui-select-match  placeholder="SELECT A ORGANISATION IN THE LIST...">{{$select.selected.name}}</ui-select-match>
+								     <ui-select-choices 
+								        repeat="option.orgId as option in orgarnisations | propsFilter:{name:$select.search} | uppercase"
+								        position="down" 
+								        
+								        refresh-delay="300">
+								      <span ng-bind-html="option.name | highlight: $select.search"></span>
+								    </ui-select-choices>
+    							</ui-select> -->
+    							
+										 <p class="text-danger" ng-show="submitted && searchUserForm.selectedOrgID.$error.required"><small id="login_val_text2">This is a required field.</small></p>
+										<!-- <div class="text-danger" id="selectedOrgId_msg"
+											 ng-show="orgIdMsg">
+											<small>This is a required field.</small>
+										</div> -->
+									</div>
+								
+									<div class="form-group col-sm-4" >
+									    <span class="textcell_reports">Email / User Id:</span>
+									    <input  type="text" id="userEmail" name="userEmail"  ng-pattern="/^[_a-z-A-Z0-9]+(\.[_a-z-A-Z0-9]+)*@[a-z-A-Z0-9-]+(\.[a-z-A-Z0-9-]+)*(\.[a-z-A-Z]{2,4})$/" class="form-control" placeholder="Enter User Email" ng-model="searchData.email" autocomplete="off" />
+									    <p class="text-danger" ng-show="submitted && searchUserForm.userEmail.$error.pattern"><small id="login_val_text2">Email is invalid.</small></p>
+									</div>
+								</div>
+							</div>
+							
+							<div class="col-sm-12">
+								<div class="row">
+									<div class="col-sm-4">
+										<span class="textcell_reports">FIRST NAME:</span>
+										<input type="text" id="firstname" name="userName" autocomplete="off" ng-pattern-restrict="^[A-Z a-z 0-9]*$" class="form-control" placeholder="Enter First Name" ng-model="searchData.fname" maxlength='50' autocomplete="off"/>
+									</div>
+									<div class="col-sm-4">
+										<span class="textcell_reports">LAST NAME:</span>
+										<input type="text" id="lastname" name="userName" autocomplete="off" ng-pattern-restrict="^[A-Z a-z 0-9]*$" class="form-control" placeholder="Enter Last Name" ng-model="searchData.lname" maxlength='50' autocomplete="off"/>
+									</div>
+									<div class="col-sm-4 nopad-left adminSearch">
+								 		<button type="submit" id="search_user_submit" class="btn btn-lg btn-danger searchUserPaddingTop" ng-click="submitted=true">Search</button>
+									</div>
+								</div>								
+							</div>									
+						</div>							
+					</form>	
+					
+					<div class="row" ng-show="searchUserData.length != 0" >
+						 
+						  <div class="col-sm-9">
+							
+							</div>
+						
+						 <div class="col-sm-2" style="margin-top:0.5%">
+							<strong style="font-size: 14px;float:right">Total Records :{{totalItems}}</strong>
+						</div>
+						 <div class="col-sm-1" ng-if="loggedUserOrgId == 'NPCI'">
+							<button type="submit" id="search_user_submit" class="btn  btn-danger" style="margin-bottom: 3%;float: right;padding:5.27%;padding-right: 11.3%;" ng-click="Export()"><i class="fa fa-file-excel-o"></i>Export</button>
+						  </div>
+					</div>	
+					<!-- <span ng-show="searchUserData.length != 0" class="showTotalRecords">
+							<strong>Total Records :{{totalItems}}</strong>
+					</span>	 -->
+					<span ng-show="searchUserData.length == 0" class="showTotalRecords">
+							<strong>Total Records :0</strong>
+					</span>				
+					<!-- <span ng-hide="searchUserData.length == 0"><button type="submit" id="search_user_submit" class="btn  btn-danger" style="margin-bottom: 1%;float: right;padding:.27%;padding-right: 1.1%;" ng-click="Export()"><i class="fa fa-file-excel-o"></i>Export</button></span>						 -->
+						<table class="table  t-responsive" id="user_table">
+							<thead id="user_table_header">
+								<tr id="user_table_row">
+									<th scope="col" id="img" class="noExport"></th>
+								  	<th scope="col" id="fname">First Name <span id="fname_sort" class="fa fa-chevron-right calColor" ng-click="sortFN=!sortFN;sort('FIRST_NAME')" ng-class="sortFN?'fa-rotate-90':'fa-rotate-270'"></span></th>
+								  	<th scope="col" id="lname">Last Name <span id="lname_sort" class="fa fa-chevron-right calColor" ng-click="sortLN=!sortLN;sort('LAST_NAME')" ng-class="sortLN?'fa-rotate-90':'fa-rotate-270'"></span></th>							  	
+								  	<th scope="col" id="user_id">Role</th>
+								  	<th scope="col" id="organisation_name">Organisation<span id="lname_sort" class="fa fa-chevron-right calColor" ng-click="sortOrgName=!sortOrgName;sort('ORGANISATION')" ng-class="sortLN?'fa-rotate-90':'fa-rotate-270'"></span></th>
+								  	<th scope="col" id="last_login">Last Login</th>
+								  	<th scope="col" id="email">Email / User Id</th>
+								  	<!-- <th scope="col" ng-show="false" id="email_1">Email / User Id</th> -->
+								  	<th scope="col" ng-show="false" id="phno_1">Phone Number</th>
+								  	<th scope="col" ng-show="false" id="pres_1">Prespective</th>
+								  	<th scope="col" ng-show="false" id="createdBy_1">Created By</th>
+								  	<th scope="col" ng-show="false" id="creationts_1">Creation Time</th>
+								  	<th scope="col" ng-show="false" id="editedBy_1">Last Edited By</th>
+								  	<th scope="col" ng-show="false" id="editedts_1">Last Edited Time</th>
+								  	<th scope="col" ng-show="false" id="deactivateBy_1">Last Deactivated By</th>
+								  	<th scope="col" ng-show="false" id="deactivatets_1">Last Deactivated Time</th>
+								  	<th scope="col" ng-show="false" id="reactivateBy_1">Last Reactivated By</th>
+								  	<th scope="col" ng-show="false" id="reactivatets_1">Last Reactivated Time</th>
+								  	<th scope="col" ng-show="false" id="rejactedBy_1">Last Rejected By</th>
+								  	<th scope="col" ng-show="false" id="rejactedts_1">Last Rejected Time</th>
+								  	<th scope="col" ng-show="false" id="approvedBy_1">Last Approved By</th>
+								  	<th scope="col" ng-show="false" id="approvedts_1">Last Approved Time</th>
+								  	<th scope="col" id="acc_status" >Status</th>
+								  	
+								  	<th scope="col" class="noExport" id="action" ng-show="rolePermission.isPermissionGranted(1723019059) && (loggedInUserMail != user.email)" ng-class="authority == 'ROLE_NTS_MGMT'?'ntsMgm':''">Action</th>
+								</tr>
+							</thead>
+							<tbody dir-paginate="user in searchUserData | itemsPerPage:page.pageSize" total-items="totalItems" current-page="currentPage" id="user_table_body">
+								<tr id="user_table_expand_row" ng-class="user.select?'expandColorTr':''">
+									<td data-label="Expand to more info" id="user_select" class="noExport">
+										<h5><span class="fa" ng-class="!user.select?'fa-plus':'fa-minus'" ng-init="user.select=false" ng-model="user.select" ng-click="user.select=!user.select;isSessionValid()"></span></h5>
+									</td>
+								 	<td data-label="First Name" id="user_info_fname" class="fixWidth"><p class="Uname"><span popover-trigger="outsideClick" class='searchFnamefont' popover-class="my-notifications-popover" uib-popover="{{user.firstName}}"  popover-append-to-body="true" popover-placement="top" popover>{{ user.firstName }}</span></p></td>
+								 	<td data-label="Last Name" id="user_info_lname" class="fixWidth"><p class="Uname"><span popover-trigger="outsideClick" class='searchFnamefont' popover-class="my-notifications-popover" uib-popover="{{user.lastName}}"  popover-append-to-body="true" popover-placement="top" popover>{{ user.lastName }}</span></p></td>
+								 	<td data-label="Role" id="role">{{roleDisplay(user.userAuthorities[0].authority)}}</td>
+								 	<td data-label="Organisation Name" id="organisation" class="fixWidth"><p class="Uname"><span popover-trigger="outsideClick" class='searchFnamefont' popover-class="my-notifications-popover" uib-popover="{{user.orgName}}"  popover-append-to-body="true" popover-placement="top" popover>{{ user.orgName }}</span></p></td>
+								  	<td data-label="Time stamp" id="user_info_prevlogin">{{user.lastLoginDate == undefined ? 'NA' : user.lastLoginDate | GMT}}</td>
+								  	<td data-label="email" name="Email" >{{user.email}}</td>
+								  	<td data-label="phno" ng-show="false" >{{user.phoneNo}}</td>
+								  	<td data-label="pres" ng-show="false" ><span ng-repeat = "perspective in user.perspective">{{ perspective }} <span class = "dlimmiterStyle">{{$last ? '' : ($index==user.perspective.length-2) ? ' , ' : ', '}}</span></span></td>
+								  	<td data-label="createdBy1" ng-show="false" >{{user.createdBy}}</td>
+								  	<td data-label="creationts1" ng-show="false" >{{user.creationTS | GMT}}</td>
+								  	<td data-label="editedBy1" ng-show="false" ><span ng-if="user.lastEditedBy != null">{{user.lastEditedBy}}</span><span ng-if="user.lastEditedBy == null">NA</span></td>
+								  	<td data-label="editts1" ng-show="false" ><span ng-if="user.lastEditedBy != null">{{user.lastEditedTs | GMT}}</span><span ng-if="user.lastEditedBy == null">NA</span></td>
+								  	<td data-label="ditedBy1" ng-show="false" ><span ng-if="user.lastDeactivatedBy != null">{{user.lastDeactivatedBy}}</span><span ng-if="user.lastDeactivatedBy == null">NA</span></td>
+								  	<td data-label="ditts1" ng-show="false" ><span ng-if="user.lastDeactivatedBy != null">{{user.lastDeactivatedTs | GMT}}</span><span ng-if="user.lastDeactivatedBy == null">NA</span></td>
+								  	<td data-label="ditedBy1" ng-show="false" ><span ng-if="user.lastReactivatedBy != null">{{user.lastReactivatedBy}}</span><span ng-if="user.lastReactivatedBy == null">NA</span></td>
+								  	<td data-label="ditts1" ng-show="false" ><span ng-if="user.lastReactivatedBy != null">{{user.lastReactivatedTs | GMT}}</span><span ng-if="user.lastReactivatedBy == null">NA</span></td>
+								  	<td data-label="rejactedBy1" ng-show="false" ><span ng-if="user.lastRejectedBy != null">{{user.lastRejectedBy}}</span><span ng-if="user.lastRejectedBy == null">NA</span></td>
+								  	<td data-label="rejectts1" ng-show="false" ><span ng-if="user.lastRejectedBy != null">{{user.lastRejectedTs | GMT}}</span><span ng-if="user.lastRejectedBy == null">NA</span></td>
+								  	<td data-label="rejactedBy1" ng-show="false" ><span ng-if="user.lastApprovedBy != null">{{user.lastApprovedBy}}</span><span ng-if="user.lastApprovedBy == null">NA</span></td>
+								  	<td data-label="rejectts1" ng-show="false" ><span ng-if="user.lastApprovedBy != null">{{user.lastApprovedTs | GMT}}</span><span ng-if="user.lastApprovedBy == null">NA</span></td>
+								  	<td ng-if="user.status == 1 && user.usrMakerChecker == 1" data-label="Account Status" id="user_info_accstatus">Active</td>	
+								  	<td ng-if="user.status == 1 && user.usrMakerChecker == 0" data-label="Account Status" id="user_info_accstatus">Active</td>
+								  	<td ng-if="user.status == 1 && user.usrMakerChecker == 3" data-label="Account Status" id="user_info_accstatus">Active</td>		
+								  	<td ng-if="user.status == 1 && user.usrMakerChecker == 2 && user.usrActiveDeactive == 3 && user.locked == 0" data-label="Account Status" id="user_info_accstatus">Edit In Process</td>
+								  	<td ng-if="user.usrActiveDeactive == 3 && user.status == 1 && user.usrMakerChecker == 2 && user.locked == 1" data-label="Account Status" id="user_info_accstatus">Locked</td>		
+								  	<td ng-if="user.status == 1 && user.usrMakerChecker == 2 && user.usrActiveDeactive == 2" data-label="Account Status" id="user_info_accstatus">Deactivation In Process</td>
+								  	<td ng-if="user.status == 2 && user.usrMakerChecker == 1" data-label="Account Status" id="user_info_accstatus">Deactivated</td>
+								  	<td ng-if="user.status == 2 && user.usrMakerChecker == 0" data-label="Account Status" id="user_info_accstatus">Deactivated</td>
+								  	<td ng-if="user.status == 2 && user.usrMakerChecker == 3" data-label="Account Status" id="user_info_accstatus">Deactivated</td>
+								  	<td ng-if="user.status == 2 && user.usrMakerChecker == 2" data-label="Account Status" id="user_info_accstatus">Reactivation In Process</td>
+								  	<td class="noExport" data-label="Action" id="user_info_action" ng-class="authority == 'ROLE_NTS_MGMT'?'ntsMgm':''" ng-show="rolePermission.isPermissionGranted(1723019059)">
+								  		<div class="dropdown" id="user_info_action_dropdown" ng-if="rolePermission.isPermissionGranted(1723019059)">
+										  <button class="btn dropdown-toggle button-width" ng-disabled="(loggedInUserMail == user.email) ||
+										  (user.usrActiveDeactive == 3 && user.status == 1 && user.usrMakerChecker == 2 && user.locked == 0) ||
+										  (user.usrActiveDeactive == 2 && user.status == 1 && user.usrMakerChecker == 2)  ||
+										  (user.usrActiveDeactive == 1 && user.status == 2 && user.usrMakerChecker == 2)" type="button" data-toggle="dropdown"><span class="fa fa-cog" aria-hidden="true"></span>
+										  </button>
+										  <ul class="dropdown-menu drop-downadj fa-eye-ul dropdownDatatable" id="user_info_action_dropdown_action"
+											  ng-if="!(loggedInUserMail == user.email) &&
+											  !((user.usrActiveDeactive == 3 && user.status == 1 && user.usrMakerChecker == 2 && user.locked == 0) ||
+											  (user.usrActiveDeactive == 2 && user.status == 1 && user.usrMakerChecker == 2)  ||
+											  (user.usrActiveDeactive == 1 && user.status == 2 && user.usrMakerChecker == 2))">
+
+											  <li ng-if="user.userAuthorities[0].authority !='ROLE_EFRM_REPORT_USER' && user.status == 1 && rolePermission.isPermissionGranted(1723019059)" ng-click="edit(user)"><a  href="#" id="edit_user"><span class="fa fa-pencil-square-o" aria-hidden="true" > Edit User</span></a></li>
+										    <li ng-if="user.status == 1 && user.locked == 1 && rolePermission.isPermissionGranted(1723019059)" ng-click="unlock(user)"><a href="#" id="unlock_user" ><span class="fa fa-unlock-alt" aria-hidden="true" > Unlock User</span></a></li>
+										    <li ng-if="user.status == 1 && rolePermission.isPermissionGranted(1723019059)" ng-click="deactivate(user)"><a  id="deactivate_user" href="#"  ><span  class="fa fa-user-times" aria-hidden="true"> Deactivate User</span></a></li>
+										  	<li ng-if="user.status != 1 && rolePermission.isPermissionGranted(1723019059)" ng-click="reactivate(user)"><a   href="#"   ><span  class="fa fa-check-circle" aria-hidden="true"> Reactivate User</span></a></li>
+										  </ul>										 
+										</div>
+								  	</td>							  	
+								</tr>
+								<tr ng-if="user.select" id="user_select_row" class="expandColor">
+									<td colspan="10" >
+										<!-- <div class="row clearfix seacrhUserPadding">
+											
+											<div class="col-sm-4 col-sm-offset-1" id="user_select_fname"><strong>First Name :</strong> <span class="firstName">{{user.firstName}}</span> </div>
+											<div class="col-sm-3" id="user_select_mname" ng-show="isMiddleNamePresent(user.middleName)"><strong>Middle Name :</strong> <span class="lastName">{{user.middleName}}</span></div>
+											<div class="col-sm-4" id="user_select_lname"><strong>Last Name :</strong> <span class="lastName">{{user.lastName}}</span></div>
+										</div> -->
+										<div class="row clearfix seacrhUserPadding">
+											
+											<div class="col-sm-4 col-sm-offset-1" id="user_select_email"><strong>Email / User Id :</strong> {{user.email}}</div>
+											<div class="col-sm-3" id="user_select_phno"><strong>Phone No :</strong> {{user.phoneNo}}</div>
+											<div class="col-sm-4 col-sm-offset-1" id="user_select_prespective"><strong>Prespective :</strong> <span ng-repeat = "perspective in user.perspective">{{ perspective }} <span class = "dlimmiterStyle">{{$last ? '' : ($index==user.perspective.length-2) ? ' , ' : ', '}}</span></span></div>
+										</div>
+										
+										<div class="row clearfix seacrhUserPadding">
+											
+											<div class="col-sm-4 col-sm-offset-1" id="created_by"><strong>Created By :</strong> {{user.createdBy}}</div>
+											<div class="col-sm-3" id="created_time"><strong>Creation Time :</strong> {{user.creationTS | GMT}}</div>
+										</div>
+										<div class="row clearfix seacrhUserPadding" ng-if="user.lastEditedBy != null">
+											
+											<div class="col-sm-4 col-sm-offset-1" id="created_by"><strong>Last Edited By :</strong> {{user.lastEditedBy}}</div>
+											<div class="col-sm-3" id="created_time"><strong>Last Edited Time :</strong> {{user.lastEditedTs | GMT}}</div>
+										</div>
+										
+										<div class="row clearfix seacrhUserPadding" ng-if="user.lastDeactivatedBy != null">
+											
+											<div class="col-sm-4 col-sm-offset-1" id="deactivated_by"><strong>Last Deactivated By :</strong> {{user.lastDeactivatedBy}}</div>
+											<div class="col-sm-3" id="deactivated_time"><strong>Last Deactivated Time :</strong> {{user.lastDeactivatedTs | GMT}}</div>
+										</div>
+										
+										<div class="row clearfix seacrhUserPadding" ng-if="user.lastReactivatedBy != null">
+											
+											<div class="col-sm-4 col-sm-offset-1" id="reactivated_by"><strong>Last Reactivated By :</strong> {{user.lastReactivatedBy}}</div>
+											<div class="col-sm-3" id="reactivated_time"><strong>Last Reactivated Time :</strong> {{user.lastReactivatedTs | GMT}}</div>
+										</div>
+										
+										<div class="row clearfix seacrhUserPadding" ng-if="user.lastRejectedBy != null">
+											
+											<div class="col-sm-4 col-sm-offset-1" id="reactivated_by"><strong>Last Rejected By :</strong> {{user.lastRejectedBy}}</div>
+											<div class="col-sm-3" id="rejacted_time"><strong>Last Rejected Time :</strong> {{user.lastRejectedTs | GMT}}</div>
+										</div>
+										
+										<div class="row clearfix seacrhUserPadding" ng-if="user.lastApprovedBy != null">
+											
+											<div class="col-sm-4 col-sm-offset-1" id="reactivated_by"><strong>Last Approved By :</strong> {{user.lastApprovedBy}}</div>
+											<div class="col-sm-3" id="approved_time"><strong>Last Approved Time :</strong> {{user.lastApprovedTs | GMT}}</div>
+										</div>
+										<!-- <div class="row clearfix seacrhUserPadding">
+
+											<div class="col-sm-4 col-sm-offset-1" id="user_select_oname"><strong>Organisation Name :</strong> <span class="firstName">{{user.bankName}}</span> </div>
+										</div> -->
+										<!-- <div class="row clearfix seacrhUserPadding">
+
+											<div class="col-sm-4 col-sm-offset-1" id="user_select_oname"><strong>Notes :</strong> <span class="firstName">{{user.createdByNotes}}</span> </div>
+										</div> -->
+									</td>																						  	
+								</tr>
+							</tbody>
+						</table>
+					<div class="text-center noData" id="no_data_found" ng-show="searchUserData.length == '0'"> <h6>No Data Found</h6></div>
+					<div class="gridPagination clearfix" ng-show="totalItems >= '10' && searchUserData.length != '0'">
+						<div class="col-sm-1 padding-left-zero">
+						 
+								<select ng-model="selectedPage" name="pageSize" id="selectpage" ng-change="changePageSize()">
+									<option value="10">10</option>
+									<option value="25">25</option>
+									<option value="50">50</option>
+									<option value="100">100</option>
+								</select>
+							
+						</div>
+						<div class="col-sm-8">
+							<dir-pagination-controls max-size="5" direction-links="true" boundary-links="true" ng-model="currentPage" on-page-change="searchUserSubmit()" ></dir-pagination-controls>
+							<!-- <pagination boundary-links="true" id="changepage" max-size="3" total-items="totalItems" items-per-page="page.pageSize" ng-model="currentPage" ng-change="searchUserSubmit()"></pagination> -->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

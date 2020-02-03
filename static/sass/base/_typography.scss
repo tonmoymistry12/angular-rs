@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css?family=Raleway:100,200,300,400,500,600,700,800,900');
+/*
+font-family: 'Roboto', sans-serif;
+font-family: 'Open Sans', sans-serif;
+*/
+
+h1, h1 a,
+h2, h2 a,
+h3, h3 a,
+h4, h4 a,
+h5, h5 a,
+h6, h6 a {
+    color: $primary-color;
+    font-family: $primary-font;
+    margin-bottom: 20px;
+    margin-top: 0px;
+}
+h1 a,
+h2 a,
+h3 a,
+h4 a,
+h5 a,
+h6 a {
+	color: $secondary-color;	
+}
+
+h1, h1 a {
+    font-size: 2.125em; /*34px*/
+}
+h2, h2 a {
+    font-size: 1.875em; /*30px*/ 
+}
+h3, h3 a {
+    font-size: 1.625em; /*26px*/
+}
+h4, h4 a {
+    font-size: 1.5em; /*24px*/
+}
+h5, h5 a {
+    font-size: 1.25em; /*20px*/
+}
+h6, h6 a {
+    font-size: 1.125em; /*18px*/
+}

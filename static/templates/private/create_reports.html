@@ -1,0 +1,599 @@
+<div class="userDashboard container-fluid ng-scope">
+<div class="hasHeader">
+		<div class="userTabs clearfix ">
+<div class="tab-content formStyle">
+<fieldset>
+  <legend class="custom-style">Create Report</legend>
+
+<form name="myForm">
+<div class="row">
+<div class="col-md-6">
+<span class="textcell_reports2">REPORT TYPE:</span> 
+		  <select class="create_report_drp setme_green" 
+			 ng-model="selectedStatus" 
+			 ng-dropdown   
+			 ng-options="option.channels[0].reportName for option in reports_data  | unique:'reportName' | orderBy:'reportName'" 
+			 ng-change="chngStatus(selectedStatus);fieldMsg = false;" 
+			 required>
+			<option style="display:none" value="">Select A Report</option>
+		   </select>
+</div>
+
+<div class="col-md-6" ng-hide="(selectedStatus.reportName == 'ADMIN_ACTIVITY_REPORT' || selectedStatus.reportName == 'ORG_AUDIT_TRAIL_REPORT' || selectedStatus.reportName == 'USER_AUDIT_TRAIL_REPORT' || selectedStatus.reportName == 'PERIMETER_REPORT' || selectedStatus.reportName == 'CALLING_REPORT' || selectedStatus.reportName == 'RTD_REPORT' || selectedStatus.reportName == 'TAGGED_TRANSACTIONS_REPORT')" ng-hide="(selectedStatus.reportName == 'ADMIN_ACTIVITY_REPORT' || selectedStatus.reportName == 'ORG_AUDIT_TRAIL_REPORT' || selectedStatus.reportName == 'USER_AUDIT_TRAIL_REPORT' || selectedStatus.reportName == 'REVIEWER_EFFICIENCY_REPORT' || selectedStatus.reportName == 'USER_MANAGEMENT_REPORT')" ng-if="showme_flag == true">
+ <span class="textcell_reports2">FILE TYPE:</span> 
+				  <select class="cases_status create_report_drp  setme_green" 
+					 ng-model="someObject.selectedtype" 
+					 ng-dropdown   
+					 ng-options="option.fields for option in file_type track by option.fields" 
+					 ng-disabled = "filetype_flag"
+					 ng-change="setFileType(someObject.selectedtype);fieldMsg = false"  required>
+					<option style="display:none" value="">Select File Type</option>
+				   </select>
+
+
+</div>
+
+
+</div>
+
+<div class="row"  ng-if="showme_flag2 == true">
+<div class="col-md-6">
+  <!-- <div ng-disabled="setAvailable_fld_flag"> -->
+  <span  ng-hide="(selectedStatus.reportName == 'ADMIN_ACTIVITY_REPORT' || selectedStatus.reportName == 'ORG_AUDIT_TRAIL_REPORT' || selectedStatus.reportName == 'USER_AUDIT_TRAIL_REPORT' || selectedStatus.reportName == 'CALLING_REPORT' || selectedStatus.reportName == 'TAGGED_TRANSACTIONS_REPORT' || selectedStatus.reportName == 'RULE_EFFICIENCY_REPORT')">
+   <span class="textcell_reports2 ">AVAILABLE FIELDS:</span>
+ <ui-select multiple ng-model="someObject.selectedPeopleSimple" theme="bootstrap" 
+  on-select="getDataBasedonselect(someObject.selectedPeopleSimple)" ng-click="onclick()"
+  on-remove="getDataBasedonselect(someObject.selectedPeopleSimple);onRemove()"
+  remove-selected="false"
+  ng-disabled="(mndt_flag || someObject.selectedtype.fields == 'PDF')"
+  close-on-select="true"
+  ng-required="true"
+   style="width: 800px;"
+    title="Please add a data field">
+    <ui-select-match placeholder="Select Fields...">{{$item.fields}}</ui-select-match>
+    <ui-select-choices id="avialableFields" repeat="person.fields as person in available_fields | propsFilter: {fields: $select.search}">
+      <div ng-bind-html="person.fields | highlight: $select.search"></div>
+      
+    </ui-select-choices>
+  </ui-select>
+  </span>
+   <div class="text-danger" style="margin-top:-1%;font-weight:500" id="avialabeField" ng-if="fieldMsg"><span>All value is selected.</span></div>
+ <!--  </div> -->
+ 
+  
+ 
+<div class="date_cell col-md-12 col-lg-12 noPadding"  ng-if="someObject.hidedatePicker">
+<div ng-if="!trans_period.length ">
+<div class="date_cell col-md-6 col-lg-6 noPadding">
+ <span class="textcell_reports2 ">FROM DATE:</span> 
+               <input type="text"
+				date-picker2 
+				placeholder="DD-MM-YYYY" 
+				maxlength="10" 
+				class="create_report_drp2 setme_green" 
+				ng-model="someObject.fromDate1" 
+				min-date="-100M"
+				max-date="+0D" 
+				required 
+				readonly="" 
+				ng-change="frmDate(someObject.fromDate1)"/>
+                <div class="text-danger" id="fromdatetodatemsg" ng-if="showMiMaxDateMsg"><small>From date can not be grater than to date .</small></div>
+	</div>
+	<div class="date_cell col-md-6 col-lg-6 noPadding">		
+				<span class="textcell_reports2 ">TO DATE:</span> 
+				<input type="text"
+				date-picker2 
+				placeholder="DD-MM-YYYY"
+				maxlength="10"
+				class="create_report_drp2 setme_green " 
+				ng-model="someObject.toDate1" 
+				min-date="-100M"
+				max-date="+0D" 
+				required 
+				readonly="" 
+				ng-disabled="dateValidated"
+				ng-change="toDate(someObject.toDate1)" />
+				
+			
+		</div>		
+</div>
+<div ng-if="trans_period.length">
+ <span class="textcell_reports2">FOR WHICH PERIOD DO YOU NEED THE REPORT:</span>
+    <ul class="radio_list adj_margin">
+		   <li class="radio_list__item_hori" ng-repeat="transaction in trans_period">
+				<input type="radio" 
+				ng-model="someObject.days_value"
+				class="radio-btn" 
+				name="days" 
+				ng-attr-id="{{ 'object-' + $index }}" 
+				ng-value="{{transaction.fields}}"
+				ng-change='setDays(days_value)'
+				 />
+			<label for="{{ 'object-' + $index }}" class="radio_label">Last {{transaction.fields}} <span ng-show="$index==0">&nbsp;Days</span><span ng-show="$index > 0">&nbsp;Days</span></label>
+		  </li>
+		
+    </ul>
+</div>
+			   	
+</div> 
+
+
+
+<div class = "col-md-12 col-lg-12 noPadding">
+		
+	<span class="textcell_reports2" style="margin-top:2%">FREQUENCY:</span>	
+	<ul class="radio_list">
+		<li class="radio_list__item inline_block" style="float:left;margin-right:8%" >
+				<input type="radio" class="radio-btn" style="height:31px !important" name="interval" id="b-opt" ng-model="reccur_val.value" ng-value="'true'" ng-click='setInterval(reccur_val.value)' />
+				<label for="b-opt" class="radio_label">One Time</label>
+		</li>
+		<li class="radio_list__item" style="float:left" ng-if="showhrRecurrence && orgId == 'NPCI' && selectedStatus.reportName != 'POS_MERCHANT_SALES_VALUE_REPORT' && selectedStatus.reportName != 'ECOM_MERCHANT_SALES_VALUE_REPORT' && selectedStatus.reportName != 'REMITTER_REPORT' && selectedStatus.reportName != 'ATM_WITHDRAWAL_REPORT'" >
+				<input type="radio" class="radio-btn" name="interval" id="aj-opt" ng-model="reccur_val.value" ng-value="'false'" ng-click='setInterval(reccur_val.value)'/>
+				<label for="aj-opt" class="radio_label">Recurrence</label>
+				<div class="input-group number-spinner" ng-if="showRecurrencefld" >
+					<label class="interval">EVERY</label>
+					<input type="number" ng-disabled="selectedStatus.reportName == 'CALLING_REPORT' || selectedStatus.reportName == 'TAGGED_TRANSACTIONS_REPORT'" class="form-control text-center setme_green" style="height:31px !important" name="myfield" placeholder="Empty"  min="1" max="24" ng-model="someObject.counterinhrs"   required />
+					<!-- <label class="interval" ng-if="someObject.counterinhrs>=1">&nbsp;hr./hrs</label> -->
+					<label class="interval" ng-if="someObject.counterinhrs>=1">&nbsp;hr(s)</label>
+					<span class="recr_field" ng-show="myForm.myfield.$dirty && myForm.myfield.$error.max">Error : Value should be below {{recRange}}</span>
+				</div>
+		</li>
+		
+		
+		 <li class="radio_list__item" ng-if="!showhrRecurrence && orgId == 'NPCI' && selectedStatus.reportName != 'POS_MERCHANT_SALES_VALUE_REPORT' && selectedStatus.reportName !='ECOM_MERCHANT_SALES_VALUE_REPORT' && selectedStatus.reportName !='REMITTER_REPORT' && selectedStatus.reportName !='ATM_WITHDRAWAL_REPORT'" style="float:left">
+				<input type="radio" class="radio-btn" name="interval" id="a-opt" ng-model="reccur_val.value" ng-value="'false'" ng-click='setInterval(reccur_val.value)'/>
+				<label for="a-opt" class="radio_label">Recurrence</label>
+				<div class="input-group number-spinner" ng-if="showRecurrencefld" >
+					<label class="interval">EVERY</label>
+					<input type="number" class="form-control text-center setme_green" style="height:31px !important" placeholder="Empty" name="myfield2" min="1" max="{{recRange}}"   ng-model="someObject.counter"  required />
+					<select class="trns_frm_left setme_green" 
+						 ng-model="someObject.recr_value" 
+						 ng-dropdown 
+						 ng-change="recr_Chng(someObject.recr_value)"  
+						 ng-options="option.name  for option in recurrenceData track by option.value"
+					>
+					</select>
+					
+				</div>
+				<span class="recr_field" ng-show="myForm.myfield2.$dirty && myForm.myfield2.$error.min">Error : Value should be above or equals 1</span>
+					<span class="recr_field" ng-show="myForm.myfield2.$dirty && myForm.myfield2.$error.max">Error : Value should be below or equals {{recRange}}</span>
+				    
+		</li>  
+	</ul>
+		
+		
+</div> 
+
+<div  ng-if="selectedStatus.reportName == 'CALLING_REPORT' || selectedStatus.reportName == 'TAGGED_TRANSACTIONS_REPORT'">
+	<span class="textcell_reports2 ">DATE:</span> 
+               <input type="text"
+				date-picker2 
+				ng-disabled="reccur_val.value == 'false'"
+				placeholder="DD-MM-YYYY" 
+				maxlength="10" 
+				class="create_report_drp2 setme_green" 
+				ng-model="someObject.fromDate2" 
+				min-date="-1M"
+				max-date="-1D" 
+				
+				readonly="" 
+				/>
+</div>
+<!-- <div class="col-md-6 col-lg-6 noPadding" ng-if="hidesummry_report">
+
+    
+    <div class="squaredFour">
+    <span class="textcell_reports2">Content Type:</span>
+     <ul class="radio_list adj_margin">
+	<li class="radio_list__item">
+	  <input type="checkbox" ng-model="someObject.summry_check" ng-click='doIfChecked(someObject.summry_check)' id="summry" name="check" ng-init="someObject.summry_check=true" />
+      <label class="report_label">Summary</label>
+	</li>
+	<li class="radio_list__item inline_block">
+	  <input type="checkbox"  name="check" ng-model="someObject.detailed_check" ng-click='doIfChecked(someObject.detailed_check)'  name="check" ng-init="someObject.detailed_check=false" />
+       <label class="report_label" >Detailed</label>
+	</li>
+	
+	
+	
+	</ul>
+      
+      
+    </div>
+    
+  
+</div> -->
+
+ 
+
+ 
+ 
+<!--  <div class=" col-md-12 col-lg-12 noPadding" >
+<span class="textcell_reports2">Recipient Email ID:</span>
+
+<tags-input class="email_input" 
+            ng-model="someObject.tags" 
+            placeholder="Email id"
+            add-from-autocomplete-only="true"
+            ng-disabled="enable_email"
+            required > 
+<auto-complete  min-length="0" 
+                load-on-focus="true" 
+                load-on-empty="true"
+                highlight-matched-text="true"  
+                source="searchPeople($query)"
+                max-results-to-show="100"
+                >
+</auto-complete>            
+            
+</tags-input>
+
+</div> -->
+
+   
+
+	
+<!-- <div class=" col-md-6 col-lg-6 noPadding" ng-hide="(selectedStatus.reportName == 'ADMIN_ACTIVITY_REPORT' || selectedStatus.reportName == 'ORG_AUDIT_TRAIL_REPORT' || selectedStatus.reportName == 'USER_AUDIT_TRAIL_REPORT' || selectedStatus.reportName == 'PERIMETER_REPORT' || selectedStatus.reportName == 'CALLING_REPORT' || selectedStatus.reportName == 'RTD_REPORT')">
+
+<span class="textcell_reports2 from_top">FILE TYPE:</span> 
+		  <select class="cases_status create_report_drp  setme_green" 
+			 ng-model="someObject.selectedtype" 
+			 ng-dropdown   
+			 ng-options="option.fields for option in file_type track by option.fields" 
+			 ng-disabled = "filetype_flag"
+			 ng-change="setFileType(someObject.selectedtype)"  required>
+			<option style="display:none" value="">Select File Type</option>
+		   </select>
+</div> -->
+
+
+  
+</div>
+<div class="col-md-6">
+		<!-- <div class = "from_top" ng-if="selectedReporType == 'RTD REPORT' || selectedReporType == 'FRAUD CARD REPORT'">
+		
+		<div class = "from_top">
+		<span class="textcell_reports2">ACQUIRER:</span> 
+				<select class="cases_status create_report_drp setme_green" 
+				 ng-model="acquirer.prop" 
+				 ng-dropdown 
+				 ng-change="change_acuirer(acquirer)"  
+				 ng-options="option.name for option in orgarnisations track by option.orgId " 
+				 required >
+				
+			   </select>
+		</div>
+		<div class = "from_top">
+		<span class="textcell_reports2">ISSUER:</span> 
+				<select class="cases_status create_report_drp setme_green" 
+				 ng-model="issuer.prop" 
+				 ng-dropdown 
+				 ng-change="change_issuer(issuer)"  
+				 ng-options="option.name for option in orgarnisations track by option.orgId" 
+				 required >
+				
+			   </select>
+		</div>
+		
+		</div> -->
+		
+		<div  ng-hide="(selectedStatus.reportName == 'ADMIN_ACTIVITY_REPORT' || selectedStatus.reportName == 'ORG_AUDIT_TRAIL_REPORT' || selectedStatus.reportName == 'USER_AUDIT_TRAIL_REPORT' ||  selectedStatus.reportName == 'USER_MANAGEMENT_REPORT')" ng-if="showme_flag == true">
+
+				<span class="textcell_reports2"  >CHANNEL:</span> 
+					<select class="cases_status create_report_drp change_width setme_green upperCases" 
+					
+					 ng-model="someObject.case_channel" 
+					 ng-dropdown 
+					 ng-disabled = "disableChannel"
+					 ng-change="change_channel(someObject.case_channel);fieldMsg = false"  
+					 ng-options="option.channelDesc  for option in channel_name |orderBy:'channelDesc' track by option.channelCode"
+					 >
+					<option  style="display:none" value="">Select A Channel</option>
+	  			 </select>
+		   </div>
+
+
+			<div  ng-if="hideorg_drp">
+			<span class="textcell_reports2">ORGANISATION:</span> 
+					<select class="cases_status create_report_drp setme_green upperCases" 
+					 ng-model="case_orgId" 
+					 ng-dropdown 
+					 ng-change="change_orgID(case_orgId)"  
+					 ng-options="option.name for option in all_orgarnisations track by option.orgId" 
+					 required >
+					<option  value="">Select An Organisation.</option>
+				   </select>
+			
+			</div>
+			
+			 <div>
+				<span class="textcell_reports2">Recipient Email ID:</span>
+
+				<tags-input class="email_input" 
+				            ng-model="someObject.tags" 
+				            placeholder="Email id"
+				            add-from-autocomplete-only="true"
+				            ng-disabled="enable_email"
+				            required > 
+					<auto-complete  min-length="0" 
+					                load-on-focus="true" 
+					                load-on-empty="true"
+					                highlight-matched-text="true"  
+					                source="searchPeople($query)"
+					                max-results-to-show="100"
+					                >
+					</auto-complete>            
+            
+			</tags-input>
+
+</div>
+
+	<div  ng-if="selectedStatus.reportName == 'REMITTER_REPORT' || selectedStatus.reportName == 'ATM_WITHDRAWAL_REPORT'">
+				<div >
+															
+								
+									<span class="textcell_reports2">Amount:</span>
+									<input type="text" id="amount" name="amount" class="cases_status create_report_drp  setme_green"  minlength="6" ng-model="someObject.amount"  placeholder="Amount"  ng-pattern-restrict="^[0-9.]*$"  required />
+									<span class="recr_field" ng-show="myForm.amount.$error.minlength">Error : Value should be above or equals 100000</span>
+								
+				</div>
+			</div>
+			<!-- <div ng-if="selectedReporType == 'RULE EFFICIENCY REPORT'">
+			
+			<div class="input-group "  >
+							<label class="textcell_reports2">Min. Rule Weightage:</label>
+							<input type="tel" name="num1" class="inpt_box text-center setme_green"  placeholder="1-999"  maxlength="3" ng-model="someObject.min_rl_weight" ng-pattern="/^[1-9]\d*$/"  required />
+			                <span class="recr_field" ng-show="myForm.num1.$dirty && myForm.num1.$error.pattern">Error : Value must start with non-zero number</span>
+			</div>
+			<div class="input-group "  >
+							<label class="textcell_reports2">Max. Rule Weightage:</label>
+							<input type="tel" name="num2" class="inpt_box text-center setme_green"  placeholder="1-999"  maxlength="3" ng-model="someObject.max_rl_weight" ng-pattern="/^[1-9]\d*$/"  required />
+							<span class="recr_field" ng-show="myForm.num2.$dirty && myForm.num2.$error.pattern">Error : Value must start with non-zero number</span>
+			</div>
+			
+			</div> -->
+
+			<div  ng-if="selectedReporType == 'UPI FRAUD DETAIL REPORT'">
+			<span class="textcell_reports2">FINAL RISK SCORE: </span> <span>1</span><input class="threshold_cls" type="range" name="range" ng-model="someObject.upi_final_risk_score" min="{{min}}"  max="{{max}}"><span>999</span>
+			 <span class="textcell_reports2 threshold_adj">(Value = {{someObject.upi_final_risk_score}})</span>
+			 <span class="textcell_reports2">PAYER RULE SCORE: </span> <span>1</span><input class="threshold_cls" type="range" name="range" ng-model="someObject.remitterRuleScore" min="{{min}}"  max="{{max}}"><span>999</span>
+			 <span class="textcell_reports2 threshold_adj">(Value = {{someObject.remitterRuleScore}})</span>
+			 <span class="textcell_reports2">PAYEE RULE SCORE: </span> <span>1</span><input class="threshold_cls" type="range" name="range" ng-model="someObject.beneficiaryRuleScore" min="{{min}}"  max="{{max}}"><span>999</span>
+			 <span class="textcell_reports2 threshold_adj">(Value = {{someObject.beneficiaryRuleScore}})</span>
+			<span class="textcell_reports2">PAYER ORGANISATION:</span> 
+					<select class="cases_status create_report_drp setme_green" 
+					 ng-model="someObject.remitterOrgId" 
+					 ng-dropdown   
+					 ng-options="option.name for option in all_orgarnisations track by option.orgId" 
+					 ng-change="onChangeofRemitter(someObject.remitterOrgId)"
+					 required >
+					<option style="display:none" value="">Select An Organisation.</option>
+				   </select>
+			<span class="textcell_reports2">PAYEE ORGANISATION:</span> 
+					<select class="cases_status create_report_drp setme_green" 
+					 ng-model="someObject.beneficiaryOrgId" 
+					 ng-dropdown   
+					 ng-change="onChangeOfBeneficiary(someObject.beneficiaryOrgId)"
+					 ng-options="option.name for option in all_orgarnisations track by option.orgId" 
+					 required >
+					<option style="display:none" value="">Select An Organisation.</option>
+				   </select>	   
+			
+			</div>
+
+			<div  ng-if="selectedReporType == 'AML TYPE REPORT'">
+			<span class="textcell_reports2 from_top">AML TYPE:</span> 
+					  <select class="create_report_drp change_width setme_green" 
+						 ng-model="someObject.amlType_data" 
+						 ng-dropdown   
+						 ng-options="option.amlTypeDesc for option in amldata track by option.amlTypeCd" 
+						 ng-change="setAml(someObject.amlType_data)" s>
+						<option  value="">ALL</option>
+					   </select>
+			</div>
+			 <div  ng-if="selectedReporType == 'FRAUD TYPE REPORT' ||selectedReporType == 'FRAUD CARD REPORT'">
+			<span class="textcell_reports2 from_top">FRAUD TYPE:</span> 
+					  <select class="create_report_drp change_width setme_green" 
+						 ng-model="someObject.fraudType_data" 
+						 ng-dropdown   
+						 ng-options="option.fraudTypeDesc for option in fraudData track by option.fraudTypeCd" 
+						 ng-change="setFraud(someObject.fraudType_data)"  >
+						<option  value="">ALL</option>
+					   </select>
+			</div>
+			<div  ng-if="selectedReporType == 'ACQUIRER LEVEL FRAUD REPORT' || selectedReporType == 'POS MERCHANT SALES VALUE REPORT' || selectedReporType == 'ECOM MERCHANT SALES VALUE REPORT' ">
+			<div class="input-group "  >
+							
+							<label class="textcell_reports2">Merchant category code:</label>
+							<span class="transaction-text text-info" style="margin-top:-1%"><span class="text-danger">* </span>Please press enter after entering each  4 digits mcc. </span>
+							<!-- <span class="transaction-text text-info"><span class="text-danger">* </span>MCC should be  4 digits. </span> -->
+							<!-- <input type="text" class="inpt_box text-center setme_green"  name="myfield" placeholder="MCC"  maxlength="4" ng-model="someObject.Acq_mcc"   required /> -->
+							<tags-input  class="email_input"  min-length="4" allowed-tags-pattern="^[0-9]+$"
+							              max-length="4"
+							tag in tagList.items track by $index
+					            ng-model="someObject.Acq_mcc" 
+					            placeholder="MCC"
+					         > 
+                            </tags-input>
+			</div>
+			</div>
+			
+		
+			
+			<!-- <div class="from_top" ng-if=" selectedReporType == 'FRAUD CARD REPORT'">
+			<div class="input-group "  >
+					<div class="col-sm-12 noPadding">
+					  <label class="textcell_reports2">Transaction Amount:</label>
+					  <input type="number" class="inpt_box text-center setme_green"  name="myfield" placeholder="Amount" ng-model="someObject.Txn_Amount" ng-pattern="/^[0-9]{1,7}$/" required/>
+					</div>		
+					 <div class="col-sm-4 noPadding">
+						  <span class="textcell_reports2 from_top">Score:</span> 
+						  <select class="create_report_drp setme_green" 
+							 ng-model="someObject.minScoreDrp" 
+							 ng-change="setRuleScore(someObject.minScoreDrp)"  required>
+							<option style="display:none" value="">Select Type</option>
+							<option value="Issuer">Issuer</option>
+							<option value="Acquirer">Acquirer</option>
+						  </select>
+					  </div>
+					  <div class="col-sm-3 noPadding" ng-if="showScoreType">
+					  <span class="textcell_reports2 from_top">Score Type:</span>
+					     <ul class="radio_list adj_margin" >
+						    <li class="radio_list__item inline_block" >
+								<input type="radio" class="radio-btn" name="scoreCheck" id="mo-opt" ng-model="someObject.model"  ng-value="true" ng-checked="(someObject.model == true)"/>
+								<label for="mo-opt" class="radio_label">Model</label>
+							</li>
+							<li class="radio_list__item" >
+								<input type="radio" class="radio-btn" name="scoreCheck" id="ru-opt" ng-model="someObject.model" ng-value="false" />
+								<label for="ru-opt" class="radio_label">Rule</label>
+							</li>
+		                </ul>
+					  </div>
+					  <div class="col-sm-5 noPadding" ng-if="showScoreType">
+					   <span class="textcell_reports2 from_top">Min. Score: </span> <span>1</span><input class="threshold_cls" type="range" name="range" ng-model="someObject.min_risk_score" min="{{min}}"  max="{{max}}"><span>999</span>
+					   <span class="textcell_reports2 threshold_adj">(Value = {{someObject.min_risk_score}})</span>
+	                   <span class="textcell_reports2 from_top">Max. Score: </span> <span>1</span><input class="threshold_cls" type="range" name="range" ng-model="someObject.max_risk_score" min="{{min}}"  max="{{max}}"><span>999</span>
+	                   <span class="textcell_reports2 threshold_adj">(Value = {{someObject.max_risk_score}})</span>
+					  </div>
+						
+			</div>
+			</div> -->
+
+			 <div  ng-if="selectedReporType == 'MERCHANT WISE FRAUD REPORT'">
+			 <label class="textcell_reports2">Merchant Id:</label>
+			<!--  <input type="text" class="mcc_box inpt_box text-center setme_green"   placeholder="MID"   ng-model="someObject.mid_data"  ng-change="setMid(someObject.mid_data)" ng-required="someObject.tid_data <= 0" /> -->
+			<tags-input class="email_input" 
+					            ng-model="someObject.mid_data" 
+					            placeholder="MID"
+					            > 
+            </tags-input>				
+			<!-- <div class="squaredFour">
+			    <span class="textcell_reports2">Case Type:</span>
+			     <ul class="radio_list adj_margin">
+				<li class="radio_list__item">
+				  <input type="checkbox" ng-model="someObject.open_check" ng-click='openCases(someObject.open_check)'  name="check" ng-init="someObject.open_check=true" ng-required="someObject.closed_check==false" />
+			      <label class="report_label">Open</label>
+				</li>
+				<li class="radio_list__item inline_block">
+				  <input type="checkbox"  name="check" ng-model="someObject.closed_check" ng-click='closedCases(someObject.closed_check)'  name="check" ng-init="someObject.closed_check=false" ng-required="someObject.open_check == false"/>
+			       <label class="report_label" >Closed</label>
+				</li>
+				
+				
+				
+				</ul>
+			      
+			      
+			    </div> -->
+			 </div> 
+			<div ng-if="selectedReporType == 'TXN WISE FRAUD REPORT'">
+			<div class="input-group "  >
+							<span class="or_position">OR</span>
+							<div class="col-sm-6 col-md-6 col-lg-6 left-border noPadding">
+							<label class="textcell_reports2">Merchant category code:</label>
+							<input type="text" class="mcc_box text-center setme_green"   placeholder="MCC"  maxlength="4" ng-model="someObject.mcc_data" ng-change="setmcc(someObject.mcc_data)"   /> <!-- ng-required="someObject.tid_data <= 0" -->
+							<label class="textcell_reports2">Merchant Id:</label>
+							<input type="text" class="mcc_box inpt_box text-center setme_green"   placeholder="MID"   ng-model="someObject.mid_data"  ng-change="setMid(someObject.mid_data)" /> <!-- ng-required="someObject.tid_data <= 0" --> 
+							
+							</div>
+							<div class="col-sm-6 col-md-6 col-lg-6 noPadding left-padding">
+							<label class="textcell_reports2">Terminal Id:</label>
+							<input type="text" class="mcc_box extra_width text-center setme_green"   placeholder="TID"   ng-model="someObject.tid_data" ng-change="setTid(someObject.tid_data)"   /> <!-- ng-required="someObject.mcc_data <= 0 || someObject.mid_data <= 0" -->
+							
+							</div>
+							
+							
+			                <span class="textcell_reports2">Transaction Type:</span>
+						     <ul class="radio_list adj_margin">
+							<li class="radio_list__item">
+							  <input type="checkbox" ng-model="someObject.approved_check"  id="approved_txn" name="check" ng-init="someObject.approved_check=true" ng-required="someObject.declined_check==false" />
+						      <label class="report_label">Approved</label>
+							</li>
+							<li class="radio_list__item inline_block">
+							  <input type="checkbox"  name="check" ng-model="someObject.declined_check"   name="check" ng-init="someObject.declined_check=false" ng-required="someObject.approved_check == false"/>
+						       <label class="report_label" >Declined</label>
+							</li>
+							</ul>
+							<span class="textcell_reports2 ">FRAUD TYPE:</span> 
+					     <select class="create_report_drp change_width setme_green" 
+						 ng-model="someObject.fraudType_data" 
+						 ng-dropdown   
+						 ng-options="option.fraudTypeDesc for option in fraudData track by option.fraudTypeCd" 
+						 ng-change="setFraud(someObject.fraudType_data)" >
+						 <option  value="">ALL</option>
+					   </select>
+			
+			</div>
+			</div>
+			<div ng-if="hidesummry_report"  ng-hide="(selectedStatus.reportName == 'ORG_AUDIT_TRAIL_REPORT' || selectedStatus.reportName == 'USER_AUDIT_TRAIL_REPORT' || selectedStatus.reportName == 'ADMIN_ACTIVITY_REPORT')" >
+					
+					    <span class="textcell_reports2" style="margin-top:2%">Content Type:</span>
+					     <ul class="radio_list" style="line-height: 0px;">
+						<li class="radio_list__item" style="float:left;margin-right:2%">
+						  <input type="checkbox" ng-model="someObject.summry_check" ng-click='doIfChecked(someObject.summry_check)' id="summry" name="check" ng-init="someObject.summry_check=true" />
+					      <label class="report_label">Summary</label>
+						</li>
+						<li class="radio_list__item inline_block" style="float:left">
+						  <input type="checkbox"  name="check" ng-model="someObject.detailed_check" ng-click='doIfChecked(someObject.detailed_check)'  name="check" ng-init="someObject.detailed_check=false" />
+					       <label class="report_label" >Detailed</label>
+						</li>
+						
+						
+						
+						</ul>
+    				
+			</div>
+			
+			
+           
+
+
+</div>
+
+
+
+
+
+
+<!-- <div class="col-md-6">
+<div>
+<span class="textcell_reports2 inline_block">ENCRYPT SENSITIVE DATA:</span>
+<ul class="radio_list adj_check">
+		
+		<li class="encrypt_grp">
+		 <div class="btn-group " id="status" data-toggle="buttons">
+             
+              <input type="radio"  id="checkme"  ng-value="true" name="multifeatured_encry"  ng-model="do_encryp" ng-change='setdataEncrypt(do_encryp)'>
+               <label class="btn btn-default btn-on btn-sm active adj-color"  for ="checkme">YES</label>
+               <input type="radio"  id="uncheckme" ng-value="false" name="multifeatured_encry" ng-model="do_encryp" ng-change='setdataEncrypt(do_encryp)'>
+                 <label class="btn btn-default btn-off btn-sm "  for ="uncheckme">NO</label>
+             </div>
+		</li>
+		
+		
+	</ul>
+		
+<ul class="radio_list adj_margin" >
+	    <li class="radio_list__item inline_block" >
+			<input type="radio" class="radio-btn" name="multifeatured_encry" id="checkme" ng-model="do_encryp" ng-value="true" ng-change='setdataEncrypt(do_encryp)' required/>
+			<label for="checkme" class="radio_label">YES</label>
+		</li>
+		<li class="radio_list__item" >
+			<input type="radio" class="radio-btn" name="multifeatured_encry" id="uncheckme" ng-model="do_encryp" ng-value="false" ng-change='setdataEncrypt(do_encryp)'/>
+			<label for="uncheckme" class="radio_label">NO</label>
+		</li>
+</ul>
+</div>
+</div>
+</div>
+</div> -->
+	
+<button type="submit" id="create_report_submit1" class="btn btn-lg btn-danger set_left" ng-click="createReport()" ng-disabled="myForm.$invalid || showMiMaxDateMsg ">Submit</button>
+</form>	
+
+</fieldset>
+	
+	</div>
+	</div>
+  </div>
+</div>

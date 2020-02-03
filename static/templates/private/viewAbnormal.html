@@ -1,0 +1,74 @@
+<div class="userDashboard container-fluid">
+    <div class="hasHeader">
+        <div class="userTabs clearfix settings">
+            <div class="tab-content formStyle">
+                <div class="pageHeading"><h5 ng-if="isApprovePending">View Abnormal Hours</h5> <h5 ng-if="!isApprovePending">Approve/Pending Abnormal Hours</h5></div>
+                <div class="tab-pane active searchUser" id="searchUser">
+
+                    <form ng-if = "isApprovePending" ng-submit="abnormalHours.$valid && abnormalHoursList()"  name="abnormalHours" novalidate accessible-form>
+                        <div class="col-sm-12 noPadding">
+
+                            <div class="form-group col-sm-4 noPadding" ng-class="{true: 'has-error'}[submitted && abnormalHours.selectedStatus.$invalid]">
+                                <select ng-model="$parent.selectedStatus" name="selectedStatus" id="selectedStatus" class="form-control" id="selectedStatus" required>
+                                    <option style="display:none" label="PLEASE SELECT THE STATUS"></option>
+                                    <option ng-repeat="item in status" value="{{item}}">{{item}}</option>
+                                </select>
+                                <div class="text-danger" id="selectedStatus_required_msg" ng-show="abnormalHours.selectedStatus.$error.required && submitted"><small>This is a required field.</small></div>
+                            </div>
+                        </div>
+
+
+
+                        <div><button type="submit" id="abnormalHours_submit" class="btn btn-lg btn-danger" ng-click="submitted=true">Submit
+                        </button></div>
+
+                        <div><p><br></p></div>
+
+                    </form>
+
+                    <table class="table  t-responsive">
+                        <thead>
+                        <tr>
+                            <th scope="col" class="text-center">MCC</th>
+                            <th scope="col" class="text-center">Creation Time</th>
+                            <th scope="col" class="text-center">Updated Time</th>
+                            <th scope="col" class="text-center">Start Time</th>
+                            <th scope="col" class="text-center">End Time</th>
+                            <th scope="col" class="text-center">Action</th>
+
+                        </tr>
+                        </thead>
+                        <tbody ng-hide="data.length == '0' || angular.isUndefined(data.length)" dir-paginate="row in data.data|orderBy:sortKey:reverse|filter:search|itemsPerPage:50">
+                        <tr id="abnormalHours_table">
+                            <td data-label="abnormalHours mcc"class="text-center">{{ row.mcc }}</td>
+                            <td data-label="creation time" class="text-center">{{ row.creationTs==null?'NA':row.creationTs|GMT}}</td>
+                            <td data-label="updated time" class="text-center">{{ row.lastUpdateTs==null?'NA':row.lastUpdateTs|GMT}}</td>
+                            <td data-label="abnormalHours score" class="text-center">{{row.startTime}}</td>
+                            <td data-label="abnormalHours score" class="text-center">{{row.endTime}}</td>
+
+                            <td data-label="Action" id="abnormalHours_action" class="text-center">
+                                <div class="dropdown" id="abnormalHours_action_dropdown">
+                                    <button  ng-disabled="(row.userInformationDTO.userId == makerId) && (selectedStatus =='PENDING_REVIEW')" class="btn dropdown-toggle button-width text-center" type="button" data-toggle="dropdown"><span class="fa fa-cog" aria-hidden="true"></span>
+                                    </button>
+                                    <ul class="dropdown-menu drop-downadj fa-eye-ul" id="role_info_action_dropdown_action">
+                                        <li ng-if="isApprovePending" ng-click="viewAbnormalHoursDetails(row)"><a href="#" id="view_abnormalHours"><span class="fa fa-eye" aria-hidden="true" >Edit Abnormal Hours</span></a></li>
+                                        <li ng-if="(selectedStatus =='PENDING_REVIEW') && (row.userInformationDTO.userId!=makerId)" ng-click="changeHoursStatus(row,'ACTIVE')" ><a href="#" id="approve_case"><span class="glyphicon"   aria-hidden="true" >&#xe013; Approve</span></a></li>
+                                        <li ng-if="(selectedStatus =='PENDING_REVIEW')&& (row.userInformationDTO.userId!=makerId)" ng-click="changeHoursStatus(row,'DEACTIVATED')"><a href="#" id="reject_case" ><span  class="glyphicon"  aria-hidden="true" >&#xe014; Reject</span></a></li>
+                                        <li ng-if="(selectedStatus =='ACTIVE') && (row.userInformationDTO.userId!=makerId)" ng-click="changeHoursStatus(row,'DEACTIVATED')" ><a href="#" id="reject_case1"><span class="glyphicon"  aria-hidden="true" >&#xe013; Deactivate</span></a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="text-center noData" id="no_data_found" ng-show="data.data.length == '0' || angular.isUndefined(data.data.length)"> <h6>No Data Found</h6></div>
+                    <div class="gridPagination clearfix" ng-hide="data.length == '0' || angular.isUndefined(data.length)">
+                        <div>
+                            <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true" ></dir-pagination-controls>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,41 @@
+<div class="displayTable">
+	<div class="verticalMiddle formStyle">
+		<div class="login">
+					<div class="pageHeading"><h5>Change Password.</h5></div>
+							<form  name="changePassword" ng-submit="changePassword.$valid && changePasswordSubmit()" autocomplete="off" novalidate accessible-form>
+								<div class="form-group" ng-class="{true: 'has-error'}[submitted && oldPassword.$invalid]">			   		
+								        <span class="textcell_reports">Old Password:</span>
+								        <input id="oldPassword"  ng-class = "{ im_active: resetPass.password }" name="oldPassword" ng-model="oldPassword" ng-change="changeOldPassword(oldPassword)" type="password" placeholder="Old Password" class="form-control" required/>
+			   							<p class="text-danger" ng-show="submitted && changePassword.oldPassword.$error.required"><small id="frg_text13">This is a required field.</small></p>
+			   					</div>
+			   					
+			   					<div class="form-group" ng-class="{true: 'has-error'}[submitted && newPassword.$invalid]">
+								        <span class="textcell_reports">New Password:</span>
+								        <input id="newPassword" size="30" ng-class = "{im_active: resetPass.password }" ng-pattern="/^(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,20}$/" name="newPassword" ng-model="newPassword" ng-change="changeNewPassword(newPassword)" type="password" placeholder="New Password"   class="form-control"  required/>
+										<a class="formHints" style="top:24px !important" popover data-placement="top" data-container="body"
+										   data-html="true"
+										   data-content="<div id='my-data-content'><p>Old Passweord and New Password should not be same.<br>
+			        						The password must have at least 8 character(s).<br>
+											At least 1 digit(s).<br>
+											At least 1 lower case letter(s).<br>
+											At least 1 upper case letter(s).<br>
+											At least 1 non-alphanumeric character(s).</p></div>">
+										<img src="../img/info.png" alt="password criteria"></a>
+										<p class="text-danger" ng-show="submitted && changePassword.newPassword.$error.required"><small id="frg_text17">This is a required field.</small></p>
+										<p class="text-danger" ng-show="changePassword.newPassword.$error.pattern"><small>Minimum eight characters, at least one letter, one number and one special character.</small></p>
+										<p class="text-danger" ng-show="oldPasswordMsg==true"><small id="frg_text18">Old Password and New Password Should Not Be Same</small></p>
+			   					</div>
+			   					
+			   					<div class="form-group" ng-class="{true: 'has-error'}[submitted && reTypePassword.$invalid]">
+								        <span class="textcell_reports">Confirm Password:</span>
+								        <input id="frg_pass2" size="30" ng-class = "{im_active: resetPass.reTypePassword }" type="password" placeholder="Confirm Password" ng-model="reTypePassword" name="temporaryPassword"  ng-change="ChangeReTypePassword(reTypePassword)" class="form-control" required/>
+										<span ng-if="tick" class="formHints fa fa-check" style="font-size:19px;color:green;top:24px !important"></span>
+										<span ng-if="cnfrmPasswordMsg" class="formHints fa fa-times" style="font-size:19px;color:red;top:24px !important"></span>
+										<p class="text-danger" ng-show="submitted && changePassword.temporaryPassword.$error.required"><small id="frg_text19">This is a required field.</small></p>
+										<p class="text-danger" ng-show="cnfrmPasswordMsg"><small>Password and confirm password is not same!</small></p>
+			   					</div>		
+								 <input id="changpasswrd" type="submit" class="btn btn-block btn-lg btn-danger" value="Submit" ng-click="submitted=true" >
+							</form>			
+			</div>
+		</div>
+	</div>	

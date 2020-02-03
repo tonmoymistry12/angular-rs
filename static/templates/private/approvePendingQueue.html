@@ -1,0 +1,219 @@
+<div class="userDashboard container-fluid">
+	<div class="hasHeader">
+		<div class="userTabs clearfix settings">
+			<div class="tab-content formStyle">
+				<div class="pageHeading"><h5>Approve / Pending Queue</h5></div>
+				<div class="tab-pane active searchUser" id="searchQueue">	
+						<form name ="searchQueueForm" autocomplete="off" novalidate>
+						<div class="clearfix row searchCriteria">
+											
+											
+							<div class="col-sm-12">
+								<div class="row">
+									<div class="col-xs-3 col-lg-4" >
+										<span class="textcell_reports">ORGANISATION:</span> 
+										 <select class="form-control" ng-disabled="loggedInOrgID != 'NPCI'" ng-change="changeOrgaisation(selectedOrgid)" ng-model="selectedOrgid"  required>
+						 						<option style="display:none" value="">PLEASE SELECT THE ORGANISATION</option>
+												<option class="upperCases" ng-repeat="data in orgarnisations" value="{{data.orgId}}">{{data.name}}</option>
+										</select> 
+									<!-- <ui-select 
+							           id="selectedOrgID"
+							           name="selectedOrgID"
+							           ng-model="selectedOrgid" 
+							           uiSelectNoAnimate
+							           theme="selectize"  
+							           title="Choose a organisation"
+							           append-to-body="true" 
+							           close-on-select="true" 
+							           ng-disabled = "loggedInOrgID != 'NPCI'"
+							           on-select="changeOrgaisation(selectedOrgid.orgId)"
+							           ng-required="true"
+								   >
+      	 						<ui-select-match placeholder="SELECT A ORGANISATION IN THE LIST...">{{$select.selected.name}}</ui-select-match>
+							     <ui-select-choices 
+							        repeat="option in orgarnisations | filter: $select.search | limitTo: 100 | uppercase"
+							        position="down" 
+							        limit="100"
+							        refresh-delay="300">
+							      <span ng-bind-html="option.name | highlight: $select.search"></span>
+							      <small ng-bind-html="option.orgId | highlight: $select.search"></small>
+							    </ui-select-choices>
+    						</ui-select> -->
+										<div class="text-danger" id="assignqueue_required_msg" ng-if="showErrMsg"><small>Select a organisation.</small></div>
+									</div>
+									<!-- <div class="col-sm-3">
+										<span class="textcell_reports">QUEUE CODE:</span>
+										<input type="text" name="queueCode" autocomplete="off" class="form-control" ng-pattern-restrict="^[A-Z a-z - ' @ 0-9]*$" placeholder="Enter Queue Code" ng-model="searchData.queueCode" maxlength='50' autocomplete="off"/>
+									</div>
+									<div class="col-sm-3">
+										<span class="textcell_reports">QUEUE NAME:</span>
+										<input type="text" name="queueName" autocomplete="off" class="form-control" ng-pattern-restrict="^[A-Z a-z - ' @ 0-9]*$" placeholder="Enter Queue Name" ng-model="searchData.queueName" maxlength='50' autocomplete="off"/>
+									</div> -->
+									<div class="col-sm-4">
+										<span class="textcell_reports">STATUS:</span>
+											<select class="form-control" ng-model="queueActionType" ng-change="changeStatus(queueActionType)" name="userRole" id="userRole">
+						 						<!-- <option value="">ALL</option> -->
+						 						<option  value="PENDING_REVIEW">REQUEST FOR NEWLY CREATED QUEUE</option>
+						 						<option value="EDIT_PENDING_REVIEW">REQUEST FOR EDITED QUEUE</option>
+						 						<option  value="PENDING_DEACTIVATION">REQUEST TO DEACTIVATE QUEUE</option>
+						 						<option  value="PENDING_REACTIVATION">REQUEST TO REACTIVATE QUEUE</option>
+				 							</select>	
+									</div>
+									
+								</div>								
+							</div>									
+						</div>	
+						<div class="clearfix row" ng-show="viewQueueData.length != '0'">
+							<div class="col-sm-12 ">
+								<span class="textcell_reports" style="text-decoration: underline;">FILTER CRITERIA</span>
+							</div>
+							<div class="form-group col-sm-4 ">
+		                        <span class="textcell_reports">QUEUE CODE:</span>
+								<input type="text" name="queueCode" autocomplete="off" class="form-control"  placeholder="Enter Queue Code" ng-model="searchData.queueCode" maxlength='50' autocomplete="off"/>
+							</div>
+							<div class="form-group col-sm-4 ">
+								<span class="textcell_reports">QUEUE NAME:</span>
+								<input type="text" name="queueName" autocomplete="off" class="form-control"  placeholder="Enter Queue Name" ng-model="searchData.queueName" maxlength='50' autocomplete="off"/>
+							</div>
+						</div>							
+					</form>					
+					<span ng-if="(viewQueueData|filter:searchData).length !=0" class="showTotalRecords">
+							<strong>Total Records :{{viewQueueData.length}}</strong>
+					</span>	
+					<span ng-if="(viewQueueData|filter:searchData).length==0" class="showTotalRecords">
+							<strong>Total Records :0</strong>
+					</span>						
+						<table  class="table  t-responsive table_adj" id="user_table">
+							<thead>
+								<tr>
+									<th scope="col" id="img" class="first_row"></th>
+								  	<th scope="col">Queue Code<span class="fa fa-chevron-right calColor"  ng-click="sort('queueCode')" ng-class="queueCodeSort?'fa-rotate-90':'fa-rotate-270'"></span></th>
+								  	<th scope="col">Queue Name <span class="fa fa-chevron-right calColor"  ng-click="sort('queueName')" ng-class="queueNameSort?'fa-rotate-90':'fa-rotate-270'"></span></th>
+								  	<th scope="col">Channel<span class="fa fa-chevron-right calColor"  ng-click="sort('userInformationDTO.channel')" ng-class="channelSort?'fa-rotate-90':'fa-rotate-270'"></span></th>							  	
+								  	<th scope="col">Organisation<span class="fa fa-chevron-right calColor"  ng-click="sort('queue.orgId')" ng-class="createdDateSort?'fa-rotate-90':'fa-rotate-270'"></span></th>	
+								  	<!-- <th scope="col">Last Updated Date <span class="fa fa-chevron-right calColor"  ng-click="sort('updatedDate')" ng-class="updatedDateSort?'fa-rotate-90':'fa-rotate-270'"></span></th>						   -->
+								  	
+								  	<!-- <th scope="col">Action Type</th> -->
+								  	<th scope="col" id="action">Action</th>
+								</tr>
+							</thead>
+							<!--  <tbody ng-repeat="queue in viewQueueData"> -->
+							<tbody  dir-paginate="queue in viewQueueData|orderBy:sortKey:reverse|filter:searchData|itemsPerPage:selectedPage">
+							
+								<tr id="queue_table_expand_row" ng-class="queue.select?'expandColorTr':''">
+									<td data-label="Expand to more info" id="queue_select">
+										<h5><span class="fa" ng-class="!queue.select?'fa-plus':'fa-minus'" ng-init="queue.select=false" ng-model="queue.select" ng-click="queue.select=!queue.select;isSessionValid()"></span></h5>
+									</td>
+																 
+								 	<td data-label="Queue Code" id="queue_code" class="fixWidth"><p class="Uname">{{ queue.queueCode}}</p></td>
+								 	<td data-label="Queue Name" id="queue_name" class="fixWidth"><p class="Uname">{{ queue.queueName }}</p></td>
+								 	<td data-label="Queue Code" id="userInformationDTO.channel" class="fixWidth"><p class="Uname">{{queue.userInformationDTO.channel}}</p></td>
+								 	<td data-label="Created_Date">{{ organisationDisplay(queue.orgId) }}</td>		
+									<!-- <td data-label="Created_Date">{{ queue.creationTs==null?'NA':queue.creationTs  | GMT}}</td>								  	
+									<td data-label="updated_date">{{ queue.lastUpdateTs==null?'NA':queue.lastUpdateTs  | GMT}}</td> -->								  	
+								  	<!-- <td data-label="Action Type" id="queue_action_type">{{ queue.userInformationDTO.actionType }}</td>	 -->
+								  	<td data-label="Action" id="queue_action" ng-class="authority == 'ROLE_NTS_MGMT'?'ntsMgm':''">
+								  		<div class="dropdown" id="queue_action_dropdown" ng-if="rolePermission.isPermissionGranted(1723019063)">
+										  <button class="btn dropdown-toggle button-width"  ng-click = check(queue) type="button" ng-disabled="queue.userInformationDTO.actionType == 'REJECTED' || queue.queueCode == 'DFLTQ'" data-toggle="dropdown"><span class="fa fa-cog" aria-hidden="true"></span>
+										  </button>
+										  <ul ng-if="queue.userInformationDTO.actionType != 'REJECTED' && queue.queueCode != 'DFLTQ'" class="dropdown-menu drop-downadj fa-eye-ul" style = "margin-left:-33px" id="queue_info_action_dropdown_action">
+									    <!-- <li ng-if="!(queue.userInformationDTO.actionType == 'REJECTED' || queue.userInformationDTO.actionType == 'ACTIVE') && (loggedInUserMail == queue.userInformationDTO.userId) && rolePermission.isPermissionGranted(1723019063)"><a href="#" id="edit_user" ><span  ng-click="edit(queue)"   class="fa fa-edit" aria-hidden="true" >Edit</span></a></li> -->
+										    <!-- <li  ng-if="isEditPermisson" ng-click="edit(queue)"><a href="#" id="edit_user" ><span class="fa fa-edit" aria-hidden="true" >Edit</span></a></li>
+										    <li ng-if="(queue.userInformationDTO.actionType == 'ACTIVE')" ng-click="edit(queue)"><a href="#" id="edit_user" ><span class="fa fa-edit" aria-hidden="true" >Edit</span></a></li> -->
+										   
+										    <li ng-if="(queue.userInformationDTO.updatedByUserIdOrig == null) && (queue.userInformationDTO.actionType == 'PENDING_REVIEW') && (loggedInUserId != queue.userInformationDTO.userIdOrig)" ng-click="queueModel(queue,'rejectqueue')"><a href="#" id="reject_queue" ><span    class="fa fa-close" aria-hidden="true" >Reject</span></a></li>
+										    <li ng-if="(queue.userInformationDTO.updatedByUserIdOrig == null) && queue.userInformationDTO.actionType == 'PENDING_REVIEW' && (loggedInUserId != queue.userInformationDTO.userIdOrig)"  ng-click="queueModel(queue,'approvequeue')"><a  id="approve_queue" href="#" ><span class="fa fa-check" aria-hidden="true"  data-toggle="tooltip">Approve</span></a></li>
+										    
+										    <li ng-if="(queue.userInformationDTO.updatedByUserIdOrig != null) && (queue.userInformationDTO.actionType == 'PENDING_REVIEW') && (loggedInUserId != queue.userInformationDTO.updatedByUserIdOrig)" ng-click="queueModel(queue,'rejectqueue')"><a href="#" id="reject_queue" ><span    class="fa fa-close" aria-hidden="true" >Reject</span></a></li>
+										    <li ng-if="(queue.userInformationDTO.updatedByUserIdOrig != null) && queue.userInformationDTO.actionType == 'PENDING_REVIEW' && (loggedInUserId != queue.userInformationDTO.updatedByUserIdOrig)"  ng-click="queueModel(queue,'approvequeue')"><a  id="approve_queue" href="#" ><span class="fa fa-check" aria-hidden="true"  data-toggle="tooltip"   >Approve</span></a></li>
+										    
+										  	<!-- <li ng-if="queue.userInformationDTO.actionType == 'ACTIVE' " ng-click="queueModel(queue,'deactivete')"><a id="deactive_user" href="#" ><span   class="fa fa-trash-o"     aria-hidden="true">Deactivate</span></a></li> -->
+										  	<li  ng-click="view(queue)"><a href="#" id="edit_user" ><span class="fa fa-edit" aria-hidden="true" >View</span></a></li>
+										  	<li ng-if="(queue.hasPendingDeactivation == true) &&  (loggedInUserId != queue.userInformationDTO.updatedByUserIdOrig)" ng-click="queueModel(queue,'decativateApprove')"><a href="#" id="edit_user" ><span class="fa fa-check" aria-hidden="true" >Approve</span></a></li>
+										  	<li ng-if="(queue.hasPendingDeactivation == true) &&  (loggedInUserId != queue.userInformationDTO.updatedByUserIdOrig)" ng-click="queueModel(queue,'decativateReject')"><a href="#" id="edit_user" ><span class="fa fa-close" aria-hidden="true" >Reject</span></a></li>
+										  	<li ng-if="(queue.hasPendingReactivation == true) &&  (loggedInUserId != queue.userInformationDTO.updatedByUserIdOrig)" ng-click="queueModel(queue,'recativateApprove')"><a href="#" id="edit_user" ><span class="fa fa-check" aria-hidden="true" >Approve</span></a></li>
+										  	<li ng-if="(queue.hasPendingReactivation == true) &&  (loggedInUserId != queue.userInformationDTO.updatedByUserIdOrig)" ng-click="queueModel(queue,'recativateReject')"><a href="#" id="edit_user" ><span class="fa fa-close" aria-hidden="true" >Reject</span></a></li>
+										  	<!-- <li ng-if="(queue.userInformationDTO.actionType == 'DEACTIVATED') &&  (loggedInUserId != queue.userInformationDTO.updatedByUserIdOrig)" ng-click="queueModel(queue,'reactive')"><a href="#" id="edit_user" ><span class="fa fa-edit" aria-hidden="true" >Recative</span></a></li> -->
+								  </ul>										 
+										</div>
+								  	</td>		
+								  						  				  	
+								</tr>
+								
+								<tr ng-show="queue.select" id="queue_select_row" class="expandColor">
+									<td colspan="10">
+										<!-- <div class="row clearfix searchQueuepaddingleft">											
+											<div class="col-sm-10" id="queue_condition" ><strong>Organisation:</strong> {{organisationDisplay(queue.orgId) }}</div>
+										</div> -->
+										
+										<div class="row clearfix searchQueuepaddingleft" ng-if="queue.userInformationDTO.userId != null">
+											<div class="col-sm-4" ng-if="queue.userInformationDTO.userId != null" id="queue_id"><strong>Created By :</strong> <span class="firstName">{{ queue.userInformationDTO.userId}}</span> </div>
+											<div class="col-sm-4"  id="queue_id"><strong>Created Date :</strong> <span class="firstName">{{ queue.creationTs==null?'NA':queue.creationTs  | GMT}}</span> </div>	
+										</div>	
+										
+										<div class="row clearfix searchQueuepaddingleft" ng-if="queue.userInformationDTO.updatedByUserId != null">																				
+											<div class="col-sm-4" ng-if="queue.userInformationDTO.updatedByUserId != null" id="queue_name"><strong>Last Updated By :</strong> <span class="lastName">{{ queue.userInformationDTO.updatedByUserId }}</span></div>
+											<div class="col-sm-4"  id="queue_id"><strong>Last Updated Date :</strong> <span class="firstName">{{ queue.lastUpdateTs==null?'NA':queue.creationTs  | GMT}}</span> </div>												
+										</div>
+										
+										<div class="row clearfix searchQueuepaddingleft" ng-if="queue.userInformationDTO.deactivatedByUserId != null">								
+											<div class="col-sm-4" ng-if="queue.userInformationDTO.deactivatedByUserId != null" id="queue_name"><strong>Last Deactivate By :</strong> <span class="lastName">{{ queue.userInformationDTO.deactivatedByUserId }}</span></div>
+											<div class="col-sm-4" ng-if="queue.deactivationTs != null" id="queue_name"><strong>Last Deactive Date :</strong> <span class="lastName">{{ queue.deactivationTs==null?'NA':queue.deactivationTs  | GMT}}</span></div>
+											
+										</div>
+										
+										<div class="row clearfix searchQueuepaddingleft" ng-if="queue.userInformationDTO.rejectedByUserId != null">
+											<div class="col-sm-4" ng-if="queue.userInformationDTO.rejectedByUserId != null" id="queue_id"><strong>Rejected By :</strong> <span class="firstName">{{ queue.userInformationDTO.rejectedByUserId}}</span> </div>											
+											<div class="col-sm-4" ng-if="queue.rejectionTs" id="queue_id"><strong>Rejected Date :</strong> <span class="firstName">{{ queue.rejectionTs==null?'NA':queue.rejectionTs  | GMT}}</span> </div>											
+										</div>
+										
+										<div class="row clearfix searchQueuepaddingleft" ng-if="queue.userInformationDTO.approvedByUserId != null">
+											<div class="col-sm-4" ng-if="queue.userInformationDTO.approvedByUserId != null" id="queue_name"><strong>Last Approved By :</strong> <span class="lastName">{{ queue.userInformationDTO.approvedByUserId }}</span></div>
+											<div class="col-sm-3" ng-if="queue.approvalTs != null" id="queue_name"><strong>Last Approve Date :</strong> <span class="lastName">{{ queue.approvalTs==null?'NA':queue.approvalTs  | GMT}}</span></div>
+										</div>
+										
+										<div class="row clearfix searchQueuepaddingleft">
+											<div class="col-sm-4" ng-if="queueActionType != 'EDIT_PENDING_REVIEW'" id="queue_action_type"><strong>Status :</strong> {{ queue.userInformationDTO.actionType}}</div>
+											<div class="col-sm-4" ng-if="queueActionType == 'EDIT_PENDING_REVIEW'" id="queue_action_type"><strong>Status :</strong> PENDING_EDIT</div>
+											<div class="col-sm-7" id="queue_description" ><strong>Description:</strong> {{ queue.description}}</div>
+										</div>
+										<div class="row clearfix searchQueuepaddingleft" ng-if="queue.condition != null">											
+											<div class="col-sm-10" id="queue_condition" ><strong>Condition:</strong> {{removeDoller(queue.condition)}}</div>
+										</div>
+										
+										<div class="row clearfix searchQueuepaddingleft">											
+											<div class="col-sm-12" style="word-break: break-all" id="queue_condition" ><strong>Rules:</strong> {{ queue.queueAlert}}</div>
+										</div>
+										<div class="row clearfix searchQueuepaddingleft">											
+											<div class="col-sm-10" id="queue_condition" ><strong>Notes:</strong> {{ queue.userInformationDTO.notes}}</div>
+										</div>
+									</td>	
+																														  	
+								</tr>	
+																												
+							</tbody>
+						</table>
+					<div  ng-show="(viewQueueData|filter:searchData).length==0 || viewQueueData.length == '0' || viewQueueData == undefined" class="text-center noData"><h6>No Records Found</h6></div>  
+					<!-- <div class="text-center noData" ng-show="viewQueueData.length == '0' || viewQueueData == undefined"> <h6>No Data Found</h6></div> -->
+					
+					
+					<div class="gridPagination clearfix" ng-show="viewQueueData.length != '0'">
+						<div class="col-sm-1" >
+							<select ng-show="viewQueueData.length > 5" ng-model="selectedPage" name="pageSize" id="selectpage">
+									<option value="5">5</option>
+									<option value="10">10</option>
+									<option value="25">25</option>
+									<option value="50">50</option>
+									<option value="100">100</option>
+							</select>
+						</div>
+						
+						<div class="col-sm-8">
+							<dir-pagination-controls max-size="5"  direction-links="true" boundary-links="true" ></dir-pagination-controls>
+						</div>
+					</div>															
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

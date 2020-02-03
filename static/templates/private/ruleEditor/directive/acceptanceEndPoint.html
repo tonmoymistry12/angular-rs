@@ -1,0 +1,179 @@
+<div class="AcceptanceEndpoint tabBodyAlign">
+   <div class="row odd-row no-margin rule-bottom-border">
+      <!-- Jurisdiction Checkbox START -->
+      <div class="col-sm-3">
+         <div class="form-group">
+            <label for="channel">Juridiction</label><br>
+            <label class="checkbox-inline">
+            <input type="checkbox" ng-model="jurisdictionDomistic" ng-change="jurisdictionInternational=false;juridictionChange('Domestic');">Domestic
+            </label>
+            <label class="checkbox-inline">
+            <input type="checkbox" ng-model="jurisdictionInternational" ng-change="jurisdictionDomistic=false;juridictionChange('International');">International
+            </label>
+         </div>
+      </div>
+      <!-- Jurisdiction Checkbox END -->
+      <!-- CHANNEL DROPDOWN START -->
+      <div class="col-sm-2">
+         <div class="form-group">
+            <label for="channel">Accep. Points</label>
+            <select class="form-control" ng-model="channelName" ng-change="channelChange()">
+               <option value="">- Select -</option>
+               <option ng-repeat="endPoint in getAcceptanceEndPoint | uniq: 'name'" value="{{endPoint.value}}">{{endPoint.name}}</option>
+               <!-- <option ng-if="metadata.channel==='RuPayPos'" value="IP">IP</option> -->
+            </select>
+         </div>
+      </div>
+      <!-- CHANNEL DROPDOWN END -->
+      <!-- EMV Compliant RADIO START -->
+      <div class="col-sm-3">
+         <div class="form-group">
+            <label for="EMVComplaint">EMV Compliant (POS/ATM)</label><br>
+            <label class="checkbox-inline">
+            <input type="checkbox" ng-model="EMVCompliantYes" ng-change="EMVCompliantNo=false;EMVCompliantChange('Yes')">Yes
+            </label>
+            <label class="checkbox-inline">
+            <input type="checkbox" ng-model="EMVCompliantNo" ng-change="EMVCompliantYes=false;EMVCompliantChange('No')">No
+            </label>
+         </div>
+      </div>
+      <!-- EMV Compliant RADIO END -->
+      <div class="col-sm-2">
+         <div class="form-group">
+            <label for="channel">Favourite</label>
+            <select class="form-control" ng-model="favouriteChannel" ng-change="favouriteChange()" ng-disabled="isChannel">
+               <option value="">- Select -</option>
+               <option value="in">IN</option>
+               <option value="notIn">NOT IN</option>
+            </select>
+         </div>
+      </div>
+      <div class="col-sm-2">
+         <div class="form-group">
+            <label for="channel">Recently Used</label>
+            <select class="form-control" ng-model="recentlyUsedChannel" ng-change="recentlyUsedChange()" ng-disabled="isChannel">
+               <option value="">- Select -</option>
+               <option value="in">IN</option>
+               <option value="notIn">NOT IN</option>
+            </select>
+         </div>
+      </div>
+   </div>
+   <div class="row even-row no-margin">
+      <!-- Usage Across Distinct  DROPDOWN START -->
+      <div class="col-sm-2">
+         <div class="form-group">
+            <label for="account">Usage Acr. Accep. Points</label>
+            <select class="form-control" ng-model="acceptancepointfilter.usageAcrossDistinctEndpoint.endPointType" ng-change="resetUsageAcc()">
+               <option value="">-Select-</option>
+               <option ng-repeat="getUsageAcrossEndpoint in getUsageAcrossEndpoints  | uniq: 'name'" value="{{getUsageAcrossEndpoint.value}}">{{getUsageAcrossEndpoint.name}}</option>
+            </select>
+         </div>
+      </div>
+      <!-- Usage Across Distinct  DROPDOWN END -->
+      <!-- OPERATOR DROPDOWN START -->
+      <div class="col-sm-2">
+         <div class="form-group">
+            <label for="exampleInputEmail1">Operator</label>
+            <select class="form-control transactionOperator" ng-model="acceptancepointfilter.usageAcrossDistinctEndpoint.operator" 
+               ng-required="acceptancepointfilter.usageAcrossDistinctEndpoint.endPointType.length>0 || acceptancepointfilter.usageAcrossDistinctEndpoint.value.length>0" ng-disabled="(acceptancepointfilter.usageAcrossDistinctEndpoint.endPointType.length>0)? false : true">
+               <option value="">- Select -</option>
+               <option ng-repeat="operator in acceptancepointfilterOperators" value="{{operator.value}}">{{operator.name}} </option>
+            </select>
+         </div>
+      </div>
+      <!-- OPERATOR END -->
+      <!-- VALUE START -->
+      <div class="col-sm-2">
+         <div class="form-group">
+            <label for="value">Value</label>
+            <input number type="text" class="form-control" ng-model="acceptancepointfilter.usageAcrossDistinctEndpoint.value" ng-required="acceptancepointfilter.usageAcrossDistinctEndpoint.endPointType.length>0 || acceptancepointfilter.usageAcrossDistinctEndpoint.operator.length>0" ng-disabled="(acceptancepointfilter.usageAcrossDistinctEndpoint.endPointType.length>0)? false : true"/>
+         </div>
+      </div>
+      <!-- VALUE END -->
+   </div>
+   <div class="even-row lastBoxPadd">
+      <div class="row">
+         <div class="col-sm-6">
+            <div class="row no-margin" style="margin-bottom:15px;">
+               <div class="col-sm-4"><input type="checkbox" name="chkbox" ng-model="isReportedFraud" ng-change="resetReportedFraudCount()">
+                  Reported Count
+               </div>
+               <div class="col-sm-2">
+                  <input type="text" class="form-control" placeholder="Count" number ng-model="acceptancepointfilter.reportedFrauds.count" ng-disabled="!isReportedFraud" ng-required="isReportedFraud"/>
+               </div>
+               <!--   <div class="col-sm-1">volume</div> -->
+               <div class="col-sm-2">Frauds in</div>
+               <div class="col-sm-2">
+                  <select class="form-control" ng-model="acceptancepointfilter.reportedFrauds.durationInDaysCount" ng-disabled="!isReportedFraud" ng-required="isReportedFraud">
+                     <option value="">- Days-</option>
+                     <option ng-repeat="day in getFraudaysForCount" value="{{day}}">{{day}}</option>
+
+                  </select>
+                  <!-- <input type="text" class="form-control" placeholder="Number of days" number ng-model="acceptancepointfilter.reportedFrauds.durationInDays" ng-disabled="!isReportedFraud" ng-required="isReportedFraud"/> -->
+               </div>
+               <div class="col-sm-1">Days</div>
+            </div>
+            <div class="row no-margin" style="margin-bottom:15px;">
+               <div class="col-sm-4"><input type="checkbox" name="chkbox" ng-model="isReportedFraudVolume" ng-change="resetReportedFraudAmount()">
+                  Reported Amount
+               </div>
+               <div class="col-sm-2">
+                  <input type="text" class="form-control" placeholder="Amount" number ng-model="acceptancepointfilter.reportedFrauds.volume" ng-disabled="!isReportedFraudVolume" ng-required="isReportedFraudVolume"/>
+               </div>
+               <div class="col-sm-2">Frauds in</div>
+               <div class="col-sm-2">
+                  <select class="form-control" ng-model="acceptancepointfilter.reportedFrauds.durationInDaysAmount" ng-disabled="!isReportedFraudVolume" ng-required="isReportedFraudVolume">
+                     <option value="">- Days-</option>
+
+                     <option ng-repeat="day in getFraudaysForAmount" value="{{day}}">{{day}}</option>
+                  </select>
+                  <!-- <input type="text" class="form-control" placeholder="Number of days" number ng-model="acceptancepointfilter.reportedFrauds.durationInDays" ng-disabled="!isReportedFraud" ng-required="isReportedFraud"/> -->
+               </div>
+               <div class="col-sm-1">Days</div>
+            </div>
+         </div>
+         <div class="col-sm-6">
+            <div class="row no-margin" style="margin-bottom:15px;">
+               <div class="col-sm-2"><input type="checkbox" name="chkbox" ng-model="isFTS" ng-change="resetFTS()">
+                  FTS >
+               </div>
+               <div class="col-sm-3">
+                  <input type="text" class="form-control" placeholder="Value" number ng-model="acceptancepointfilter.FTS.count" ng-disabled="!isFTS" ng-required="isFTS"/>
+               </div>
+               <div class="col-sm-2">
+                  <input type="text" class="form-control" placeholder="Number of days" number ng-model="acceptancepointfilter.FTS.durationInDays" ng-disabled="!isFTS" ng-required="isFTS"/>
+               </div>
+               <div class="col-sm-2">Days</div>
+            </div>
+            <div class="row no-margin" style="margin-bottom:15px;">
+               <div class="col-sm-2"><input type="checkbox" name="chkbox" ng-model="isDisputed" ng-change="resetDisputed()">
+                  Disputed
+               </div>
+               <div class="col-sm-3">
+                  <select class="form-control transactionOperator" ng-model="acceptancepointfilter.disputedInfo.operator" ng-disabled="!isDisputed" ng-required="isDisputed">
+                     <option value="">- Operator -</option>
+                     <option ng-repeat="operator in acceptancepointfilterOperators" value="{{operator.value}}">{{operator.name}} </option>
+                  </select>
+               </div>
+               <div class="col-sm-2">
+                  <input type="text" class="form-control" placeholder="Count" number ng-model="acceptancepointfilter.disputedInfo.count" ng-disabled="!isDisputed"  ng-required="isDisputed"/>
+               </div>
+               <div class="col-sm-2">
+                  <input type="text" class="form-control" placeholder="Duration" number ng-model="acceptancepointfilter.disputedInfo.duration" ng-disabled="!isDisputed"  ng-required="isDisputed"/>
+               </div>
+               <div class="col-sm-2">
+                  <select ng-model="acceptancepointfilter.disputedInfo.unit" class="form-control" ng-disabled="!isDisputed"  ng-required="isDisputed">
+                     <option value=""> - Unit - </option>
+                     <option value="Days">Days</option>
+                     <option value="Hours">Hours</option>
+                     <!-- <option value="Mins">Minutes</option>
+                        <option value="Secs">Seconds</option> -->
+                  </select>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="row odd-row no-margin"><span class="mandatory-field text-danger"> {{mandatory}}</span></div>
+</div>

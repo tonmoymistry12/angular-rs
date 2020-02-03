@@ -1,0 +1,271 @@
+<div class="userDashboard container-fluid">
+    <div class="hasHeader">
+        <div class="userTabs clearfix settings">
+            <div class="tab-content formStyle">
+                <div class="pageHeading" ng-if="isAssignSelected"><h5>View Unassigned Queues</h5></div>
+                <div class="pageHeading" ng-if="!isAssignSelected"><h5>Assign Queues</h5></div>
+                <div class="tab-pane active searchUser" id="searchQueue">
+                	<span ng-if="viewQueueData.length != 0" class="showTotalRecords">
+							<strong>Total Records :{{viewQueueData.length}}</strong>
+					</span>	
+					<span ng-if="viewQueueData.length == 0" class="showTotalRecords">
+							<strong>Total Records :0</strong>
+					</span>	
+                    <table ng-if="isAssignSelected" class="table  t-responsive table_adj" id="user_table">
+                        <thead>
+                        <tr>
+                            <th scope="col" id="img" class="first_row"></th>
+                            <th scope="col" style="width:25%">Queue Name <span class="fa fa-chevron-right calColor"  ng-click="sort('queueName')" ng-class="queueNameSort?'fa-rotate-90':'fa-rotate-270'"></span></th>
+                            <th scope="col" style="width:30%">Organization <span class="fa fa-chevron-right calColor"  ng-click="sort('organizationName')" ng-class="orgIdSort?'fa-rotate-90':'fa-rotate-270'"></span></th>
+                            <th scope="col" style="width:15%">Channel<span class="fa fa-chevron-right calColor"  ng-click="sort('channel')" ng-class="channelSort?'fa-rotate-90':'fa-rotate-270'"></span></th>
+                            <!-- <th scope="col">Created Date <span class="fa fa-chevron-right calColor"  ng-click="sort('createdDate')" ng-class="createdDateSort?'fa-rotate-90':'fa-rotate-270'"></span></th>
+                            <th scope="col">Last Updated Date <span class="fa fa-chevron-right calColor"  ng-click="sort('updatedDate')" ng-class="updatedDateSort?'fa-rotate-90':'fa-rotate-270'"></span></th> -->
+
+                            <!-- <th scope="col">Action Type</th> -->
+                            <th scope="col" style="width:20%" id="action">Status</th>
+                            <th scope="col" id="action"  ng-class="authority == 'ROLE_NTS_MGMT'?'ntsMgm':''">Action</th>
+                        </tr>
+                        </thead>
+                        <!--  <tbody ng-repeat="queue in viewQueueData"> -->
+                        <tbody  dir-paginate="queue in viewQueueData|orderBy:sortKey:reverse|filter:searchData|itemsPerPage:selectedPage">
+
+                        <tr id="queue_table_expand_row" ng-class="queue.select?'expandColorTr':''">
+                            <td data-label="Expand to more info" id="queue_select">
+                                <h5><span class="fa" ng-class="!queue.select?'fa-plus':'fa-minus'" ng-init="queue.select=false" ng-model="queue.select" ng-click="queue.select=!queue.select;isSessionValid()"></span></h5>
+                            </td>
+                            <td data-label="Queue Name" id="queue_name"><p class="Uname">{{ queue.queueName }}</p></td>
+                            <!-- <td data-label="Queue Name" id="queue_name"><p class="Uname">{{ queue.organizationName }}</p></td> -->
+                            <td data-label="Organisation Name" id="organisation" class="fixWidth"><p class="Uname">{{ queue.organizationName }}</p></td>
+                            <td data-label="Queue Code" id="queue_channel" ><p class="Uname">{{queue.channel}}</p></td>
+                            <!-- <td data-label="Created_Date">{{ queue.creationTs==null?'NA':queue.creationTs  | GMT}}</td>
+                            <td data-label="updated_date">{{ queue.lastUpdateTs==null?'NA':queue.lastUpdateTs  | GMT}}</td> -->
+                            <!-- <td data-label="Action Type" id="queue_action_type">{{ queue.userInformationDTO.actionType }}</td>	 -->
+                            <td data-label="updated_date">{{queue.status}}</td>
+                            <td data-label="Action" id="user_info_action" ng-class="authority == 'ROLE_NTS_MGMT'?'ntsMgm':''" ng-show="rolePermission.isPermissionGranted(1723019059)">
+								  		<div class="dropdown" id="user_info_action_dropdown" ng-if="rolePermission.isPermissionGranted(1723019059)">
+										  <button class="btn dropdown-toggle button-width"  type="button" data-toggle="dropdown"><span class="fa fa-cog" aria-hidden="true"></span>
+										  </button>
+										  <ul class="dropdown-menu drop-downadj2 fa-eye-ul dropdownDatatable" id="user_info_action_dropdown_action">
+											  <li  ng-click="setassignQueue(queue)"><a  href="#" id="assign"><span class="glyphicon">&#xe013; Assign</span></a></li>
+										  </ul>										 
+										</div>
+								  	</td>
+
+                        </tr>
+
+                        <tr ng-show="queue.select" id="queue_select_row" class="expandColor">
+                            <td colspan="9" class="queueTable">
+                                <div class="row clearfix col-sm-offset-1 col-sm-5">
+                                    <!-- <div class="col-sm-12 shiftLeft"><strong>Organisation:</strong> {{queue.organizationName}}</div> -->
+                                     <div class="col-sm-12 shiftLeft"><strong>Description:</strong> {{ queue.description}}</div>
+                                    <div class="col-sm-12 shiftLeft"><strong>Condition:</strong> {{ queue.condition}}</div>
+                                    <div class="col-sm-12 shiftLeft"><strong>Rules:</strong> {{ queue.rules}}</div>
+                                    <div class="col-sm-12 shiftLeft"><strong>Notes:</strong> {{ queue.notes}}</div>
+                                </div>
+                                <div class="row clearfix col-sm-offset-1 col-sm-4">
+                                	<div class="col-sm-12" ng-if="queue.createdBy != null"><strong>Created By:</strong>{{ queue.createdBy}}</div>
+                                    <div class="col-sm-12" ng-if="queue.updatedBy != null"><strong>Updated By:</strong>{{ queue.updatedBy }}</div>
+                                    <div class="col-sm-12" ng-if="queue.approvedBy != null"><strong>Approved By:</strong>{{ queue.approvedBy }}</div>
+                                    <div class="col-sm-12" ng-if="queue.deactivatedBy != null"><strong>Deactivated By:</strong>{{ queue.deactivatedBy }}</div>
+                                    <div class="col-sm-12" ng-if="queue.rejectedBy != null"><strong>Rejected By:</strong>{{ queue.rejectedBy }}</div>
+                                </div>
+                                <div class="row clearfix col-sm-offset-1 col-sm-3">
+                                	<div class="col-sm-12" ng-if="queue.creationTs != null"><strong>Created Date:</strong>{{ queue.creationTs==null?'':queue.creationTs | GMT}}</div>
+                                    <div class="col-sm-12" ng-if="queue.lastUpdateTs != null"><strong>Updated Date:</strong>{{ queue.lastUpdateTs==null?'':queue.lastUpdateTs  | GMT}}</div>
+                                    <div class="col-sm-12" ng-if="queue.approvalTime != null"><strong>Approved Date:</strong>{{ queue.approvalTime==null?'':queue.approvalTime | GMT }}</div>
+                                    <div class="col-sm-12" ng-if="queue.deactivationTime != null"><strong>Deactivated Date:</strong>{{ queue.deactivationTime==null?'':queue.deactivationTime | GMT }}</div>
+                                    <div class="col-sm-12" ng-if="queue.rejectionTime != null"><strong>Rejected Date:</strong>{{ queue.rejectionTime==null?'':queue.rejectionTime | GMT}}</div>
+                                </div>
+                            </td>
+
+                        </tr>
+
+                        </tbody>
+                    </table>
+         
+                    <div  ng-show="(viewQueueData|filter:searchData).length==0 || viewQueueData.length == '0' || viewQueueData == undefined" class="text-center noData"><h6>No Records Found</h6></div>
+                    <!-- <div class="text-center noData" ng-show="viewQueueData.length == '0' || viewQueueData == undefined"> <h6>No Data Found</h6></div> -->
+
+
+                    <div class="gridPagination clearfix" ng-show="viewQueueData.length != '0' && isAssignSelected">
+						<div class="col-sm-1" >
+							<select ng-show="viewQueueData.length > 5" ng-model="selectedPage" name="pageSize" id="selectpage">
+									<option value="5">5</option>
+									<option value="10">10</option>
+									<option value="25">25</option>
+									<option value="50">50</option>
+									<option value="100">100</option>
+							</select>
+						</div>
+						
+                        <div class="col-sm-8">
+                            <dir-pagination-controls max-size="5"  direction-links="true" boundary-links="true" ></dir-pagination-controls>
+                        </div>
+                    </div>
+                    
+                   <!--  assign queue start -->
+                   
+                    <table ng-if="!isAssignSelected" class="table  t-responsive table_adj" id="user_table">
+                        <thead>
+                        <tr>
+                            <th scope="col" id="img" class="first_row"></th>
+                            <th scope="col">Queue Name <span class="fa fa-chevron-right calColor"  ng-click="sort('queueName')" ng-class="queueNameSort?'fa-rotate-90':'fa-rotate-270'"></span></th>
+                            <th scope="col">Organization <span class="fa fa-chevron-right calColor"  ng-click="sort('orgId')" ng-class="orgIdSort?'fa-rotate-90':'fa-rotate-270'"></span></th>
+                            <th scope="col">Channel<span class="fa fa-chevron-right calColor"  ng-click="sort('channel')" ng-class="channelSort?'fa-rotate-90':'fa-rotate-270'"></span></th>
+                           <!--  <th scope="col">Created Date <span class="fa fa-chevron-right calColor"  ng-click="sort('createdDate')" ng-class="createdDateSort?'fa-rotate-90':'fa-rotate-270'"></span></th>
+                            <th scope="col">Last Updated Date <span class="fa fa-chevron-right calColor"  ng-click="sort('updatedDate')" ng-class="updatedDateSort?'fa-rotate-90':'fa-rotate-270'"></span></th> -->
+
+                            <!-- <th scope="col">Action Type</th> -->
+                            <th scope="col" id="action">Status</th>
+                            <!-- <th scope="col" id="action"  ng-class="authority == 'ROLE_NTS_MGMT'?'ntsMgm':''">Action</th> -->
+                        </tr>
+                        </thead>
+                        <!--  <tbody ng-repeat="queue in viewQueueData"> -->
+                        <tbody  dir-paginate="queue in myassignQueue|orderBy:sortKey:reverse|filter:searchData|itemsPerPage:5">
+
+                        <tr id="queue_table_expand_row" ng-class="queue.select?'expandColorTr':''">
+                            <td data-label="Expand to more info" id="queue_select">
+                                <h5><span class="fa" ng-class="!queue.select?'fa-plus':'fa-minus'" ng-init="queue.select=false" ng-model="queue.select" ng-click="queue.select=!queue.select;isSessionValid()"></span></h5>
+                            </td>
+                            <td data-label="Queue Name" id="queue_name"><p class="Uname">{{ queue.queueName }}</p></td>
+                            <td data-label="Queue Name" id="queue_name"><p class="Uname">{{ queue.orgId }}</p></td>
+                            <td data-label="Queue Code" id="queue_channel" ><p class="Uname">{{queue.channel}}</p></td>
+                            <!-- <td data-label="Created_Date">{{ queue.creationTs==null?'NA':queue.creationTs  | GMT}}</td>
+                            <td data-label="updated_date">{{ queue.lastUpdateTs==null?'NA':queue.lastUpdateTs  | GMT}}</td> -->
+                            <!-- <td data-label="Action Type" id="queue_action_type">{{ queue.userInformationDTO.actionType }}</td>	 -->
+                            <td data-label="updated_date">{{queue.status}}</td>
+                            <!-- <td data-label="Action" id="user_info_action" ng-class="authority == 'ROLE_NTS_MGMT'?'ntsMgm':''" ng-show="rolePermission.isPermissionGranted(1723019059)">
+								  		<div class="dropdown" id="user_info_action_dropdown" ng-if="rolePermission.isPermissionGranted(1723019059)">
+										  <button class="btn dropdown-toggle button-width"  type="button" data-toggle="dropdown"><span class="fa fa-cog" aria-hidden="true"></span>
+										  </button>
+										  <ul class="dropdown-menu drop-downadj fa-eye-ul dropdownDatatable" id="user_info_action_dropdown_action">
+											  <li  ng-click="assignQueue(queue)"><a  href="#" id="assign"><span class="glyphicon">&#xe013; Assign</span></a></li>
+										  </ul>										 
+										</div>
+								  	</td> -->
+
+                        </tr>
+
+                        <tr ng-show="queue.select" id="queue_select_row" class="expandColor">
+                            <td colspan="9" class="queueTable">
+                                <div class="row clearfix col-sm-offset-1 col-sm-5">
+                                    <div class="col-sm-12 shiftLeft"><strong>Organisation:</strong> {{queue.organizationName}}</div>
+                                     <div class="col-sm-12 shiftLeft"><strong>Description:</strong> {{ queue.description}}</div>
+                                    <div class="col-sm-12 shiftLeft"><strong>Condition:</strong> {{ queue.condition}}</div>
+                                    <div class="col-sm-12 shiftLeft" style="word-break: break-all"><strong>Rules:</strong> {{ queue.rules}}</div>
+                                    <div class="col-sm-12 shiftLeft"><strong>Notes:</strong> {{ queue.notes}}</div>
+                                </div>
+                               <div class="row clearfix col-sm-offset-1 col-sm-4">
+                                	<div class="col-sm-12" ng-if="queue.createdBy != null"><strong>Last Created By :</strong>{{ queue.createdBy}}</div>
+                                    <div class="col-sm-12" ng-if="queue.updatedBy != null"><strong>Last Updated By :</strong>{{ queue.updatedBy }}</div>
+                                    <div class="col-sm-12" ng-if="queue.approvedBy != null"><strong>Last Approved By :</strong>{{ queue.approvedBy }}</div>
+                                    <div class="col-sm-12" ng-if="queue.deactivatedBy != null"><strong>Last Deactivated By :</strong>{{ queue.deactivatedBy }}</div>
+                                    <div class="col-sm-12" ng-if="queue.rejectedBy != null"><strong>Last Rejected By :</strong>{{ queue.rejectedBy }}</div>
+                                </div>
+                                <div class="row clearfix col-sm-offset-1 col-sm-3">
+                                	<div class="col-sm-12" ng-if="queue.creationTs != null"><strong>Created Date :</strong>{{ queue.creationTs==null?'':queue.creationTs | GMT}}</div>
+                                    <div class="col-sm-12" ng-if="queue.lastUpdateTs != null"><strong>Last Updated Date :</strong>{{ queue.lastUpdateTs==null?'':queue.lastUpdateTs  | GMT}}</div>
+                                    <div class="col-sm-12" ng-if="queue.approvalTime != null"><strong>Last Approved Date :</strong>{{ queue.approvalTime==null?'':queue.approvalTime | GMT }}</div>
+                                    <div class="col-sm-12" ng-if="queue.deactivationTime != null"><strong>Last Deactivated Date :</strong>{{ queue.deactivationTime==null?'':queue.deactivationTime | GMT }}</div>
+                                    <div class="col-sm-12" ng-if="queue.rejectionTime != null"><strong>Rejected Date :</strong>{{ queue.rejectionTime==null?'':queue.rejectionTime | GMT}}</div>
+                                </div>
+                            </td>
+
+                        </tr>
+
+                        </tbody>
+                    </table>
+                    
+                    <fieldset ng-if="!isAssignSelected">
+									<legend class="custom-style">USER LIST</legend>
+									<span  class="transaction-text text-info" ng-if="issueraccquirermsg" ><span class="text-danger">* </span>Please select at least one user from issuer perspective and one user from acquirer perspective. </span>
+									<span  class="transaction-text text-info" ng-if="atleastoneacquirermsg" ><span class="text-danger">* </span>Please select at least one user from acquirer perspective. </span>
+									<span  class="transaction-text text-info" ng-if="atleastoneissuerrmsg" ><span class="text-danger">* </span>Please select at least one user from issuer perspective. </span>
+									<span  class="transaction-text text-info" ng-if="acquireramlmsg" ><span class="text-danger">* </span>Please select at least one user from acquirer perspective and one user from aml perspective. </span>
+									<span  class="transaction-text text-info" ng-if="issuerandamlmsg" ><span class="text-danger">* </span>Please select at least one user from issuer perspective and one user from aml perspective. </span>
+									<span  class="transaction-text text-info" ng-if="issueracquireramlmsg" ><span class="text-danger">* </span>Please select at least one user from issuer perspective and one user from aml perspective and one user from acquirer perspective. </span>
+									<span  class="transaction-text text-info" ng-if="onlyissuermsg" ><span class="text-danger">* </span>Please select user from issuer perspective only. </span>
+									<span  class="transaction-text text-info" ng-if="onlyacquiermsg" ><span class="text-danger">* </span>Please select user from acquirer perspective only. </span>
+									<span  class="transaction-text text-info" ng-if="onlyamlmsg" ><span class="text-danger">* </span>Please select user from aml perspective only. </span>
+									<span  class="transaction-text text-info" ng-if="anyofmsg" ><span class="text-danger">* </span>Please select a user from any perspective. </span>
+									<span  class="transaction-text text-danger" ng-if="myrequiredmsg" ><span class="text-danger">* </span>Please select a user. </span>
+									<span  class="transaction-text text-info" ng-if="atleasetoneamlmsg" ><span class="text-danger">* </span>Please select at least one user from aml perspective. </span>
+									<div class="text-center noData" id="no_data_found" ng-if="issuerUserList.length == 0 && aqurierUserList.length == 0 && amlUserList.length == 0"> <h6>No  User available</h6></div>
+									
+									<div class="clearfix row">
+										<div class="form-group col-sm-3 labelMargintop" ng-if="issuerUserList.length != 0">
+											 <span class="textcell_reports">USERS WITH ISSUER PERSPECTIVE:</span> 
+											<ui-select multiple ng-model="someObject.issuerSelectedPersion" theme="bootstrap"
+													   on-select="selectedIssuerUser(someObject.issuerSelectedPersion)"
+													   on-remove="selectedIssuerUser(someObject.issuerSelectedPersion)"
+													   remove-selected="false"
+													   close-on-select="true"
+													   style="width: 120% !important;"
+													   title="Choose a User">
+												<ui-select-match allow-clear="true" placeholder="Select Fields...">{{$item.email}}</ui-select-match>
+												<ui-select-choices style="max-height: 110px;overflow-x:auto !important" repeat="person in issuerUserList | propsFilter: {email: $select.search} ">
+													<!-- <div ng-bind-html="person.email | highlight: $select.search"></div> -->
+													<div><span ng-bind-html="person.email | highlight: $select.search"></span> <span class="assignQueueOrgShow" ng-bind-html=" person.orgId | highlight: $select.search"></span></div>
+													
+												</ui-select-choices>
+												<ui-select-no-choice style="max-height: 110px;overflow-x:auto !important;left: 0px !important">
+     												<div style="text-align:center;font-size: 18px"><span style="color:red">User does not exist for your organisation</span></div>
+   												 </ui-select-no-choice>
+											</ui-select>
+											<!-- <div class="text-danger" id="assignqueue_required_msg" ng-if="showMultiSelectMsg"><small>This is a required field.</small></div> -->
+										</div>
+										
+										<div class="form-group col-sm-3 labelMargintop" style="margin-left:9%" ng-if="aqurierUserList.length != 0">
+											 <span class="textcell_reports">USERS WITH ACQUIRER PERSPECTIVE:</span> 
+											<ui-select multiple ng-model="someObject.acquierSelectedPersion" theme="bootstrap"
+													   on-select="selectedAcquierUser(someObject.acquierSelectedPersion)"
+													   on-remove="selectedAcquierUser(someObject.acquierSelectedPersion)"
+													   remove-selected="false"
+													   close-on-select="true"
+													   style="width: 120% !important;"
+													   title="Choose a User">
+												<ui-select-match allow-clear="true" placeholder="Select Fields...">{{$item.email}}</ui-select-match>
+												<ui-select-choices style="max-height: 110px;overflow-x:auto !important" repeat="person in aqurierUserList | propsFilter: {email: $select.search} ">
+													<!-- <div ng-bind-html="person.email | highlight: $select.search"></div> -->
+														<div><span ng-bind-html="person.email | highlight: $select.search"></span> <span class="assignQueueOrgShow" ng-bind-html=" person.orgId | highlight: $select.search"></span></div>
+													
+												</ui-select-choices>
+												<ui-select-no-choice style="max-height: 110px;overflow-x:auto !important;left: 0px !important">
+     												<div style="text-align:center;font-size: 18px"><span style="color:red">User does not exist for your organisation</span></div>
+   												 </ui-select-no-choice>
+											</ui-select>
+											<!-- <div class="text-danger" id="assignqueue_required_msg" ng-if="showMultiSelectMsg"><small>This is a required field.</small></div> -->
+										</div>
+										
+										<div class="form-group col-sm-3 labelMargintop" style="margin-left:9%" ng-if="amlUserList.length != 0">
+											 <span class="textcell_reports">USERS WITH AML PERSPECTIVE:</span> 
+											<ui-select multiple ng-model="someObject.amlSelectedPersion" theme="bootstrap"
+													   on-select="selectedAmlUser(someObject.amlSelectedPersion)"
+													   on-remove="selectedAmlUser(someObject.amlSelectedPersion)"
+													   remove-selected="false"
+													   close-on-select="true"
+													   style="width: 120% !important"
+													   title="Choose a User">
+												<ui-select-match allow-clear="true" placeholder="Select Fields...">{{$item.email}}</ui-select-match>
+												<ui-select-choices style="max-height: 110px;overflow-x:auto !important" repeat="person in amlUserList | propsFilter: {email: $select.search} ">
+													<!-- <div ng-bind-html="person.email | highlight: $select.search"></div> -->
+														<div><span ng-bind-html="person.email | highlight: $select.search"></span> <span class="assignQueueOrgShow" ng-bind-html=" person.orgId | highlight: $select.search"></span></div>
+													
+												</ui-select-choices>
+												<ui-select-no-choice style="max-height: 110px;overflow-x:auto !important;left: 0px !important">
+     												<div style="text-align:center;font-size: 18px"><span style="color:red">User does not exist for your organisation</span></div>
+   												 </ui-select-no-choice>
+											</ui-select>
+											<!-- <div class="text-danger" id="assignqueue_required_msg" ng-if="showMultiSelectMsg"><small>This is a required field.</small></div> -->
+										</div>
+										
+									</div>
+									<button type="submit" id="assign_queue_submit"  class="btn btn-lg btn-danger createQueue-Submitbtn" ng-click="assignQueueSubmit()">Submit</button>
+									<button type="submit" id="assign_queue_submit"  class="btn btn-lg btn-danger createQueue-Submitbtn" ng-click="back()">Back</button>
+								</fieldset>
+								
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

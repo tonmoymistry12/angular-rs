@@ -1,0 +1,21 @@
+<div class="userDashboard container-fluid">
+   <div class="hasHeader">
+      <div class="userTabs clearfix settings">
+         <div class="tab-content formStyle">
+            <div class="row labelLeft">
+               <div class="col-md-6 pageHeading noPadding">
+                  <h5>Create Rule</h5>
+               </div>
+               <div ng-if="createFlag=='true'" class="col-md-6">
+                  <div class="float-right">
+                     <i type="button" ng-click="goBackView()"
+                        class="fa fa-arrow-circle-o-left caseSearch-Left-Arrow cursor">Back</i>
+                  </div>
+               </div>
+            </div>
+            
+            <rule rule-mode="modes"></rule>
+         </div>
+      </div>
+   </div>
+</div>

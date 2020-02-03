@@ -1,0 +1,17 @@
+<div class="displayTable hasHeader">
+
+	<div class="verticalMiddle architectureBg applicationStatus">
+	
+		<div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3 text-center">
+			<img ng-show="{{flag}}" src="../img/mail.png" alt="Application submitted" class="animated bounceInLeft">		
+			<img ng-show="{{!flag}}" src="../img/duplicate.png" alt="Duplicate application" class="animated shake">
+			<h2 ng-show="{{flag}}"><strong>Your application has been submitted!</strong></h2>	
+			<h2 ng-show="{{!flag}}" class="text-danger"><strong>Oops!</strong></h2>	
+			<p ng-show="{{!flag}}">{{applicationStatusMsg}}</p>
+			<p ng-show="{{flag}}">{{applicationStatusMsg}}</p>
+		</div>
+		
+	</div>	
+
+</div>
+

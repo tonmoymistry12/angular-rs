@@ -1,0 +1,96 @@
+<div class="userDashboard container-fluid">
+	<div class="hasHeader">
+		<div class="userTabs clearfix settings">
+			<div class="tab-content formStyle">
+				<div class="pageHeading"><h5>My Current Cases</h5></div>
+				<div class="tab-pane active searchUser" id="searchUser">
+
+					<div ng-hide="data.length == '0'" class="form-group col-sm-12 noPadding">
+						<span class="textcell_reports">Search By Case Id:</span>
+						<div class="col-sm-4 noPadding">
+							<input class="form-control" placeholder="Enter Case Id" ng-model="searchType.caseId"/>
+						</div>
+					</div>
+					
+					<span ng-if="showme" class="showTotalRecords">
+							<strong>Total Records :{{data.length}}</strong>
+					</span>
+						
+					<table class="table  t-responsive">
+						<thead>
+						<tr>
+							<th scope="col" id="img"></th>
+							<th scope="col">Case Id</th>
+							<th scope="col">Alert Count <span id="lname_sort" class="fa fa-chevron-right calColor" ng-click="sort('txnCount')" ng-class="alertCountsort?'fa-rotate-90':'fa-rotate-270'"></span></th>
+							<th scope="col">Channel</th>
+							<th scope="col" id="lname">Creation Time <span id="lname_sort" class="fa fa-chevron-right calColor" ng-click="sort('creationTs')" ng-class="creationTsSort?'fa-rotate-90':'fa-rotate-270'"></span></th>
+							<th scope="col">Case Status</th>
+							<th scope="col">Manual/Auto</th>
+							<th scope="col">Fraud Score <span id="lname_sort" class="fa fa-chevron-right calColor" ng-click="sort('finalRiskScore')" ng-class="fraudScore?'fa-rotate-90':'fa-rotate-270'"></span></th>
+							<!-- <th scope="col">Priority</th> -->
+							<th scope="col">Action</th>
+
+						</tr>
+						</thead>
+						<tbody ng-hide="data.length == '0'" dir-paginate="case in data|orderBy:sortKey:reverse|filter:searchType|itemsPerPage:selectedPage">
+						<tr id="case_table_expand_row" ng-class="case.select?'expandColorTr':''">
+							<td data-label="Expand to more info" id="queue_select">
+								<h5><span class="fa" ng-class="!case.select?'fa-plus':'fa-minus'" ng-init="case.select=false" ng-model="case.select" ng-click="case.select=!case.select;isSessionValid()"></span></h5>
+							</td>
+							<td data-label="case id">{{ case.caseId }}</td>
+							<td data-label="case id">{{ case.txnCount }}</td>
+
+							<td data-label="source channel">{{channelDisplay(case.sourceChannel) }}</td>
+							
+							<td data-label="source channel">{{ case.creationTs!=null?(case.creationTs  | GMT):'NA'}}</td>
+							<td data-label="case status">{{ case.caseStatus }}</td>
+							<td data-label="case type">{{ case.isManual == false ? 'AUTO' : 'MANUAL' }}</td>
+							<td data-label="risk score">{{ chckRiskScore(case)}}</td>
+							<!-- <td data-label="risk score">{{ case.priority}}</td> -->
+							<td data-label="Action" id="case_action" class='' >
+								<div class="dropdown">
+									<button class="btn dropdown-toggle button-width" type="button" data-toggle="dropdown"><span class="fa fa-cog" aria-hidden="true"></span>
+									</button>
+									<ul class="dropdown-menu drop-downadj fa-eye-ul" id="case_info_action_dropdown_action">
+										<li ng-click="showData(case.caseId,case.sourceChannel,case.locked,case.caseStatus)"><a href="#" id="view_case"><span  class="fa fa-eye" aria-hidden="true" >View Case</span></a></li>
+									</ul>
+								</div>
+							</td>
+						</tr>
+
+						<tr ng-show="case.select" id="case_select_row" class="expandColor">
+							<td colspan="9" class="queueTable">
+								<div class="row clearfix">
+									<!--<div class="col-sm-offset-1 col-sm-6" id="queue_id"><strong>Case Creation Time :</strong> <span class="firstName">{{ case.creationTs!=null?(case.creationTs |GMT):'NA' }}</span> </div>-->
+									<div class="col-sm-4" id="queue_code" ><strong>Last Updated Time :</strong> <span class="lastName">{{ case.lastUpdateTs!=null?(case.lastUpdateTs |GMT):'NA' }}</span></div>
+									
+								</div>
+								<!-- <div class="row clearfix">
+									<div class="col-sm-offset-1 col-sm-6" id="queue_name"><strong>Pin Code :</strong> <span class="lastName">{{ case.pincode }}</span></div>
+								</div> -->
+							</td>
+						</tr>
+
+
+						</tbody>
+					</table>
+					<div class="text-center noData" id="no_data_found" ng-show="data.length == '0'"> <h6>No Data Found</h6></div>
+					<div class="gridPagination clearfix">
+						<div class="col-sm-1" >
+							<select ng-if="showme" ng-model="selectedPage" name="pageSize" id="selectpage" ng-change="changePageSize(selectedPage)">
+									<option value="5">5</option>
+									<option value="10">10</option>
+									<option value="25">25</option>
+									<option value="50">50</option>
+									<option value="100">100</option>
+							</select>
+						</div>
+						<div class="col-sm-8">
+							<dir-pagination-controls max-size="5"  direction-links="true" boundary-links="true" ></dir-pagination-controls>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

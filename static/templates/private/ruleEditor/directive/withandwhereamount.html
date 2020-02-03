@@ -1,0 +1,209 @@
+<div class="withamount tabBodyAlign">
+   <div class="row odd-row no-margin rule-bottom-border">
+      <!-- WITH AMOUNT START-->
+      <div class="col-sm-12">
+        <!--  <h6>With Amount</h6> -->
+         <div class="form-group">
+            <label class="checkbox-inline">
+            	<input type="checkbox" ng-model="withamountfilter.txnValue" ng-change="withamountfilter.isTotal=false;withamountfilter.max=false;withamountfilter.currentMtd=false;" >TXN Value
+            </label>
+            <label class="checkbox-inline">
+            	<input type="checkbox" ng-model="withamountfilter.isTotal" ng-change="withamountfilter.txnValue=false;withamountfilter.max=false;withamountfilter.currentMtd=false;">Cumulative TXN Value
+            </label>
+            <label class="checkbox-inline">
+            	<input type="checkbox" ng-model="withamountfilter.max" ng-change="withamountfilter.txnValue=false;withamountfilter.isTotal=false;withamountfilter.currentMtd=false;">Maximum TXN Value
+            </label>
+            <label class="checkbox-inline">
+            	<input type="checkbox" ng-model="withamountfilter.currentMtd" ng-change="withamountfilter.txnValue=false;withamountfilter.isTotal=false;withamountfilter.max=false;">Current MTD 
+            </label>
+         </div>
+      </div>
+      <!-- WITH AMOUNT END-->
+   </div>
+<!--    <div class="row  no-margin even-row rule-bottom-border">
+      <div class="col-sm-12">
+         <div class="row">
+            <div class="col-sm-2">
+               <div class="form-group">
+                  <label for="type">Operator</label><br>
+                  <select ng-blur="visitedWithAmtWhereAmtOperators=true" name="withAmtWhereAmtOperators" class="form-control transactionOperator" ng-model="whereamountfilter.operator" ng-change="changeOpt()" ng-required="isAmount||ruledata.withAmount.isOr!=undefined">
+                     <option value="">- Operator -</option>
+                     <option ng-repeat="operator in withAmtWhereAmtOperators" value="{{operator.value}}">{{operator.name}} </option>
+                  </select>
+               </div>
+            </div>
+         </div>
+      </div>
+      WHERE AMOUNT  START
+   </div> -->
+   <div class="row no-margin odd-row lastBoxPadd">
+      <div class="col-sm-12 ">
+         <h6>Where Amount</h6>
+         <div class="row">
+            <div class="col-sm-12">
+               <div class="form-group">
+                  <label class="checkbox-inline">
+                  <input type="checkbox" ng-model="withamountfilter.isPANKeyed" >PAN Keyed TXN
+                  </label>
+               </div>
+            </div>
+         </div>
+         <div class="row">
+            <div class="col-sm-12" style="margin-bottom:10px;">
+               <div class="form-group">
+                  <label class="checkbox-inline">
+                  	<input type="checkbox" ng-model="isHistoryValue" ng-blur="visitedWithAmtWhereAmtOperators=true" ng-change="isDayValue=false; isAmount=false; resetHistoryDayValue();" >History Value
+                  </label>
+                  <label class="checkbox-inline">
+                  	<input type="checkbox" ng-model="isDayValue" ng-blur="visitedWithAmtWhereAmtOperators=true" ng-change="isHistoryValue=false;isAmount=false; resetHistoryDayValue();">Day Value
+                  </label>
+                  <label class="checkbox-inline">
+                  	<input type="checkbox" ng-model="isAmount" ng-blur="visitedWithAmtWhereAmtOperators=true" ng-change="isHistoryValue=false;isDayValue=false;resetHistoryDayValue();">Value
+                  </label>
+                  <label class="checkbox-inline">
+                  <select ng-blur="visitedWithAmtWhereAmtOperators=true" name="withAmtWhereAmtOperators" class="form-control transactionOperator" ng-model="whereamountfilter.operator" ng-change="changeOpt()" ng-disabled="!isAmount" ng-required="isAmount||ruledata.withAmount.isOr!=undefined">
+                     <option value="">- Operator -</option>
+                     <option ng-repeat="operator in withAmtWhereAmtOperators" value="{{operator.value}}">{{operator.name}} </option>
+                  </select>
+                  </label>
+                  <label><input type="text" class="form-control" number ng-model="whereamountfilter.amount" ng-disabled="!isAmount" ng-required="isAmount"/></label>
+               </div>
+            </div>
+            <!-- Type DROPDOWN START -->
+            
+            <!-- HISTORY VALUE START -->
+            <div class="col-sm-12" ng-show="isHistoryValue">
+               <div class="col-sm-12" style="margin-bottom:10px;">
+                  <div class="row">
+                     <div class="col-sm-1">
+                        <input type="checkbox" ng-model="historyValueAvg" ng-change="historyValueAmount=false;historyValueUCL=false;historyValueLCL=false;resetHistoryDayInputs();"/>
+                     </div>
+                     <div class="col-sm-2">
+                        <input class="form-control" type="text" number ng-model="whereamountfilter.historyValue.avg" ng-disabled="!historyValueAvg" ng-required="historyValueAvg"/> 
+                     </div>
+                     <div class="col-sm-2">% of Average value of   </div>
+                     <div class="col-sm-2">
+                     <input type="text" ng-model="valueType" readonly ng-required="historyValueAvg && !isAnyAmt" style="position:absolute; visibility:hidden; left:-5000px;"/>
+                     <multiselect class="input-xlarge" multiple="true" empty="{{isEmpty}}"
+                           ng-model="valueType"
+                           options="type for type in whereAmtTypeDatas"
+                           change="selected()" disabled="!historyValueAvg || isAnyAmt" style="width: 186px;" ng-change="isAnyAmountChange();" ng-required="historyValueAvg && !isAnyAmt"></multiselect>
+                      <!-- <i class="fa fa-exclamation-circle text-info multiselectCnt2" title="Transaction Type" data-toggle="popover" data-content="{{valueType}}" data-trigger="hover" ng-show="(valueType.length>0)? true : false"></i> -->
+                      <div class="multiselect-info"><span ng-repeat="type in valueType">{{type}}, </span></div>
+                     </div>
+                     <div class="col-sm-1">
+                        <label class="checkbox-inline">
+                        
+                        <input type="checkbox" ng-disabled="!historyValueAvg" ng-model="isAnyAmt" ng-change="isAnyAmountChange('ALL');"  /> Any
+                        </label>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-sm-12" style="margin-bottom:10px;">
+                  <div class="row">
+                     <div class="col-sm-1">
+                        <input type="checkbox" ng-model="historyValueUCL" ng-change="historyValueAmount=false;historyValueAvg=false;historyValueLCL=false;isAnyAmt=false;resetHistoryDayInputs();"/> 
+                     </div>
+                     <div class="col-sm-2">
+                        <input type="text" class="form-control" number ng-model="whereamountfilter.historyValue.UCLPercent" ng-disabled="!historyValueUCL" ng-required="historyValueUCL"/>  
+                     </div>
+                     <div class="col-sm-2">% of UCL</div>
+                  </div>
+               </div>
+               <div class="col-sm-12" style="margin-bottom:10px;">
+                  <div class="row">
+                     <div class="col-sm-1">
+                        <input type="checkbox" ng-model="historyValueLCL" ng-change="historyValueAmount=false;historyValueUCL=false;historyValueAvg=false;isAnyAmt=false;resetHistoryDayInputs();"/> 
+                     </div>
+                     <div class="col-sm-2">
+                        <input type="text" class="form-control" number ng-model="whereamountfilter.historyValue.LCLPercent" ng-disabled="!historyValueLCL" ng-required="historyValueLCL"/>
+                     </div>
+                     <div class="col-sm-2">
+                        % of LCL  
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <!-- HISTORY VALUE END -->
+            <!-- DAY VALUE START -->
+            <div class="col-sm-12" ng-show="isDayValue">
+               <div class="col-sm-12" style="margin-bottom:10px;">
+                  <div class="row">
+                     <div class="col-sm-1">
+                        <input type="checkbox" ng-model="dayValueAvg" ng-change="dayValueAmount=false;dayValueUCL=false;dayValueLCL=false;resetHistoryDayInputs();" />
+                     </div>
+                     <div class="col-sm-2">
+                        <input class="form-control" type="text" number ng-model="whereamountfilter.dayValue.avg" ng-disabled="!dayValueAvg" ng-required="dayValueAvg"/> 
+                     </div>
+                     <div class="col-sm-2">% of value of</div>
+                     <div class="col-sm-2">
+                     <input type="text" ng-model="valueType" readonly ng-required="dayValueAvg && !isAnyAmt" style="position:absolute; visibility:hidden; left:-5000px;"/>
+                     <multiselect class="input-xlarge" multiple="true" empty="{{isEmpty}}"
+                           ng-model="valueType"
+                           options="type for type in whereAmtTypeDatas"
+                           change="selected()" disabled="!dayValueAvg || isAnyAmt" style="width: 186px;" ng-change="isAnyAmountChange();" ng-required="dayValueAvg && !isAnyAmt"></multiselect>
+                         <!-- <i class="fa fa-exclamation-circle text-info multiselectCnt2" title="Transaction Type" data-toggle="popover" data-content="{{valueType}}" data-trigger="hover" ng-show="(valueType.length>0)? true : false"></i> --> 
+                      <div class="multiselect-info"><span ng-repeat="type in valueType">{{type}}, </span></div>
+                     </div>
+                     <div class="col-sm-1">
+                        <label class="checkbox-inline">
+                        <input type="checkbox" ng-disabled="!dayValueAvg" ng-model="isAnyAmt" ng-change="isAnyAmountChange('ALL');"  /> Any
+                        </label>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-sm-12" style="margin-bottom:10px;">
+                  <div class="row">
+                     <div class="col-sm-1">
+                        <input type="checkbox" ng-model="dayValueUCL" ng-change="dayValueAvg=false;dayValueAmount=false;dayValueLCL=false;isAnyAmt=false;resetHistoryDayInputs();"/> 
+                     </div>
+                     <div class="col-sm-2">
+                        <input type="text" class="form-control" number ng-model="whereamountfilter.dayValue.UCLPercent" ng-disabled="!dayValueUCL" ng-required="dayValueUCL"/>  
+                     </div>
+                     <div class="col-sm-2">% of UCL</div>
+                  </div>
+               </div>
+               <div class="col-sm-12" style="margin-bottom:10px;">
+                  <div class="row">
+                     <div class="col-sm-1">
+                        <input type="checkbox" ng-model="dayValueLCL" ng-change="dayValueAvg=false;dayValueUCL=false;dayValueAmount=false;isAnyAmt=false;resetHistoryDayInputs();"/> 
+                     </div>
+                     <div class="col-sm-2">
+                        <input type="text" class="form-control" number ng-model="whereamountfilter.dayValue.LCLPercent" ng-disabled="!dayValueLCL" ng-required="dayValueLCL"/>
+                     </div>
+                     <div class="col-sm-2">
+                        % of LCL  
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <!-- DAY VALUE END -->
+         </div>
+         <div class="row">
+         <div class="col-sm-12">
+         
+         <div class="form-group">
+            <label class="checkbox-inline">
+            	<input type="checkbox" ng-model="amountAnd" ng-change="amountOr=false;amountAndOr();" ng-required="(ruledata.withAmount.whereAmount.operator && ruledata.withCount.whereCount.operator && !amountOr)?true:false" >And <!-- (false) -->
+            </label>
+            <label class="checkbox-inline">
+            	<input type="checkbox" ng-model="amountOr" ng-change="amountAnd=false;amountAndOr();" ng-required="(ruledata.withAmount.whereAmount.operator && ruledata.withCount.whereCount.operator && !amountAnd)?true:false">Or <!-- (true) -->
+            </label>
+            <div ng-show="ruledata.withAmount.whereAmount.operator && ruledata.withCount.whereCount.operator && !amountOr && !amountAnd===true" class="text-danger">Select And / Or</div>
+         </div>
+        
+         <!-- <div class="form-group">
+	            <label class="checkbox-inline">
+	            	<input type="checkbox" ng-model="withamountfilter.isOr" >Or Count
+	            </label>
+	            <label class="checkbox-inline">
+	            	<input type="checkbox" ng-model="withamountfilter.isOrCount" ng-change="withamountfilter.isAndCount=false">OR Count
+	            </label>
+            </div> -->
+            
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="row odd-row no-margin"><span class="mandatory-field text-danger"> {{mandatory}}</span></div>
+</div>

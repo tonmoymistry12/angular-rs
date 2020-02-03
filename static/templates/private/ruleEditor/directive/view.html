@@ -1,0 +1,634 @@
+<div class="rule-viewRule">
+   <input type="hidden" id="ruleId" name="ruleId"/>
+   <div class="row">
+      <div class="col-sm-12 rule-border-bottom">
+         <div class="row">
+            <!-- RULE NAME START -->
+            <div class="col-sm-3 ">
+               <span class="textcell_reports">Rule Name : <span class="viewRuleData">{{ruledata.ruleMetaData.ruleName}}</span></span>
+            </div>
+            <!-- RULE NAME END -->
+            <!-- CHANNEL START -->
+            <div class="col-sm-3">
+               <span class="textcell_reports">Channel : <span class="viewRuleData">{{ruledata.ruleMetaData.channel}}</span></span>
+            </div>
+            <!-- CHANNEL END -->
+            <!-- Organization   START -->
+            <div class="col-sm-5">
+               <span class="textcell_reports">Organization : <span class="viewRuleData">{{ruledata.ruleMetaData.orgId}}</span></span>
+            </div>
+            <!-- Organization END -->
+         </div>
+      </div>
+      <div class="col-sm-12 rule-border-bottom">
+         <div class="row">
+            <!-- REMITTER START -->
+            <div class="col-sm-2" ng-if="ruledata.ruleMetaData.remitter">
+               <span class="textcell_reports">REMITTER</span>
+               <!--  <span class="viewRuleData">{{ruledata.ruleMetaData.remitter}}</span> -->
+            </div>
+            <!-- REMITTER END -->
+            <!-- Beneficiary START -->
+            <div class="col-sm-2" ng-if="ruledata.ruleMetaData.beneficiary">
+               <span class="textcell_reports">Beneficiary</span>
+               <!--  <span class="viewRuleData">{{ruledata.ruleMetaData.beneficiary}}</span> -->
+            </div>
+            <!-- Beneficiary END -->
+            <!-- Issuer START -->
+            <div class="col-sm-2"  ng-if="ruledata.ruleMetaData.issuer">
+               <span class="textcell_reports">Issuer</span>
+               <!-- <span class="viewRuleData">{{ruledata.ruleMetaData.issuer}}</span> -->
+            </div>
+            <!-- Issuer END -->
+            <!-- Acquirer START -->
+            <div class="col-sm-2" ng-if="ruledata.ruleMetaData.acquirer">
+               <span class="textcell_reports">Acquirer</span>
+               <!-- <span class="viewRuleData">{{ruledata.ruleMetaData.acquirer}}</span> -->
+            </div>
+            <!-- Acquirer END -->
+            <!-- AML START -->
+            <div class="col-sm-2" ng-if="ruledata.ruleMetaData.aml">
+               <span class="textcell_reports">AML</span>
+               <!--  <span class="viewRuleData">{{ruledata.ruleMetaData.aml}}</span> -->
+            </div>
+            <!-- AML END -->
+            <!-- Alert Required START -->
+            <div class="col-sm-2" ng-if="ruledata.ruleMetaData.alertRequired">
+               <span class="textcell_reports">Alert Required</span>
+               <!-- <span class="viewRuleData">{{ruledata.ruleMetaData.alertRequired}}</span> -->
+            </div>
+            <!-- Alert Required END -->
+            <!-- Auto-closable Required START -->
+            <div class="col-sm-2" ng-if="ruledata.ruleMetaData.autoClosable">
+               <span class="textcell_reports">Auto-closable </span>
+               <!-- <span class="viewRuleData">{{ruledata.ruleMetaData.autoClosable}}</span> -->
+            </div>
+            <!-- Auto-closable Required END -->
+            <!-- Exclude Current Transaction   START -->
+            <div class="col-sm-2" ng-if="ruledata.ruleMetaData.excludeCurrentTxn">
+               <span class="textcell_reports">Exclude Current Transaction</span>
+               <!-- <span class="viewRuleData">{{ruledata.ruleMetaData.excludeCurrentTxn}}</span> -->
+            </div>
+            <!-- Exclude Current Transaction  Required END -->
+            <!-- Decline Flag   START -->
+            <div class="col-sm-2" ng-if="ruledata.ruleMetaData.declineFlag">
+               <span class="textcell_reports" >Decline Flag</span>
+               <!-- <span class="viewRuleData">{{ruledata.ruleMetaData.declineFlag}}</span> -->
+            </div>
+            <!-- Decline Flag END -->
+         </div>
+      </div>
+      <div class="col-sm-12 rule-border-bottom">
+         <div class="row">
+            <!-- Rule Online Status START -->
+            <div class="col-sm-2">
+               <span class="textcell_reports">Rule Online Status : <span class="viewRuleData">{{ruledata.ruleMetaData.online}}</span></span>
+            </div>
+            <!-- Rule Online Status END -->
+            <!-- Rule Score START -->
+            <div class="col-sm-2">
+               <span class="textcell_reports">Rule Score : <span class="viewRuleData">{{ruledata.ruleMetaData.ruleScore}}</span></span>
+            </div>
+            <!--Rule Score  END -->
+            <!-- Priority START -->
+            <div class="col-sm-2">
+               <span class="textcell_reports">Priority : <span class="viewRuleData">{{ruledata.ruleMetaData.priority}}</span></span>
+            </div>
+            <!--Priority END -->
+            <!-- Rule Type START -->
+            <div class="col-sm-2">
+               <span class="textcell_reports">Rule Type : <span class="viewRuleData">{{ruledata.ruleMetaData.ruleType}}</span></span>
+            </div>
+            <!--Rule Type END -->
+         </div>
+      </div>
+      <div class="col-sm-12 rule-border-bottom">
+         <div class="row">
+            <!--From date START -->
+            <div class="col-sm-3" ng-if="ruledata.ruleMetaData.effectiveFromTs">
+               <span class="textcell_reports">From Date : <span class="viewRuleData">{{ruledata.ruleMetaData.effectiveFromTs}}</span></span>
+            </div>
+            <!--From Date END -->
+            <!--To Date START -->
+            <div class="col-sm-3" ng-if="ruledata.ruleMetaData.effectiveToTs">
+               <span class="textcell_reports">To Date : <span class="viewRuleData">{{ruledata.ruleMetaData.effectiveToTs}}</span></span>
+            </div>
+            <!--To Date END -->
+         </div>
+      </div>
+      <!--Overriding Rules START -->
+      <div class="col-sm-12 rule-border-bottom" ng-if="ruledata.ruleMetaData.overridingRuleList.length>0">
+         <p class="textcell_reports">Overriding Rules</p>
+         <span class="viewRuleData">{{ruledata.ruleMetaData.overridingRuleList.toString()}}</span>
+      </div>
+      <!--Overriding Rules END -->
+      <div class="col-sm-12">
+         <div class="row">
+            <!--Description START -->
+            <div class="col-sm-6 " ng-if="ruledata.ruleMetaData.ruleDesc">
+               <p class="textcell_reports">Description</p>
+               <span class="viewRuleData">{{ruledata.ruleMetaData.ruleDesc}}</span>
+            </div>
+            <!--Description END -->
+            <!--Notes START -->
+            <div class="col-sm-6" ng-if="ruledata.ruleMetaData.userInformationDTO.notes">
+               <p class="textcell_reports">Notes</p>
+               <span class="viewRuleData">  {{ruledata.ruleMetaData.userInformationDTO.notes}}</span>
+            </div>
+            <!--Notes END -->
+         </div>
+      </div>
+      <div class="col-sm-12 rule-border-bottom">&nbsp;</div>
+   </div>
+   <!-- TXN FILTER START -->
+   <div ng-if="(ruledata.txnFilter | json) != '{}'">
+      <div class="row viewRuleTitleBAR">
+         <h3 class="viewRuleTitle">Transaction</h3>
+      </div>
+      <div class="row">
+         <!-- TYPES START -->
+         <div class="col-sm-12" ng-if="ruledata.txnFilter.types.length>0">
+            <span class="textcell_reports">Types : <span class="viewRuleData">{{ruledata.txnFilter.types.toString()}}</span></span>
+            
+         </div>
+         <!-- TYPES END -->
+           <!-- Status START -->
+         <div class="col-sm-12" ng-if="ruledata.txnFilter.status.length>0">
+            <span class="textcell_reports">Status : <span class="viewRuleData">{{ruledata.txnFilter.status.toString()}}</span></span>
+         </div>
+         <!-- Status END -->
+         <div class="col-sm-12" ng-if="ruledata.txnFilter.channels[0].txnFields.length>0">
+            <table class="table table-striped" style="width:50%;">
+               <thead>
+                  <tr style="background-color:#ccc;">
+                     <th style="font-weight:bold;">Transaction Field</th>
+                     <th style="font-weight:bold;">Operator</th>
+                     <th style="font-weight:bold;">List</th>
+                     <th style="font-weight:bold;">Value 1</th>
+                     <th style="font-weight:bold;">Value 2</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr ng-repeat="channel in ruledata.txnFilter.channels[0].txnFields">
+                     <td>{{channel.txnFieldName}}</td>
+                     <td>{{channel.operator}}</td>
+                     <td ng-if="channel.txnFieldName!='country'">{{channel.list}}</td>
+                     <td ng-if="channel.txnFieldName==='country'">{{countryList(channel.list).split(',').join(', ')}}</td>
+                     <td>{{channel.value1.split(',').join(', ')}}</td>
+                     <td>{{channel.value2.split(',').join(', ')}}</td>
+                  </tr>
+               </tbody>
+            </table>
+         </div>
+         <!-- PAN Keyed Transaction   START -->
+         <div class="col-sm-2" ng-if="ruledata.txnFilter.isPANKeyed">
+            <span class="textcell_reports">PAN Keyed Transaction  </span>
+            <!--  <span class="viewRuleData">{{ruledata.txnFilter.isPANKeyed}}</span> -->
+         </div>
+         <!-- PAN Keyed Transaction   END -->
+        
+         <!-- High Risk Locations START -->
+         <div class="col-sm-2" ng-if="ruledata.txnFilter.isHighRiskLocation">
+            <span class="textcell_reports">High Risk Locations   </span>
+            <!--  <span class="viewRuleData">{{ruledata.txnFilter.isHighRiskLocation}}</span> -->
+         </div>
+         <!-- High Risk Locations END -->
+         <!-- Split START -->
+         <div class="col-sm-2" ng-if="ruledata.txnFilter.isSplit">
+            <span class="textcell_reports">Split</span>
+            <!-- <span class="viewRuleData">{{ruledata.txnFilter.isSplit}}</span> -->
+         </div>
+         <!-- Split END -->
+         <!-- Offline START -->
+         <div class="col-sm-2" ng-if="ruledata.txnFilter.isOffline">
+            <p class="textcell_reports">Offline</p>
+            <!--  <span class="viewRuleData">{{ruledata.txnFilter.isOffline}}</span> -->
+         </div>
+         <!-- Offline END -->
+          <!-- Transaction Below LCL (Floor Limit)     START -->
+         <div class="col-sm-3" ng-if="ruledata.txnFilter.isTxnBelowLCLLimit">
+            <span class="textcell_reports">Transaction Below LCL (Floor Limit)</span>
+            <!-- <span class="viewRuleData">{{ruledata.txnFilter.isTxnBelowLCLLimit}}</span> -->
+         </div>
+         <!-- Transaction Below LCL (Floor Limit)    END -->
+       
+      </div>
+   </div>
+   <!-- TXN FILTER END -->
+   <!-- PAYER FILTER START -->
+   <div ng-if="(ruledata.payerFilter | json) != '{}'">
+      <div class="row viewRuleTitleBAR">
+         <h3 class="viewRuleTitle">Payer</h3>
+      </div>
+      <div class="row">
+         <!-- JURISDICTION START -->
+         <div class="col-sm-2" ng-if="ruledata.payerFilter.jurisdiction">
+            <span class="textcell_reports">Juridiction : <span class="viewRuleData">{{ruledata.payerFilter.jurisdiction}}</span></span>
+            
+         </div>
+         <!-- JURISDICTION END -->
+         <!-- ACCOUNT START -->
+         <div class="col-sm-2" ng-if="ruledata.payerFilter.account">
+            <span class="textcell_reports">Account : <span class="viewRuleData">{{ruledata.payerFilter.account}}</span></span>
+            
+         </div>
+         <!-- ACCOUNT END -->
+         <!-- CATEGORY START -->
+         <div class="col-sm-2" ng-if="ruledata.payerFilter.category.length>0">
+            <span class="textcell_reports">Category : <span class="viewRuleData">{{ruledata.payerFilter.category.toString()}}</span></span>
+            
+         </div>
+         <!-- CATEGORY END -->
+         <!-- isFirstUseInLast6Months START -->
+         <div class="col-sm-2" ng-if="ruledata.payerFilter.isFirstUseInLast6Months">
+            <span class="textcell_reports">First Used in 6 months</span>
+            <!-- <span class="viewRuleData">{{ruledata.payerFilter.isFirstUseInLast6Months}}</span> -->
+         </div>
+         <!-- isFirstUseInLast6Months END -->
+         <!-- isHIN START -->
+         <div class="col-sm-2" ng-if="ruledata.payerFilter.isHIN">
+            <span class="textcell_reports">HNI (BIN) :  <span class="viewRuleData">{{ruledata.payerFilter.isHIN}}</span></span>
+           
+         </div>
+         <!-- isHIN END -->
+         <div class="col-sm-12" ng-if="ruledata.payerFilter.usageAcrossDistinctEndpoint.operator1">
+          
+               <span class="textcell_reports">
+Used at {{ruledata.payerFilter.usageAcrossDistinctEndpoint.operator1}} (Operator) {{ruledata.payerFilter.usageAcrossDistinctEndpoint.value1}} (Number of Endpoints) {{ruledata.payerFilter.usageAcrossDistinctEndpoint.endPointType}} (Usage Across Endpoint) 
+<span ng-if="ruledata.payerFilter.usageAcrossDistinctEndpoint.operator2">{{ruledata.payerFilter.usageAcrossDistinctEndpoint.operator2}} (Operator) {{ruledata.payerFilter.usageAcrossDistinctEndpoint.value2}} (Number of Transactions)Times</span></span>
+           
+         </div>
+         <div class="col-sm-12" ng-if="ruledata.payerFilter.chargebackRepresentment.noOfChargeBack">
+            <span class="textcell_reports">Chargeback - Representment :
+            <span class="viewRuleData">More than {{ruledata.payerFilter.chargebackRepresentment.noOfChargeBack}} Chargebacks raised on this payment source <span ng-if="isWithRepresentment  || !isWithRepresentment">(<span ng-if="isWithRepresentment">with representment</span> <span ng-if="!isWithRepresentment">without representment</span> )</span> in the {{ruledata.payerFilter.chargebackRepresentment.noOfChargeBack}} last months.</span> </span>
+         </div>
+      </div>
+   </div>
+   <!-- PAYER FILTER END -->
+   <!-- PAYEE FILTER START -->
+   <div ng-if="(ruledata.payeeFilter | json) != '{}'">
+      <div class="row viewRuleTitleBAR">
+         <h3 class="viewRuleTitle">Payee</h3>
+      </div>
+      <div class="row">
+         <!-- JURISDICTION START -->
+         <div class="col-sm-2" ng-if="ruledata.payeeFilter.jurisdiction">
+            <span class="textcell_reports">Juridiction : <span class="viewRuleData">{{ruledata.payeeFilter.jurisdiction}}</span></span>
+            
+         </div>
+         <!-- JURISDICTION END -->
+         <div class="col-sm-12">
+            <span class="textcell_reports">Mcc In : <span>{{ruledata.payeeFilter.mccIn.toString()}}</span></span>
+            
+         </div>
+         <div class="col-sm-12">
+            <span class="textcell_reports">Mcc Not In : <span>{{ruledata.payeeFilter.mccNotIn.toString()}}</span></span>
+            
+         </div>
+         <div class="col-sm-2" ng-if="ruledata.payeeFilter.isClosedRetailer">
+            <span class="textcell_reports">Closed Retailer</span>
+         </div>
+         <div class="col-sm-3" ng-if="ruledata.payeeFilter.isFirstVisitInLast6Months">
+            <span class="textcell_reports">First Visit in 6 months by Account</span>
+         </div>
+         <div class="col-sm-2" ng-if="ruledata.payeeFilter.isNew">
+            <span class="textcell_reports">New Merchant</span>
+         </div>
+      </div>
+   </div>
+   <!-- PAYEE FILTER END -->
+   <!-- ACCEPTANCEPOINT FILTER START -->
+   <div ng-if="(ruledata.acceptancePointFilter | json) != '{}'">
+      <div class="row viewRuleTitleBAR">
+         <h3 class="viewRuleTitle">Acceptance</h3>
+      </div>
+      <div class="row">
+         <!-- JURISDICTION START -->
+         <div class="col-sm-2" ng-if="ruledata.acceptancePointFilter.jurisdiction">
+            <span class="textcell_reports">Juridiction : <span class="viewRuleData">{{ruledata.acceptancePointFilter.jurisdiction}}</span></span>
+            
+         </div>
+         <!-- JURISDICTION END -->
+         <!-- End Point START -->
+         <div class="col-sm-2" ng-if="ruledata.acceptancePointFilter.channels.length>0">
+            <span class="textcell_reports">End Point : <span class="viewRuleData">{{ruledata.acceptancePointFilter.channels[0].channelName}}</span></span>
+            
+         </div>
+         <!-- End Point END -->
+         <!-- End Point START -->
+         <div class="col-sm-2" ng-if="ruledata.acceptancePointFilter.isEMVCompliant || !ruledata.acceptancePointFilter.isEMVCompliant">
+            <span class="textcell_reports">EMV Compliant (POS/ATM) : <span class="viewRuleData">{{ruledata.acceptancePointFilter.isEMVCompliant}}</span></span>
+            
+         </div>
+         <!-- End Point END -->
+         <!-- Favourite START -->
+         <div class="col-sm-2" ng-if="ruledata.acceptancePointFilter.channels[0].channelCriteria[0].channelCriterionName">
+            <span class="textcell_reports">Favourite : <span class="viewRuleData">{{ruledata.acceptancePointFilter.channels[0].channelCriteria[0].operator}}</span></span>
+            
+         </div>
+         <!-- Favourite END -->
+         <!-- Recently Used START -->
+         <div class="col-sm-2" ng-if="ruledata.acceptancePointFilter.channels[0].channelCriteria[1].channelCriterionName">
+            <span class="textcell_reports">Recently Used : <span class="viewRuleData">{{ruledata.acceptancePointFilter.channels[0].channelCriteria[1].operator}}</span></span>
+            
+         </div>
+         <!-- Recently Used END -->
+         <div class="col-sm-12">
+            <div class="row">
+               <!-- Usage Across Endpoint START -->
+               <div class="col-sm-2" ng-if="ruledata.acceptancePointFilter.usageAcrossDistinctEndpoint.endPointType">
+                  <span class="textcell_reports">Usage Across Endpoint : <span class="viewRuleData">{{ruledata.acceptancePointFilter.usageAcrossDistinctEndpoint.endPointType}}</span></span>
+                  
+               </div>
+               <!-- Usage Across Endpoint END -->
+               <!-- Operator START -->
+               <div class="col-sm-2" ng-if="ruledata.acceptancePointFilter.usageAcrossDistinctEndpoint.Operator">
+                  <span class="textcell_reports">Operator : <span class="viewRuleData">{{ruledata.acceptancePointFilter.usageAcrossDistinctEndpoint.Operator}}</span> </span>
+                 
+               </div>
+               <!-- Operator END -->
+               <!-- Value START -->
+               <div class="col-sm-2" ng-if="ruledata.acceptancePointFilter.usageAcrossDistinctEndpoint.Value">
+                  <span class="textcell_reports">Value : <span class="viewRuleData">{{ruledata.acceptancePointFilter.usageAcrossDistinctEndpoint.Value}}</span></span>
+                  
+               </div>
+               <!-- Value END -->
+            </div>
+         </div>
+         <div class="col-sm-12">
+            <div ng-if="ruledata.acceptancePointFilter.reportedFrauds.count" class="textcell_reports">Reported Count {{ruledata.acceptancePointFilter.reportedFrauds.count}} Frauds in {{ruledata.acceptancePointFilter.reportedFrauds.durationInDaysCount}} Days</div>
+            <div ng-if="ruledata.acceptancePointFilter.reportedFrauds.volume" class="textcell_reports">Reported Amount {{ruledata.acceptancePointFilter.reportedFrauds.volume}} Frauds in {{ruledata.acceptancePointFilter.reportedFrauds.durationInDaysAmount}} Days</div>
+            <div ng-if="ruledata.acceptancePointFilter.FTS.count" class="textcell_reports">FTS >{{ruledata.acceptancePointFilter.FTS.count}} {{ruledata.acceptancePointFilter.FTS.durationInDays}} Days</div>
+            <div ng-if="ruledata.acceptancePointFilter.disputedInfo.operator" class="textcell_reports">Disputed {{ruledata.acceptancePointFilter.disputedInfo.operator}} {{ruledata.acceptancePointFilter.disputedInfo.count}} {{ruledata.acceptancePointFilter.disputedInfo.duration}} {{ruledata.acceptancePointFilter.disputedInfo.unit}}</div>
+         </div>
+      </div>
+   </div>
+   <!-- ACCEPTANCEPOINT FILTER END -->
+   <!-- TIMEBASEDTXN FILTER START -->
+   <div ng-if="(ruledata.timeBasedTxnFilter | json) != '{}'">
+      <div class="row viewRuleTitleBAR">
+         <h3 class="viewRuleTitle">Time Based Transaction</h3>
+      </div>
+      <div class="row">
+         <div class="col-sm-12" ng-if="ruledata.withTotalOn.sources.length>0 || ruledata.withTotalOn.acceptances.length>0">
+            <div class="row">
+               <div class="col-sm-12" >With Total On</div>
+               <!-- Source START -->
+               <div class="col-sm-2" ng-if="ruledata.withTotalOn.sources.length>0">
+                  <span class="textcell_reports">Source : <span class="viewRuleData">{{ruledata.withTotalOn.sources[0]}}</span></span>
+                  
+               </div>
+               <!-- Source END -->
+               <!-- Acceptance START -->
+               <div class="col-sm-2" ng-if="ruledata.withTotalOn.acceptances.length>0 ">
+                  <span class="textcell_reports">Acceptance : <span class="viewRuleData">{{ruledata.withTotalOn.acceptances[0]}}</span></span>
+                  
+               </div>
+               <!-- Acceptance END -->
+            </div>
+         </div>
+         <!-- presetTime START -->
+         <div class="col-sm-2" ng-if="ruledata.timeBasedTxnFilter.presetTime">
+            <span class="textcell_reports">PRESET-TIME : <span class="viewRuleData">{{ruledata.timeBasedTxnFilter.presetTime}}</span></span>
+            
+         </div>
+         <!-- presetTime END -->
+         <!-- Hour Between START -->
+         <div class="col-sm-2" ng-if="ruledata.timeBasedTxnFilter.hourBetween.from.hour">
+            <span class="textcell_reports">Hour Between : 
+            <span class="viewRuleData" ng-if="ruledata.timeBasedTxnFilter.hourBetween.from.hour"> From{{ruledata.timeBasedTxnFilter.hourBetween.from.hour}} : {{ruledata.timeBasedTxnFilter.hourBetween.from.minute}} : {{ruledata.timeBasedTxnFilter.hourBetween.from.second}}</span>
+            <span class="viewRuleData" ng-if="ruledata.timeBasedTxnFilter.hourBetween.to.hour"> To{{ruledata.timeBasedTxnFilter.hourBetween.to.hour}} : {{ruledata.timeBasedTxnFilter.hourBetween.to.minute}} : {{ruledata.timeBasedTxnFilter.hourBetween.to.second}}</span>
+         	</span>
+         </div>
+         <!-- Hour Between END -->
+         <!-- Week START -->
+         <div class="col-sm-2" ng-if="ruledata.timeBasedTxnFilter.weekDay">
+            <span class="textcell_reports">Week : <span class="viewRuleData" >{{ruledata.timeBasedTxnFilter.weekDay}}</span></span>
+            
+         </div>
+         <!-- Week END -->
+         <!-- Over START -->
+         <div class="col-sm-2" ng-if="ruledata.timeBasedTxnFilter.over.unit">
+            <span class="textcell_reports">Over : <span class="viewRuleData" >{{ruledata.timeBasedTxnFilter.over.duration}} {{ruledata.timeBasedTxnFilter.over.unit}}</span></span>
+            
+         </div>
+         <!-- Over END -->
+         <!-- Interday Or Intraday START -->
+         <div class="col-sm-2" ng-if="ruledata.timeBasedTxnFilter.intraOrIntraday.operator">
+            <span class="textcell_reports">Interday Or Intraday :  <span class="viewRuleData" >{{ruledata.timeBasedTxnFilter.intraOrIntraday.operator}} {{ruledata.timeBasedTxnFilter.intraOrIntraday.duration}} {{ruledata.timeBasedTxnFilter.intraOrIntraday.unit}}</span></span>
+           
+         </div>
+         <!-- Interday Or Intraday END -->
+         <!-- Time difference between last transaction and this START -->
+         <div class="col-sm-12 rule-border-bottom" ng-if="ruledata.timeBasedTxnFilter.timeDifferenceWithLastTxn.operator">
+            <span class="textcell_reports">Time difference between last transaction and this 
+            <span class="viewRuleData" > {{ruledata.timeBasedTxnFilter.timeDifferenceWithLastTxn.operatorr}} {{ruledata.timeBasedTxnFilter.timeDifferenceWithLastTxn.duration}} {{ruledata.timeBasedTxnFilter.timeDifferenceWithLastTxn.unit}}</span></span>
+         </div>
+         <!-- Time difference between last transaction and this END -->
+         <!-- Abnormal Distance START -->
+         <div class="col-sm-12 rule-border-bottom" ng-if="ruledata.timeBasedTxnFilter.isAbnormalDistance">
+            <span class="textcell_reports">Abnormal Distance ({{ruledata.timeBasedTxnFilter.isAbnormalDistance}})
+            <span class="viewRuleData" >The Abnormal Distance is a value greater than the distance that can be covered via air travel between the co-ordinates of the current transaction and transaction preceding it in the time elapsed between these two transaction</span></span>
+         </div>
+         <!-- Abnormal Distance END -->
+      </div>
+   </div>
+   <!-- TIMEBASEDTXN FILTER END -->
+   <!-- WITHAMOUNT FILTER START -->
+   <div ng-if="(ruledata.withAmount.txnValue || ruledata.withAmount.isTotal || ruledata.withAmount.max || ruledata.withAmount.currentMtd) && (ruledata.withAmount.whereAmount | json) != '{}'">
+      <div class="row viewRuleTitleBAR">
+         <h3 class="viewRuleTitle">With Amount Where Amount</h3>
+      </div>
+      <div class="row">
+         <div class="col-sm-12">
+            <h3>With Amount</h3>
+         </div>
+         <!-- Transaction Value   START -->
+         <div class="col-sm-2" ng-if="ruledata.withAmount.txnValue">
+            <span class="textcell_reports">Transaction Value</span>
+            <!-- <span class="viewRuleData" >{{ruledata.withAmount.txnValue}}</span> -->
+         </div>
+         <!-- Transaction Value   END -->
+         <!-- Cumulative Transaction Value    START -->
+         <div class="col-sm-2" ng-if="ruledata.withAmount.isTotal">
+            <span class="textcell_reports">Cumulative Transaction Value  </span>
+           <!--  <span class="viewRuleData" >{{ruledata.withAmount.isTotal}}</span> -->
+         </div>
+         <!-- Cumulative Transaction Value    END -->
+         <!-- Maximum Transaction Value      START -->
+         <div class="col-sm-2" ng-if="ruledata.withAmount.max">
+            <span class="textcell_reports">Maximum Transaction Value  </span>
+           <!--  <span class="viewRuleData" >{{ruledata.withAmount.max}}</span> -->
+         </div>
+         <!-- Maximum Transaction Value     END -->
+         <!-- Current MTD START -->
+         <div class="col-sm-2" ng-if="ruledata.withAmount.currentMtd">
+            <span class="textcell_reports">Current MTD</span>
+           <!--  <span class="viewRuleData" >{{ruledata.withAmount.currentMtd}}</span> -->
+         </div>
+         <!-- Current MTD END -->
+         <div class="col-sm-12">Where Amount</div>
+         <!-- PAN Keyed Transaction START -->
+         <div class="col-sm-2" ng-if="ruledata.withAmount.isPANKeyed">
+            <span class="textcell_reports">PAN Keyed Transaction</span>
+            <!-- <span class="viewRuleData" >{{ruledata.withAmount.isPANKeyed}}</span> -->
+         </div>
+         <!-- PAN Keyed Transaction END -->
+         <!-- Operator START -->
+         <div class="col-sm-2" ng-if="ruledata.withAmount.whereAmount.operator">
+            <span class="textcell_reports">Operator : <span class="viewRuleData" >{{ruledata.withAmount.whereAmount.operator}}</span></span>
+            
+         </div>
+         <!-- Operator END -->
+         <!-- Value START -->
+         <div class="col-sm-2" ng-if="ruledata.withAmount.whereAmount.amount">
+            <span class="textcell_reports">Value : <span class="viewRuleData" >{{ruledata.withAmount.whereAmount.amount}}</span></span>
+            
+         </div>
+         <!-- Value END -->
+         <!-- HISTORY VALUE START -->
+         <div class="col-sm-12" ng-if="ruledata.withAmount.whereAmount.historyValue!=undefined">
+            <h3>History Value</h3>
+            <div class="row">
+               <!-- Avg START -->
+               <div class="col-sm-12 rule-border-bottom" ng-if="ruledata.withAmount.whereAmount.historyValue.avg">
+                  <span class="viewRuleData" >{{ruledata.withAmount.whereAmount.historyValue.avg}} % of Average value of {{ruledata.withAmount.whereAmount.types.toString()}}</span>
+               </div>
+               <!-- Avg END -->
+               <!-- UCL START -->
+               <div class="col-sm-12 rule-border-bottom" ng-if="ruledata.withAmount.whereAmount.historyValue.UCLPercent">
+                  <span class="viewRuleData" >{{ruledata.withAmount.whereAmount.historyValue.UCLPercent}} % of UCL</span>
+               </div>
+               <!-- UCL END -->
+               <!-- LCL START -->
+               <div class="col-sm-12 rule-border-bottom" ng-if="ruledata.withAmount.whereAmount.historyValue.LCLPercent">
+                  <span class="viewRuleData" >{{ruledata.withAmount.whereAmount.historyValue.LCLPercent}} % of LCL</span>
+               </div>
+               <!-- LCL END -->
+            </div>
+         </div>
+         <!-- HISTORY VALUE END -->
+         <!-- DAY VALUE START -->
+         <div class="col-sm-12" ng-if="ruledata.withAmount.whereAmount.dayValue!=undefined">
+            <h3>Day Value</h3>
+            <div class="row">
+               <!-- Avg START -->
+               <div class="col-sm-12 rule-border-bottom" ng-if="ruledata.withAmount.whereAmount.dayValue.avg">
+                  <span class="viewRuleData" >{{ruledata.withAmount.whereAmount.dayValue.avg}} % of Average value of {{ruledata.withAmount.whereAmount.types.toString()}}</span>
+               </div>
+               <!-- Avg END -->
+               <!-- UCL START -->
+               <div class="col-sm-12 rule-border-bottom" ng-if="ruledata.withAmount.whereAmount.dayValue.UCLPercent">
+                  <span class="viewRuleData" >{{ruledata.withAmount.whereAmount.dayValue.UCLPercent}} % of UCL</span>
+               </div>
+               <!-- UCL END -->
+               <!-- LCL START -->
+               <div class="col-sm-12 rule-border-bottom" ng-if="ruledata.withAmount.whereAmount.dayValue.LCLPercent">
+                  <span class="viewRuleData" >{{ruledata.withAmount.whereAmount.dayValue.LCLPercent}} % of LCL</span>
+               </div>
+               <!-- LCL END -->
+            </div>
+         </div>
+         <!-- DAY VALUE END -->
+      </div>
+   </div>
+   <!-- WITHAMOUNT FILTER END -->
+   <!-- WITHCOUNT FILTER START -->
+   <!-- <div ng-if="(ruledata.withCount | json) != '{}'"> -->
+   <div ng-if="(ruledata.withCount.isWithSameAmount || ruledata.withCount.isTotalOnly || ruledata.withCount.max || ruledata.withCount.currentMtd || ruledata.withCount.total.operator.length>0) && (ruledata.withCount.whereCount | json) != '{}'">
+      <div class="row viewRuleTitleBAR">
+         <h3 class="viewRuleTitle">With Count Where Count</h3>
+      </div>
+      <div class="row">
+         <div class="col-sm-12">
+            <h3>With Count</h3>
+         </div>
+         <!-- Same Transaction Amount     START -->
+         <div class="col-sm-2" ng-if="ruledata.withCount.isWithSameAmount">
+            <span class="textcell_reports">Same Transaction Amount  </span>
+           <!--  <span class="viewRuleData" >{{ruledata.withCount.isWithSameAmount}}</span> -->
+         </div>
+         <!-- Same Transaction Amount     END -->
+         <!-- Cumulative Transaction Count   START -->
+         <div class="col-sm-2" ng-if="ruledata.withCount.isTotalOnly">
+            <span class="textcell_reports">Cumulative Transaction Count  </span>
+            <!-- <span class="viewRuleData" >{{ruledata.withCount.isTotalOnly}}</span> -->
+         </div>
+         <!-- Cumulative Transaction Count    END -->
+         <!-- Maximum Transaction Count       START -->
+         <div class="col-sm-2" ng-if="ruledata.withCount.max">
+            <span class="textcell_reports">Maximum Transaction Count  </span>
+            <!-- <span class="viewRuleData" >{{ruledata.withCount.max}}</span> -->
+         </div>
+         <!-- Maximum Transaction Count      END -->
+         <!-- Current MTD START -->
+         <div class="col-sm-2" ng-if="ruledata.withCount.currentMtd">
+            <span class="textcell_reports">Current MTD</span>
+            <!-- <span class="viewRuleData" >{{ruledata.withCount.currentMtd}}</span> -->
+         </div>
+         <!-- Current MTD END -->
+         <!-- Current MTD START -->
+         <div class="col-sm-2" ng-if="ruledata.withCount.total.operator">
+            <span class="textcell_reports">Total : <span class="viewRuleData" >{{ruledata.withCount.total.operator}} {{ruledata.withCount.total.value}}</span></span>
+            
+         </div>
+         <!-- Current MTD END -->
+         <div class="col-sm-12">Where Count</div>
+         <!-- PAN Keyed Transaction START -->
+         <div class="col-sm-2" ng-if="ruledata.withCount.isPANKeyed">
+            <span class="textcell_reports">PAN Keyed Transaction</span>
+            <!-- <span class="viewRuleData" >{{ruledata.withCount.whereCount.isPANKeyed}}</span> -->
+         </div>
+         <!-- PAN Keyed Transaction END -->
+         <!-- Operator START -->
+         <div class="col-sm-2" ng-if="ruledata.withCount.whereCount.operator">
+            <span class="textcell_reports">Operator : <span class="viewRuleData" >{{ruledata.withCount.whereCount.operator}}</span></span>
+           <!--   -->
+         </div>
+         <!-- Operator END -->
+         <!-- Value START -->
+         <div class="col-sm-2" ng-if="ruledata.withCount.whereCount.count">
+            <span class="textcell_reports">Value : <span class="viewRuleData" >{{ruledata.withCount.whereCount.count}}</span></span>
+            
+         </div>
+         <!-- Value END -->
+         <!-- HISTORY VALUE START -->
+         <div class="col-sm-12" ng-if="ruledata.withCount.wherecount.historyValue!=undefined">
+            <h3>History Value</h3>
+            <div class="row">
+               <!-- Avg START -->
+               <div class="col-sm-12 rule-border-bottom" ng-if="ruledata.withCount.whereCount.historyValue.avg">
+                  <span class="viewRuleData" >{{ruledata.withCount.whereCount.historyValue.avg}} % of Average value of {{ruledata.withCount.whereCount.types.toString()}}</span>
+               </div>
+               <!-- Avg END -->
+               <!-- LCL START -->
+               <div class="col-sm-12 rule-border-bottom" ng-if="ruledata.withCount.whereCount.historyValue.LCLPercent">
+                  <span class="viewRuleData" >{{ruledata.withCount.whereCount.historyValue.LCLPercent}} % of LCL</span>
+               </div>
+               <!-- LCL END -->
+            </div>
+         </div>
+         <!-- HISTORY VALUE END -->
+         <!-- DAY VALUE START -->
+         <div class="col-sm-12" ng-if="ruledata.withCount.whereCount.dayValue!=undefined">
+            <h3>Day Value</h3>
+            <div class="row">
+               <!-- Avg START -->
+               <div class="col-sm-12 rule-border-bottom" ng-if="ruledata.withCount.whereCount.dayValue.avg">
+                  <span class="viewRuleData" >{{ruledata.withCount.whereCount.dayValue.avg}} % of Average value of {{ruledata.withCount.whereCount.types.toString()}}</span>
+               </div>
+               <!-- Avg END -->
+               <!-- LCL START -->
+               <div class="col-sm-12 rule-border-bottom" ng-if="ruledata.withCount.whereCount.dayValue.LCLPercent">
+                  <span class="viewRuleData" >{{ruledata.withCount.whereCount.dayValue.LCLPercent}} % of LCL</span>
+               </div>
+               <!-- LCL END -->
+            </div>
+         </div>
+         <!-- DAY VALUE END -->
+         <div class="col-sm-12" ng-if="ruledata.withAmount.isOr">isOr {{ruledata.withAmount.isOr}}</div>
+      </div>
+   </div>
+   <!-- WITHCOUNT FILTER END -->
+ <!--   <div >{{ruledata}}</div> -->
+</div>

@@ -1,0 +1,143 @@
+<div class="userDashboard container-fluid">
+	<div class="hasHeader">
+		<div class="userTabs clearfix settings">
+			<div class="tab-content formStyle">
+				<div class="pageHeading"><h5>My Reports</h5></div>
+				<div class="tab-pane active searchUser" id="searchUser">
+				  <fieldset>
+					<legend  class="custom-style">Ad Hoc Request</legend>
+					<table  class="table  t-responsive table_adj" id="user_table">
+							<thead>
+								<tr>
+									<th scope="col" id="img" class="first_row"></th>
+								  	<th scope="col">Report Name <span id="report_name_sort" class="fa fa-chevron-right calColor" ng-click="sort('reportName')" ng-class="reportNamesort?'fa-rotate-90':'fa-rotate-270'"></span></th>
+								  	<th scope="col">Organisation <span id="org_name_sort" class="fa fa-chevron-right calColor" ng-click="sort('reportForOrg')" ng-class="reportOrgsort?'fa-rotate-90':'fa-rotate-270'"></span></th>
+								  	<th scope="col">Channel <span id="channel_sort" class="fa fa-chevron-right calColor" ng-click="sort('sourceChannel')" ng-class="sourceChannelsort?'fa-rotate-90':'fa-rotate-270'"></span></th>
+								  	<th scope="col">Status <span id="reportStatus_sort" class="fa fa-chevron-right calColor" ng-click="sort('reportStatus')" ng-class="reportStatussort?'fa-rotate-90':'fa-rotate-270'"></span></th>							  	
+								  	<th scope="col">Mime Type <span id="mimeType_sort" class="fa fa-chevron-right calColor" ng-click="sort('reportMimeType')" ng-class="reportMimeTypesort?'fa-rotate-90':'fa-rotate-270'"></span></th>	
+								  	<th scope="col">Request Time In <span id="requestTimeIn_sort" class="fa fa-chevron-right calColor" ng-click="sort('requestTimeIn')" ng-class="requestTimeInsort?'fa-rotate-90':'fa-rotate-270'"></span></th>			  	
+								</tr>
+							</thead>
+							<tbody  dir-paginate="csreport in customReportRequestList|orderBy:sortKey:reverse | itemsPerPage:5" pagination-id="customerReport">
+							
+								<tr id="csreport_table_expand_row" ng-class="csreport.select?'expandColorTr':''">
+									<td data-label="Expand to more info" id="csreport_select">
+										<h5><span class="fa" ng-class="!csreport.select?'fa-plus':'fa-minus'" ng-init="csreport.select=false" ng-model="csreport.select" ng-click="csreport.select=!csreport.select"></span></h5>
+									</td>
+																 
+								 	<td data-label="Report Name" id="report_name" class="fixWidth"><p class="Uname"><span popover-trigger="outsideClick" popover-is-open="popoverIsOpen"  ng-mouseenter="popoverIsOpen = true" ng-mouseleave="popoverIsOpen = false" class='searchFnamefont' popover-class="my-notifications-popover" uib-popover="{{csreport.reportName}}"  popover-append-to-body="true" popover-placement="top" popover>{{ csreport.reportName }}</span></p></td>
+								 	<td data-label="Organisation Name" id="organisation" class="fixWidth"><p class="Uname"><span popover-trigger="outsideClick" popover-is-open="popoverIsOpen" ng-mouseenter="popoverIsOpen = true" ng-mouseleave="popoverIsOpen = false" class='searchFnamefont' popover-class="my-notifications-popover" uib-popover="{{csreport.reportForOrg}}"  popover-append-to-body="true" popover-placement="top" popover>{{ csreport.reportForOrg }}</span></p></td>	 	
+								 	<td data-label="Source_Channel" id="source_channel" class="fixWidth"><p class="Uname"><span popover-trigger="outsideClick" popover-is-open="popoverIsOpen"  ng-mouseenter="popoverIsOpen = true" ng-mouseleave="popoverIsOpen = false" class='searchFnamefont' popover-class="my-notifications-popover" uib-popover="{{csreport.sourceChannel}}"  popover-append-to-body="true" popover-placement="top" popover>{{csreport.sourceChannel }}</span></p></td>
+								 	<td data-label="Report_Status" id="report_status" class="fixWidth"><p class="Uname">{{csreport.reportStatus}}</p></td>		
+									<td data-label="Mime_Type" id="mime_type">{{csreport.reportMimeType}}</td>	
+									<td data-label="request_time_in">{{ csreport.requestTimeIn==null?'NA':csreport.requestTimeIn  | GMT}}</td>							  	
+																  							  				  	
+								</tr>
+								
+								<tr ng-show="csreport.select" id="csreport_select_row" class="expandColor">
+									<td colspan="10">						
+										<div class="row clearfix searchQueuepaddingleft">
+											<div class="col-sm-4"  id="from_date"><strong>From Date :</strong> <span class="firstName">{{ csreport.reportFromDate==null?'NA':csreport.reportFromDate  | GMT}}</span> </div>
+											<div class="col-sm-3"  id="to_date"><strong>To Date :</strong> <span class="firstName">{{ csreport.reportToDate==null?'NA':csreport.reportToDate  | GMT}}</span> </div>	
+											<div class="col-sm-4" id="emailId"><strong>Recipients :</strong> <span class="firstName">{{ csreport.emailId}}</span> </div>																					
+										</div>
+									</td>																															  	
+								</tr>	
+																												
+							</tbody>
+						</table>
+					<div  ng-show="!showcustomReport" class="text-center noData"><h6>No Records Found</h6></div>  
+					
+					<div class="gridPagination clearfix" ng-show="showcustomReport">
+						
+						<div class="col-sm-8">
+							<dir-pagination-controls max-size="5"  direction-links="true" pagination-id="customerReport" boundary-links="true" ></dir-pagination-controls>
+						</div>
+					</div>
+					</fieldset>
+					
+					 <fieldset>
+					<legend  class="custom-style">Scheduled Reports</legend>
+					
+					<div class="clearfix row" ng-show="fixedReportRequestList.length != '0'">
+							<div class="col-sm-12 ">
+								<span class="textcell_reports" style="text-decoration: underline;">FILTER CRITERIA</span>
+							</div>
+							<div class="form-group col-sm-4 ">
+		                        <span class="textcell_reports">ORGANISATION NAME:</span>
+								<!-- <input type="text" name="queueCode" autocomplete="off" class="form-control"  placeholder="Enter Organisation Code" ng-model="searchData1.reportForOrg" maxlength='50' autocomplete="off"/> -->
+								<input type="text" name="queueCode" autocomplete="off" class="form-control"  placeholder="Enter Organisation Code" ng-change="filterCaseId(searchorg)" ng-model="searchorg" maxlength='50' autocomplete="off"/>
+							</div>
+							
+						</div>	
+						
+					<table  class="table  t-responsive table_adj" id="user_table">
+							<thead>
+								<tr>
+									<th scope="col" id="img" class="first_row"></th>
+								  	<th scope="col">Report Name <span id="report_name_sort" class="fa fa-chevron-right calColor" ng-click="sort1('reportName')" ng-class="fixedreportNamesort?'fa-rotate-90':'fa-rotate-270'"></span></th>
+								  	<th scope="col">Organisation <span id="report_name_sort" class="fa fa-chevron-right calColor" ng-click="sort1('reportForOrg')" ng-class="fixedreportOrgsort?'fa-rotate-90':'fa-rotate-270'"></span></th>
+								  	<th scope="col" >Channel <span id="report_name_sort" class="fa fa-chevron-right calColor" ng-click="sort1('sourceChannel')" ng-class="fixedreportChannelsort?'fa-rotate-90':'fa-rotate-270'"></span></th>
+								  	<th scope="col">Status <span id="report_name_sort" class="fa fa-chevron-right calColor" ng-click="sort1('reportStatus')" ng-class="fixedreportstatussort?'fa-rotate-90':'fa-rotate-270'"></span></th>							  	
+								  	<th scope="col" >Mime Type <span id="report_name_sort" class="fa fa-chevron-right calColor" ng-click="sort1('reportMimeType')" ng-class="fixedreportTypesort?'fa-rotate-90':'fa-rotate-270'"></span></th>				  	
+								  	<th scope="col">Request Time In <span id="report_name_sort" class="fa fa-chevron-right calColor" ng-click="sort1('requestTimeIn')" ng-class="fixedreportTimeIn?'fa-rotate-90':'fa-rotate-270'"></span></th>
+								  	<th scope="col"  style="width:16%">Next Scheduled Time <span id="report_name_sort" class="fa fa-chevron-right calColor" ng-click="sort1('nextScheduleTime')" ng-class="fixedScheduleTimesort?'fa-rotate-90':'fa-rotate-270'"></span></th>
+								  	<th scope="col" id="action">Action</th>
+								</tr>
+							</thead>
+							<tbody  dir-paginate="fixedreport1 in fixedReportRequestList|orderBy:sortKey1:reverse1|itemsPerPage:5" pagination-id="fixedReport">
+							
+							
+								<tr id="fixedreport_table_expand_row" ng-class="fixedreport.select?'expandColorTr':''">
+									<td data-label="Expand to more info" id="fixedreport_select">
+										<h5><span class="fa" ng-class="!fixedreport.select?'fa-plus':'fa-minus'" ng-init="fixedreport.select=false" ng-model="fixedreport.select" ng-click="fixedreport.select=!fixedreport.select"></span></h5>
+									</td>
+																 
+								 	<!-- <td data-label="fixedreportReport Name" id="fixedreport_report_name" class="fixWidth"><p class="Uname">{{fixedreport1.reportName}}</p></td> -->
+								 	<td data-label="fixedreportReport_Name" id="fixedreport_report_name" class="fixWidth"><p class="Uname"><span popover-trigger="outsideClick" class='searchFnamefont' popover-class="my-notifications-popover" uib-popover="{{fixedreport1.reportName}}"  popover-append-to-body="true" popover-placement="top" popover>{{ fixedreport1.reportName }}</span></p></td>
+								 	<td data-label="Organisation Name" id="fixed_organisation" class="fixWidth"><p class="Uname"><span popover-trigger="outsideClick" class='searchFnamefont' popover-class="my-notifications-popover" uib-popover="{{fixedreport1.reportForOrg}}"  popover-append-to-body="true" popover-placement="top" popover>{{ fixedreport1.reportForOrg }}</span></p></td>	 	
+								 	<td data-label="fixedreportSource_Channel" id="fixedreport_source_channel" >{{fixedreport1.sourceChannel }}</td>
+								 	<td data-label="Report_Status" id="status_report_status" >{{fixedreport1.status}}</td>		
+									<td data-label="fixedreport_Mime_Type" id="fixedreport_mime_type">{{fixedreport1.reportMimeType}}</td>								  	
+									<td data-label="updated_date" class="fixWidth">{{ fixedreport1.requestTimeIn==null?'NA':fixedreport1.requestTimeIn  | GMT }}</td>
+									<td data-label="updated_date" class="fixWidth">{{ fixedreport1.nextScheduleTime==null?'NA':fixedreport1.nextScheduleTime  | GMT }}</td>								  	
+								  	<td data-label="Action" id="queue_action" ng-class="authority == 'ROLE_NTS_MGMT'?'ntsMgm':''">
+								  		<div class="dropdown" id="queue_action_dropdown">
+										  <button class="btn dropdown-toggle button-width" ng-disabled="(fixedreport1.status != 'ACTIVE' || (searchData.orgId != 'NPCI' && fixedreport1.reportName == 'PERIMETER_REPORT'))" type="button" data-toggle="dropdown"><span class="fa fa-cog" aria-hidden="true"></span>
+										  </button>
+											  <ul class="dropdown-menu drop-downadj fa-eye-ul" style = "margin-left:-33px" id="queue_info_action_dropdown_action" ng-if="fixedreport1.status == 'ACTIVE'">
+											  	<li  ng-click="stopProcess(fixedreport1)"><a href="#" id="stop" ><span class="fa fa-times" aria-hidden="true" > STOP</span></a></li>
+									  		</ul>										 
+										</div>
+								  	</td>		
+								  						  				  	
+								</tr>
+								
+								<tr ng-show="fixedreport.select" id="fixedreport_select_row" class="expandColor">
+									<td colspan="10">						
+										<div class="row clearfix searchQueuepaddingleft">
+											<div class="col-sm-3"  id="requestTimeIn1"><strong>From Date :</strong> <span class="firstName">{{ fixedreport1.reportFromDate==null?'NA':fixedreport1.reportFromDate  | GMT}}</span> </div>	
+											<div class="col-sm-3"  id="todate"><strong>To Date :</strong> <span class="firstName">{{ fixedreport1.reportToDate==null?'NA':fixedreport1.reportToDate  | GMT}}</span> </div>	
+											<div class="col-sm-3" id="emailId1"><strong>Recipients :</strong> {{ fixedreport1.emailId}} </div>																											
+											<div class="col-sm-3" id="emailId1"><strong>Scheduled Interval :</strong> <span class="firstName">{{ fixedreport1.scheduledInterVal}}</span> </div>																					
+										</div>
+									</td>																															  	
+								</tr>	
+																												
+							</tbody>
+						</table>
+					<div  ng-show="(fixedReportRequestList|filter:searchData1).length==0 || fixedReportRequestList.length == '0' || fixedReportRequestList == undefined" class="text-center noData"><h6>No Records Found</h6></div>  
+					<!-- <div  ng-show="!fixedReport" class="text-center noData"><h6>No Records Found</h6></div> -->  
+					
+					<div class="gridPagination clearfix" ng-show="fixedReportRequestList.length != '0'">
+						
+						<div class="col-sm-8">
+							<dir-pagination-controls max-size="5" pagination-id="fixedReport"  direction-links="true" boundary-links="true" ></dir-pagination-controls>
+						</div>
+					</div>
+					</fieldset>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

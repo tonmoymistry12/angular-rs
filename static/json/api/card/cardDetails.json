@@ -1,0 +1,40 @@
+{
+    "emailId": "swarup.ju@gmail.com",
+    "phoneNo": "9176543210",
+    "firstName": "Soumen",
+    "lastName": "Sarkar",
+    "ssn": 1234,
+    "createdOn": "2017-11-06",
+    "status": "ACTIVE",
+    "address": [
+        {
+            "street": "xxxx",
+            "aptSuitFloor": "112",
+            "city": "aaa",
+            "state": "www",
+            "zip": "1333333",
+            "country": "qqqq",
+            "addressType": "BILLING"
+        }
+    ],
+    "account": [
+        {
+            "accountNumber": 100000006,
+            "status": "ACTIVE",
+            "cards": [
+                {
+                    "cardNumber": "7011232159928515",
+                    "securityCode": "765",
+                    "expiryDate": "12/22",
+                    "cardType": "VIRTUAL",
+                    "pin": "1843",
+                    "creditLimit": 500,
+                    "otbLimit": 500,
+                    "status": "ACTIVE",
+                    "createdOn": "2017-11-06"
+                }
+            ]
+        }
+    ]
+}
+

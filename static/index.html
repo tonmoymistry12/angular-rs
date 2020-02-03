@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <base href="/" />
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>Enterprise Fraud and Risk Management Portal</title>
+    <link rel="shortcut icon" type="image/x-icon" href="./img/npcilogo.png" />
+    <link rel="stylesheet" href="./css/vendor/bootstrap.css" />
+    <link href="css/style1.css" rel="stylesheet" type="text/css" />
+    <link href="css/vendor/angular-bootstrap-toggle.css" rel="stylesheet" type="text/css" />
+    <link href="css/vendor/jquery-ui.css" rel="stylesheet" type="text/css" />
+    <link rel='stylesheet' href='css/vendor/angular-bootstrap-toggle.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='css/vendor/angular-toast.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='css/angular-confirm.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='css/angular-loading-bar.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='css/vendor/font-awesome.min.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='css/angular-moment-datepicker.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='css/bootstrap-datetimepicker.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='css/bootstrap-datetimepicker-standalone.css' type='text/css' media='all' />
+    <link rel="stylesheet" href="css/vendor/select2.css" />
+    <link rel="stylesheet" href="css/vendor/selectize.default.css" />
+    <link rel="stylesheet" type="text/css" href="css/vendor/vis.css" />
+    <link href="css/vendor/jquery.qtip.css" rel="stylesheet" type="text/css" />
+    <link href="css/vendor/ng-tags-input.css" rel="stylesheet" type="text/css" />
+    <link href="css/vendor/dual-selectbox.css" rel="stylesheet" />
+    <link href="css/vendor/tabulator.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/rule-editor.css" />
+    <link rel="stylesheet" href="css/ADM-dateTimePicker.css" />
+    <link rel="stylesheet" href="css/ngDialog.css" />
+    <link rel="stylesheet" href="css/ngDialog-theme-default.css" /> </head>
+
+<body ng-app="efrm" ng-init="spinner=true" ng-cloak="" ng-class="preload?'loaded':''">
+    <div class="main-cont">
+        <div id="loading-bar-container"></div>
+        <div id="main" ng-class="spinner ? 'blurElm' : ''">
+            <div id="main-wrapper" class="cardBg" ui-view=""></div>
+        </div>
+        <div ng-show="spinner" class="spinnerWrap">
+            <div id="spinner" class="loader loader--style6 text-center">
+                <svg version="1.1" x="0px" y="0px" width="44px" height="50px" viewBox="0 0 24 30" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+                    <rect x="0" y="13" width="4" height="5" fill="#333">
+                        <animate attributeName="height" attributeType="XML" values="5;21;5" begin="0s" dur="0.6s" repeatCount="indefinite" />
+                        <animate attributeName="y" attributeType="XML" values="13; 5; 13" begin="0s" dur="0.6s" repeatCount="indefinite" /> </rect>
+                    <rect x="10" y="13" width="4" height="5" fill="#333">
+                        <animate attributeName="height" attributeType="XML" values="5;21;5" begin="0.15s" dur="0.6s" repeatCount="indefinite" />
+                        <animate attributeName="y" attributeType="XML" values="13; 5; 13" begin="0.15s" dur="0.6s" repeatCount="indefinite" /> </rect>
+                    <rect x="20" y="13" width="4" height="5" fill="#333">
+                        <animate attributeName="height" attributeType="XML" values="5;21;5" begin="0.3s" dur="0.6s" repeatCount="indefinite" />
+                        <animate attributeName="y" attributeType="XML" values="13; 5; 13" begin="0.3s" dur="0.6s" repeatCount="indefinite" /> </rect>
+                </svg>
+                <p><small>Processing ...</small></p>
+            </div>
+        </div>
+        <div class="scroll-top-wrapper "> <span class="scroll-top-inner"> <span class="fa fa-2x fa-arrow-circle-up"></span> </span>
+        </div>
+    </div>
+    <script src="lib/vendor/jquery.js"></script>
+    <script src="lib/vendor/jquery-ui.min.js"></script>
+    <script src="lib/vendor/modernizr.js"></script>
+    <script src="lib/vendor/bootstrap.js"></script>
+    <script src="lib/vendor/lodash.js"></script>
+    <script src="lib/vendor/moment.js"></script>
+    <script src="lib/vendor/moment-timezone.js"></script>
+    <script src="lib/vendor/moment-timezone-data.js"></script>
+    <script src="lib/vendor/bootstrap-datetimepicker.js"></script>
+    <script src="lib/vendor/chart.js"></script>
+    <script src="lib/vendor/fileSaver.js"></script>
+    <script src="lib/vendor/BlobConverter.js"></script>
+    <script src="lib/vendor/scrollTop.js"></script>
+    <script src="lib/vendor/pdf.js"></script>
+    <script src="lib/vendor/xlsx.js"></script>
+    <script src="lib/vendor/canvas2image.js"></script>
+    <script src="lib/vendor/jPdf.js"></script>
+    <script src="lib/vendor/jpdf.worker.js"></script>
+    <script src="lib/vendor/jquery.inputmask.bundle.js"></script>
+    <script type="text/javascript" src="lib/vendor/vis.js"></script>
+    <script type="text/javascript" src="lib/vendor/notify.js"></script>
+    <script type="text/javascript" src="lib/vendor/notify.min.js"></script>
+    <script src="lib/vendor/d3.min.js"></script>
+    <script src="lib/vendor/d3.tip.js"></script>
+    <script src="lib/vendor/jquery.qtip.js"></script>
+    <script src="lib/vendor/tabulator.js"></script>
+    <script src="lib/vendor/tabulator-excel-download.js"></script>
+    <script type="text/javascript" src="lib/vendor/crypto.js"></script>
+    <script src="lib/angular/angular.js"></script>
+    <script src="lib/vendor/angular-sanitize.js"></script>
+    <script src="lib/vendor/select2.min.js"></script>
+    <script src="lib/angular/angular-ui-router.min.js"></script>
+    <script src="lib/angular/angular-animate.js"></script>
+    <script src="lib/angular/angular-resource.js"></script>
+    <script src="lib/angular/angular-bootstrap-toggle.js"></script>
+    <script src='lib/angular/angular-loading-bar.js'></script>
+    <script src='lib/angular/angular-toast.js'></script>
+    <script src="lib/angular/dirPagination.js"></script>
+    <script src="lib/angular/angular-confirm.js"></script>
+    <script src="lib/angular/angular-moment-datepicker.js"></script>
+    <script src="lib/vendor/ui-bootstrap.min.js"></script>
+    <script src="lib/angular/angular-chart.js"></script>
+    <script src="lib/angular/angular-filter.js"></script>
+    <script src="lib/angular/angular-pdf-viewer.js"></script>
+    <script src="lib/vendor/sha256.js"></script>
+    <script src="lib/angular/ng-tags-input.min.js"></script>
+    <script src="lib/angular/ui-bootstrap-tpls.js"></script>
+    <script src="lib/vendor/html2canvas.js"></script>
+    <script src="lib/vendor/table2excel.js"></script>
+    <script th:src="@{/js/efrmModules.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/efrmRoute.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/efrmApp.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/common/efrm.common.service.module.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/common/efrmCommonDataService.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/common/efrmDataService.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/common/efrmRestService.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/efrmConfig.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/common/efrmFilters.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/common/efrmDirectives.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/public/controllers/signInController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/public/controllers/forgetPasswordController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/public/controllers/resetTempPassController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/public/controllers/headerNavController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/public/controllers/updatePassBySecurityQuesController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/dashboardRoute.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/dashboardController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/controllers/createController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/controllers/accountSettingsController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/controllers/updateSecurityQuestionController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/controllers/createQueueController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/controllers/searchQueueController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/controllers/assignQueueController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/controllers/searchController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/controllers/editPermissionController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/controllers/configurationController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/controllers/chartController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/controllers/myCasesController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/controllers/reviewCasesController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/controllers/unassignedCasesController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/controllers/viewCaseController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/controllers/viewTransactionsController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/controllers/searchCasesController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/controllers/myReportsController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/controllers/createReportsController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/controllers/viewRuleController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/controllers/createRuleController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/controllers/unapprovedListController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/controllers/hotlistController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/controllers/insertHotlistController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/controllers/unapprovedRoleController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/controllers/viewAbnormalController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/controllers/configAbnormalController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/controllers/unassignedAlertsController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/controllers/myAlertsController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/controllers/alertsInQueueController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/controllers/approvePendingQueueController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/controllers/viewAlertController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/controllers/operationalDashboardController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/controllers/ruleByEditorController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/controllers/unassignedQueueController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/controllers/approvependingassignmentController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/controllers/changePreferencesController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/controllers/myReportsDetailsController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/controllers/myActivityReportsController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/controllers/resetroleapproveController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/controllers/createnamedhotlistController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/controllers/createchargebackController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/controllers/viewcharegebackController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/controllers/createRuleSetsController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/controllers/ruleImportExportController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/controllers/viewRuleSetController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/controllers/viewRuleSetsController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/controllers/viewSimulationController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/controllers/createBinController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/controllers/viewBinController.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/controllers/notGeneratedRules.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/ruleEditor/lib/ng-pattern-restrict.min.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/ruleEditor/lib/jquery.multi-select.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/ruleEditor/lib/jquery.quicksearch.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/ruleEditor/lib/angular.multi-select.js?v=}+${currentVersion}"></script>
+    <script src="lib/angular/angular-drag-and-drop-lists.min.js"></script>
+    <script th:src="@{/js/private/ruleEditor/lib/ADM-dateTimePicker.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/ruleEditor/lib/dx.all.js?v=}+${currentVersion}"></script>
+    
+    <script th:src="@{/js/private/ruleEditor/lib/ngDialog.min.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/ruleEditor/lib/angular-idle.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/ruleEditor/rule.module.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/ruleEditor/rule.component.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/ruleEditor/rule.script.component.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/ruleEditor/rule.data.service.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/ruleEditor/directive/rule.transaction.directive.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/ruleEditor/directive/rule.payer.directive.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/ruleEditor/directive/rule.payee.directive.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/ruleEditor/directive/rule.acceptanceEndPoint.directive.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/ruleEditor/directive/rule.timebasedfilter.directive.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/ruleEditor/directive/rule.withamountwhereamount.directive.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/ruleEditor/directive/rule.withcountwherecount.directive.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/ruleEditor/directive/rule.view.directive.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/ruleEditor/misc/multiselect.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/ruleEditor/misc/multiselect-ruleset.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/ruleEditor/misc/multiselect-jsonStc.js?v=}+${currentVersion}"></script>
+    <script th:src="@{/js/private/ruleEditor/misc/multiselect-org.js?v=}+${currentVersion}"></script>
+    <script src="lib/angular/sortable.js"></script>
+      
+</body>
+
+</html>

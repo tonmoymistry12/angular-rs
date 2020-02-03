@@ -1,0 +1,61 @@
+<div class="ruleByEditor ruleImportExport">
+   <div class="row">
+      <div class="col-md-6 pageHeading noPadding">
+         <h5>{{pageTitle}}</h5>
+      </div>
+   </div>
+   <tabset>
+      <tab heading="Export Rules"  ng-click="resetTab()">
+         <form name="createRuleSet" class="form-validation" role="form" novalidate autocomplete="off">
+            <div class="row">
+               <div class="col-sm-3">
+                  <div class="form-group">
+                     <label for="ruleSet" class="textcell_reports">Organisation  <span class="text-danger rule-mandatory">*</span></label>
+                     <select ng-blur="visitedOrgId=true" class="form-control" ng-model="orgId" ng-change="orgChange(orgId)" required >
+                        <option value="">SELECT ORGANISATION</option>
+                        <option class="upperCases" ng-repeat="bank in bankList" value="{{bank.orgId}}">{{bank.name}}</option>
+                     </select>
+                     <input type="hidden" ng-model="formParams.srcOrgId"/>
+                     <div ng-messages="createRuleSet.orgId.$error" ng-show="createRuleSet.orgId.$error.required && visitedOrgId">
+                        <div ng-message="required" class="text-danger">Please Select Organisation.</div>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-sm-12 ">
+                  <div class="row">
+                     <div class="col-sm-4" ng-if="showAvailableRules">
+                        <div class="ruleset-header">All Available Rules </div>
+                        <multiselectruleset class="input-xlarge" multiple="true"
+                           ng-model="ruleIds"
+                           options="rule for rule in availableRules"
+                           change="selected()" ng-change="addRule(ruleIds)" ></multiselectruleset>
+                        <!-- {{ruleIds.length}} -->
+                     </div>
+                  </div>
+               </div>
+               <div class="col-sm-12">
+                  <a ng-href="{{ fileUrl }}" download="{{fileName}}" ng-click="exportBtn(ruleIds)" class="btn btn-lg btn-danger" ng-class="{'disabled':ruleIds.length<=0 ||ruleIds===undefined }">Export</a>
+                  <!--  <button  type="button"  ng-click="exportBtn()" class="btn btn-lg btn-danger">Submit
+                     </button> -->
+               </div>
+            </div>
+         </form>
+      </tab>
+      <tab heading="Import Rules"  ng-click="resetTab()">
+         <label for="files" class="btn btn-lg btn-danger">Import Rules</label>
+         <input id="files" style="visibility:hidden;" type="file" accept='.json' on-read-file="showContent($content)" ng-click="test()"/>
+         <!-- <input type="file" value="" on-read-file="showContent($content)" /> -->
+         <div ng-if="content">
+            <h5>Imported Rules</h5>
+            <pre class="alert alert-info" style="font-size:1.7em;">{{ content }}</pre>
+            
+            <button  type="button"  ng-click="saveRules()" class="btn btn-lg btn-danger">Save</button>
+         </div>
+         <div style="margin-top:15px;">
+         <div ng-repeat="status in statusOfRuleCreation" style="font-size:1.5em;" class="alert" ng-class="{'alert-success':status.includes('status=SUCCESS')==true,'alert-danger':status.includes('status=FAIURE')==true,'alert-info':status.includes('status=FAIURE')==false}">{{status}}</div>
+         
+         </div>
+      </tab>
+   </tabset>
+   <!--    {{formParams}} -->
+</div>

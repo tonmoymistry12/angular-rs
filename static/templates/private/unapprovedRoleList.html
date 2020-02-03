@@ -1,0 +1,141 @@
+<div class="userDashboard container-fluid">
+	<div class="hasHeader">
+		<div class="userTabs clearfix settings">
+			<div class="tab-content formStyle">
+				<div class="pageHeading"><h5>Approve / Pending</h5></div>
+				<div class="tab-pane active searchUser" id="searchUser">	
+					<span ng-if="unapprovedList.length != 0" class="showTotalRecords">
+							<strong>Total Records :{{unapprovedList.length}}</strong>
+					</span>	
+					<span ng-if="unapprovedList.length == 0" class="showTotalRecords">
+							<strong>Total Records :0</strong>
+					</span>		
+							
+						<table  class="table  t-responsive" id="user_table">
+							<thead>
+								<tr>
+									<th scope="col" id="img" class="first_row"></th>
+								  	<th scope="col">Authority Type</th>
+								  	<th scope="col">Organisation</th>
+								  	<th scope="col">Created Time</th>
+								  	<th scope="col">Visibility</th>
+								  	<th scope="col" class="unapproveRuleTablehead" id="action" >Action</th>
+								</tr>
+							</thead>
+							<tbody  dir-paginate="data in unapprovedList|orderBy:sortKey:reverse|filter:searchData|itemsPerPage:selectedPage">
+							
+								<tr id="unassigned_table_expand_row" ng-class="data.select?'expandColorTr':''">
+									<td data-label="Expand to more info" id="data_select">
+										<h5><span class="fa" ng-class="!data.select?'fa-plus':'fa-minus'" ng-init="data.select=false" ng-model="data.select" ng-click="data.select=!data.select;isSessionValid()"></span></h5>
+									</td>
+																		 
+								 	<td data-label="Authority Type" id="authority_Type" ><p>{{ listroleDisplay(data.roleName)}}</p></td>
+								  	<td data-label="Organisation" id="unapprove_organisation">{{ data.orgId}}</td>
+								  	<td data-label="CreatedTime" id="unapprove_organisation">{{data.creationTs == undefined ? 'NA' : data.creationTs| GMT}}</td>
+								  	<td data-label="Visibility" id="unapprove_visibility">{{ isEncripted(data.p2Visibility)}}</td>		
+								  	<td data-label="Action" id="unapprove_action" ng-class="authority == 'ROLE_NTS_MGMT'?'ntsMgm':''">
+								  		<div class="dropdown unapproveRuleTablebtn" id="unapprove_action_dropdown" ng-if="data.lastEditedBy != null">
+										  <button class="btn dropdown-toggle button-width"  ng-disabled = "loggedInUserMail == data.lastEditedBy" type="button" data-toggle="dropdown"><span class="fa fa-cog" aria-hidden="true"></span>
+										  </button>
+										  <ul class="dropdown-menu drop-downadj fa-eye-ul" id="unapprove_info_action_dropdown_action">
+										    <li ng-click="decisionModel(data,'reject')" ><a href="#" id="reject" ><span   class="fa fa-close" aria-hidden="true" >Reject</span></a></li>
+										    <li ng-click="decisionModel(data,'approve')"><a  id="approve" href="#" ><span  class="fa fa-check" aria-hidden="true">Approve</span></a></li>
+										  </ul>										 
+										</div>
+										
+										<div class="dropdown unapproveRuleTablebtn" id="unapprove_action_dropdown" ng-if="data.lastEditedBy == null">
+										  <button class="btn dropdown-toggle button-width"  ng-disabled = "loggedInUserMail == data.createdBy" type="button" data-toggle="dropdown"><span class="fa fa-cog" aria-hidden="true"></span>
+										  </button>
+										  <ul class="dropdown-menu drop-downadj fa-eye-ul" id="unapprove_info_action_dropdown_action">
+										    <li ng-click="decisionModel(data,'reject')" ><a href="#" id="reject" ><span   class="fa fa-close" aria-hidden="true" >Reject</span></a></li>
+										    <li ng-click="decisionModel(data,'approve')"><a  id="approve" href="#" ><span  class="fa fa-check" aria-hidden="true">Approve</span></a></li>
+										  </ul>										 
+										</div>
+								  	</td>		
+								  						  				  	
+								</tr>
+								
+								<tr ng-show="data.select" id="data_select_row"  class="expandColor">
+									<td colspan="8" class="queueTable" >
+										
+										<div class="row clearfix">
+											
+											<div class="col-sm-4 col-sm-offset-1" id="user_select_email" ng-if="data.createdBy != null"><strong>Created By :</strong> {{data.createdBy}}</div>
+											<div class="col-sm-4 col-sm-offset-1" id="user_select_email" ng-if="data.createdBy == null"><strong>Created By :</strong> System</div>
+											<div class="col-sm-3" id="user_select_phno"><strong>Creation Time :</strong> {{data.creationTs == undefined ? 'NA' : data.creationTs| GMT}}</div>
+										</div>
+										
+										<div class="row clearfix" ng-if="data.lastEditedBy != null">
+											
+											<div class="col-sm-4 col-sm-offset-1" id="user_select_email"><strong>Last Updated By :</strong> {{data.lastEditedBy}}</div>
+											<div class="col-sm-3" id="user_select_phno"><strong>Last Updated Time :</strong> {{data.lastEditedTs == undefined ? 'NA' : data.lastEditedTs| GMT}}</div>
+										</div>
+										
+										<div class="row clearfix" ng-if="data.lastApprovedBy != null">
+											
+											<div class="col-sm-4 col-sm-offset-1" id="user_select_email"><strong>Last Approved By :</strong> {{data.lastApprovedBy}}</div>
+											<div class="col-sm-3" id="user_select_phno"><strong>Last Approve Time :</strong> {{data.lastApprovedTs == undefined ? 'NA' : data.lastApprovedTs| GMT}}</div>
+										</div>
+										
+										<div class="row clearfix" ng-if="data.lastRejectedBy != null">
+											
+											<div class="col-sm-4 col-sm-offset-1" id="user_select_email"><strong>Last Rejected By :</strong> {{data.lastRejectedBy}}</div>
+											<div class="col-sm-3" id="user_select_phno"><strong>Last Rejected Time :</strong> {{data.lastRejectedTs == undefined ? 'NA' : data.lastRejectedTs| GMT}}</div>
+										</div>
+										
+										<div class="row clearfix" >
+										
+											<fieldset style="min-width: 98%;max-width: 98%;" ng-if="data.previousPermissionGroup.permissionGroup != null">
+												<legend class="custom-style">Previous Permission</legend>
+												<div class="col-sm-12" id="frist_name" ng-repeat="x in data.previousPermissionGroup.permissionGroup">												
+														
+														<strong class="makerChekrDatatable">{{x.groupName}} :</strong> <span ng-repeat = "permisson in x.permissions">
+														{{ permisson.permission }} <span class = "dlimmiterStyle">{{$last ? '' : ($index==x.permissions.length-2) ? ' , ' : ', '}}</span>
+													  </span>
+																									
+												</div>
+											</fieldset>
+											
+											<fieldset style="min-width: 98%;max-width: 98%;">
+												<legend class="custom-style">Requested Permission</legend>
+												<div class="col-sm-12" id="frist_name" ng-repeat="x in data.permissionGroup">												
+														
+														<strong class="makerChekrDatatable">{{x.groupName}} :</strong> <span ng-repeat = "permisson in x.permissions">
+														{{ permisson.permission }} <span class = "dlimmiterStyle">{{$last ? '' : ($index==x.permissions.length-2) ? ' , ' : ', '}}</span>
+													  </span>
+																									
+												</div>
+											</fieldset>
+										</div>
+										
+									</td>	
+																														  	
+								</tr>	
+																												
+							</tbody>
+						</table>
+						
+					<div  ng-show="(unapprovedList|filter:searchData).length==0 || unapprovedList.length == '0' || unapprovedList == undefined" class="text-center noData"><h6>No Records Found</h6></div>  
+					
+					
+					<div class="gridPagination clearfix" ng-show="unapprovedList.length != '0'">
+					
+						<div class="col-sm-1" >
+							<select ng-show="unapprovedList.length > 5" ng-model="selectedPage" name="pageSize" id="selectpage">
+									<option value="5">5</option>
+									<option value="10">10</option>
+									<option value="25">25</option>
+									<option value="50">50</option>
+									<option value="100">100</option>
+							</select>
+						</div>
+						
+						<div class="col-sm-8">
+							<dir-pagination-controls max-size="5"  direction-links="true" boundary-links="true" ></dir-pagination-controls>
+						</div>
+					</div>															
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,186 @@
+
+
+<div>
+	<div class="chart-side-menu noPadding">
+		<div class="">
+		
+		
+			<span class="bar_button " ng-class="{ chart_active: isSet(1) }">
+				
+				    <a class="noPadding" ng-click="setTab(1)" >
+					<i class="fa fa-line-chart noPadding" aria-hidden="true"></i>
+					<span class="menu_text2">Graph</span>
+					</a>
+			</span>
+			
+			
+			
+			<span ng-if="showAml" class="bar_button " ng-class="{ chart_active: isSet(2) }">
+				<a class="noPadding" ng-click="setTab(2)" >
+				    <i class="fa fa-table noPadding" aria-hidden="true"></i>
+					<span class="menu_text2">Table</span>
+				</a>	
+			</span>
+			
+		</div>
+	</div>
+<div class="chart-bar-space noPadding">
+ 
+<div ng-show="isSet(1)">
+
+<div class="chart_nav"> 
+<ul ng-init="reccur_val=true">
+  <li   class="inline_block">
+  <div class="frd_type_actn inline_block">
+     DASHBOARD FOR: 
+    <input type="radio" name="custom_type" ng-model="reccur_val" ng-value="true" ng-change='newValue(reccur_val)'/>
+    AML
+    <input type="radio" name="custom_type" ng-model="reccur_val" ng-value="false" ng-change='newValue(reccur_val)'  />
+    CPP
+  </div>
+  
+  <div class="frd_type_actn inline_block" ng-if="reccur_val">
+     COUNT: 
+    <input class="count_inpt" type="number" name="custom_type" ng-model="someObject.count_val"  />
+    
+  </div>
+    
+    <div class="date_actn inline_block">
+      <span class=" ">FROM DATE:</span> 
+               <input type="text"
+				date-picker2 
+				placeholder="DD-MM-YYYY" 
+				maxlength="10" 
+				class="setme_green set_date_btn cpp_input" 
+				ng-model="fromDate1" 
+				min-date="-100M"
+				max-date="+0D" 
+				required 
+				readonly="" 
+				ng-change="frmDate(someObject.fromDate1)"/>
+                <div class="text-danger" id="fromdatetodatemsg" ng-if="showMiMaxDateMsg"><small>From date can not be grater than to date .</small></div>
+				
+	<span class=" ">TO DATE:</span> 
+				<input type="text"
+				date-picker2 
+				placeholder="DD-MM-YYYY"
+				maxlength="10"
+				class="setme_green set_date_btn cpp_input" 
+				ng-model="toDate1" 
+				min-date="-100M"
+				max-date="+0D" 
+				required 
+				readonly="" 
+				ng-disabled="dateValidated"
+				ng-change="toDate(someObject.toDate1)" />
+    </div>
+    <button type="submit"  class="btn  btn-danger set_left fraud_submit" ng-click="checkFunction()" ng-disabled="">Submit</button>
+    <Button class="btn  btn-danger set_left fraud_submit" ng-click="getReport()">Download Report</Button><br><p ng-if="show_download_msg">Report generated in IRM</p>
+  </li>
+</ul>
+
+</div>
+
+<div >
+<ul class="legend2">
+    <li><span class="severe"></span>Severe</li>
+    <li><span class="high"></span>High</li>
+    <li><span class="elevated"></span>Elevated</li>
+    <li><span class="guarded"></span>Guarded</li>
+    <li><span class="low"></span>Low</li>
+    <!-- <li><span class="neutral"></span>Neutral</li> -->
+    
+</ul>
+<!-- <div ng-if ="showAml" id="mynetwork_alm"></div> -->
+<div  id ="mynetwork_cpp"></div>
+</div>
+</div>
+ <div ng-if="showondata">
+<div class="message_aml" ng-if="!report_gent2">
+Unable to render the view because of huge amount of data. Please <a class="link_aml" ng-click="getReport()">click here</a> to generate the report in IRM.
+</div>
+<div class="message_aml" ng-if="report_gent2">
+Report generated successfully
+</div>
+</div>
+<div  ng-if="isSet(2)" >
+<div class="transact_dt"><span class="textcell_reports">Account: {{data_set_forms1.length}}</span> <span class="textcell_reports">Transaction: {{data_set_forms2.length}}</span></div>
+<div class="col-sm-5 col-md-5 col-lg-5">
+<div id="example-tablefor1"> 
+<div class="usageBox">
+<div class="card-header">
+<h5>Account Details</h5>
+</div>
+
+  <table class="table  t-responsive" id="user_table1">
+    <thead>
+      <tr>
+        <th class="fnt_wgt">Id</th>
+        <th class="fnt_wgt">Account Id</th>
+        <th class="fnt_wgt">Account No</th>
+      </tr>
+    </thead>
+    <tbody ng-repeat="user2 in data_set_forms1 | offset: (item2.pageNo - 1) * item2.itemsintable | limitTo:item2.itemsintable" >
+      <tr class="aml_td_style">
+        <td>{{user2.id}}</td>
+        <td>{{user2.acctid}}</td>
+        <td>{{user2.acctNo}}</td>
+      </tr>
+
+    </tbody>
+  </table>
+  <div class="col-sm-8" ng-if="data_set_forms1.length != 0">
+<pagination boundary-links="true" id="changepage1" max-size="5" total-items="data_set_forms1.length" items-per-page="item2.itemsintable" ng-model="item2.pageNo" ></pagination>
+</div>
+</div>
+
+
+</div>
+
+ 
+</div>
+<div class="col-sm-7 col-md-7 col-lg-7">
+<div id="example-tablefor2">
+<div class="usageBox">
+<div class="card-header">
+<h5>Transaction Details</h5>
+</div>
+
+  <table class="table  t-responsive" id="user_table" >
+    <thead id="user_table_header">
+      <tr id="user_table_row">
+        <th scope="col" id="fname" class="fnt_wgt">From</th>
+        <th scope="col" id="to" class="fnt_wgt">To</th>
+        <th scope="col" id="at" class="fnt_wgt">Amount Transferred</th>
+        <th scope="col" id="at" class="fnt_wgt">Transaction Id</th>
+        <th scope="col" id="at" class="fnt_wgt">Date & Time</th>
+      </tr>
+    </thead>
+    <tbody ng-repeat="user in data_set_forms2 | offset: (item.pageNo - 1) * item.itemsintable | limitTo:item.itemsintable" id="user_table_body">
+      <tr  class="aml_td_style" id="user_table_expand_row">
+        <td>{{user.from}}</td>
+        <td>{{user.to}}</td>
+        <td>{{user.label}}</td>
+         <td>{{user.txnId}}</td>
+          <td>{{user.ts}}</td>
+      </tr>
+
+    </tbody>
+  </table>
+  <div class="col-sm-8" ng-if="totalItems != 0">
+  <pagination boundary-links="true" id="changepage" max-size="5" total-items="totalItems" items-per-page="item.itemsintable" ng-model="item.pageNo" ></pagination>
+  </div>
+</div>
+</div>
+</div>
+
+
+</div>
+<!-- <div  ng-show="isSet(3)" >test3</div> -->
+
+</div>
+<div id="toast">
+		<p></p>
+</div>
+</div>
+	

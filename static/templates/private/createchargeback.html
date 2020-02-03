@@ -1,0 +1,113 @@
+<div class="userDashboard container-fluid" id="insertHotListValue">
+	<div class="hasHeader">
+		<!-- Tabs start -->	
+		<div class="userTabs clearfix">
+			<div class="tab-content formStyle">
+				<div class="row">
+					<div class="col-md-6"><h5>Create Charge Back</h5></div>
+					
+				</div>
+				<div class="tab-pane active" id="createChargeBckFrom">
+					<div class="clearfix row">
+						<div class="col-xs-3 col-lg-4">
+							<span class="textcell_reports">Type Of Create:</span> 
+									<select class="form-control" id="type" ng-change="changeType(selectedType)" name="type"  ng-model="selectedType">
+										<option style="display:none" value="">PLEASE CHOOSE THE TYPE</option>
+										<option value="manual">CREATE MANUALLY</option>
+										<option value="uploaded">FILE UPLOAD</option>
+									</select>
+						</div>
+					</div>
+				</div>
+				
+				<div ng-show="fileUploaded" class="tab-pane active" id="fileUpload">
+					 
+					   <div class="clearfix row">
+							<div class="col-xs-3 col-lg-4" ng-init="processMode='REPLACE'">
+									<span class="textcell_reports">Process Mode:</span> 
+											<label class="radio-inline">							
+      									  		<input type="radio" ng-model="processMode" ng-change="changeProcessMode(processMode)" value="REPLACE" name="optradio" ><span style="font-size:13px;font-weight:700">REPLACE</span>   
+      									   </label> 	
+      									   <label class="radio-inline">																    
+									      		<input type="radio" ng-model="processMode" value="APPEND" ng-change="changeProcessMode(processMode)" name="optradio"><span style="font-size:13px;font-weight:700">APPEND</span>
+									       </label>
+							</div>
+							
+						</div>
+						
+						<div class="clearfix row">
+								<div class="col-xs-3 col-lg-4">
+									<span class="textcell_reports">List Name:</span> 
+									<select class="form-control" id="listName" name="listName" ng-change="changeChannel(channelobj.listName)" ng-model="channelobj.listName">
+										<option style="display:none" value="">PLEASE SELECT THE LIST</option>
+										<option  value="CHARGEBACK_3">CHARGEBACK_3</option>
+										<option  value="CHARGEBACK_5">CHARGEBACK_5</option>
+									</select>
+									<div class="text-danger" id="channelmsg" ng-show="showFileUploadChargeback"><small>This is a required field.</small></div>							
+								</div>
+						
+								
+						</div>	
+						
+					 <input type="file" accept="text/plain" id="myFile" ng-click="chckUpload()" class="form-control" name="myFile" style="width: 32.3%;margin-top: 2%;margin-bottom: 1%" file-model="$parent.myFile"/>
+    				 <div class="text-danger" id="fileuploadmsg" ng-show="showfileuploadmessage"><small>Please choose a file.</small></div>							
+    				 <button class = "btn btn-primary" ng-click="uploadFile()">UPLOAD</button>
+				</div>
+			  	<div ng-show="manuallyCreate" class="tab-pane active" id="createChargeBckFrom">
+					<form name="chargebackform" ng-submit="chargebackform.$valid && onChargeBackSubmit()" novalidate accessible-form>
+						<div class="clearfix row">
+							<div class="col-xs-3 col-lg-4" ng-init="processMode='REPLACE'">
+									<span class="textcell_reports">Process Mode:</span> 
+											<label class="radio-inline">							
+      									  		<input type="radio" ng-model="processMode" ng-change="changeProcessMode(processMode)" value="REPLACE" name="optradio" ><span style="font-size:13px;font-weight:700">REPLACE</span>   
+      									   </label> 	
+      									   <label class="radio-inline">																    
+									      		<input type="radio" ng-model="processMode" value="APPEND" ng-change="changeProcessMode(processMode)" name="optradio"><span style="font-size:13px;font-weight:700">APPEND</span>
+									       </label>
+							</div>
+							
+						</div>
+						
+						<div class="clearfix row">
+								<div class="col-xs-3 col-lg-4">
+									<span class="textcell_reports">List Name:</span> 
+									<select class="form-control" id="listName" name="listName" ng-change="changeChannel(channelobj.listName)" ng-model="channelobj.listName"   required>
+										<option style="display:none" value="">PLEASE SELECT THE LIST</option>
+										<option  value="CHARGEBACK_3">CHARGEBACK_3</option>
+										<option  value="CHARGEBACK_5">CHARGEBACK_5</option>
+									</select>
+									<div class="text-danger" id="channelmsg" ng-show="chargebackform.listName.$error.required && submitted"><small>This is a required field.</small></div>							
+								</div>
+						
+								
+						</div>	
+						
+						<div class="clearfix row">	
+								
+								<div class="col-xs-3 col-lg-4">
+									
+									<span class="textcell_reports" style="margin-left:.1%">Card Number:</span> 
+									<span class="transaction-text text-info"><span class="text-danger">* </span>Please press enter after entering each card number. </span>
+									<span class="transaction-text text-info"><span class="text-danger">* </span>Card number should be in between 14 to 19 digit. </span>
+									<tags-input ng-model="tags" add-on-enter="true" name="cardno" id="cardno"  allowed-tags-pattern="^[0-9]+$"
+							              min-length="14"
+							              max-length="19"
+							               placeholder="Card Number"
+							              display-property="text"
+							              key-property="id"
+							              on-tag-added="onTagAdded($tag)" required>
+							         </tags-input>
+							         <div class="text-danger" id="cardnomsg" ng-show="chargebackform.cardno.$error.required && submitted"><small>Please provide a valid input.</small></div>							
+								</div>
+						</div>
+						
+						<button type="submit" id="hotlist_submit" ng-click="submitted=true"
+								class="btn btn-lg btn-danger" 
+								>Submit</button>
+					</form>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+</div>

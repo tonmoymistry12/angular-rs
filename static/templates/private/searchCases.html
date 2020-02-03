@@ -1,0 +1,290 @@
+<div class="userDashboard container-fluid">
+    <div class="hasHeader">
+        <div class="userTabs clearfix settings">
+            <div class="tab-content formStyle">
+                <div class="pageHeading"><h5>Search Case</h5></div>
+                <div class="tab-pane active searchUser" id="searchUser">
+
+                    <form ng-submit="searchCase.$valid && searchAllCase(caseId,selectedChannel,SelectedPerspective)"  name="searchCase" novalidate accessible-form>
+                        <div class="row">
+                         	<div class="form-group col-sm-2" ng-class="{true: 'has-error'}[submitted && searchCase.selectedChannel.$invalid]">
+                            	<span class="textcell_reports">CHANNEL:</span>
+                                <select ng-model="selectedChannel" name="selectedChannel" ng-change="changeChanel()" id="selectedChannel" class="form-control upperCases" id="selectedChannel" required>
+                                    <option style="display:none" value="">PLEASE SELECT</option>
+                                    <option  ng-repeat="item in channel_code|orderBy:'channelDesc'" value="{{item.channelCode}}">{{item.channelDesc}}</option>
+                                </select>
+                                <div class="text-danger" id="selectedChannel_required_msg" ng-show="searchCase.selectedChannel.$error.required && submitted"><small>This is a required field.</small></div>
+                            </div>
+								<div class="form-group col-sm-2">
+									<span class="textcell_reports">PERSPECTIVE:</span>
+									<select class="form-control upperCases"
+											ng-model="SelectedPerspective"
+											ng-dropdown ng-disabled="desableme==true || prespectiveDisabled"
+											ng-change="setPrespective(SelectedPerspective)" required>
+										<option ng-repeat="option in perspectiveArray track by $index"
+												value="{{option}}">{{prespectiveDisplay(option)}}</option>
+
+									</select>
+
+								</div>
+
+                        	 <div class="form-group col-sm-4" ng-class="{true: 'has-error'}[submitted && searchCase.selectedCriteria.$invalid]">
+                            	<span class="textcell_reports">SEARCH CRITERIA:</span>
+                                <select ng-model="selectedCriteria" ng-disabled="disabledSearchCriteria" ng-change="changeCriteria();chckValidation(selectedCriteria)" name="selectedCriteria" id="selectedCriteria" class="form-control upperCases"  required>
+                                    <option style="display:none" value="">PLEASE SELECT</option>
+                                    <option  ng-repeat="item in searchCriterias|orderBy:'name'" value="{{item.value}}">{{item.name}}</option>
+                                </select>
+                                <div class="text-danger" id="selectedCriteria_required_msg" ng-show="searchCase.selectedCriteria.$error.required && submitted"><small>This is a required field.</small></div>
+                            </div>
+                            
+                             
+                            
+                            <div class="form-group col-sm-4" ng-class="{true: 'has-error'}[submitted && searchCase.caseId.$invalid]">
+	                            <span class="textcell_reports">ENTER VALUE:</span>
+	                            <input type="text" 
+	                                   class="form-control" 
+	                                   ng-disabled="disabledValue" 
+	                                   ng-change ="validateSearchInput()"
+	                                   id="caseId1" 
+	                                   name="caseId" 
+	                                   ng-model="caseId" 
+	                                   placeholder="Enter Value" 
+	                                   minlength={{minNo}} 
+	                                   maxlength={{maxNo}} 
+	                                   pattern={{pattern}} 
+	                                   autocomplete="off" 
+	                                   required/>
+	                            <div class="text-danger" id="searchCase_required_msg" ng-show="searchCase.caseId.$error.required && submitted"><small>This is a required field.</small></div>
+	                            <div class="text-danger" id="searchCase_pattern_msg" ng-show="searchCase.caseId.$error.pattern"><small>Please Provide Valid Input.</small></div>	
+	                            <div class="text-danger" id="searchCase_minlength_msg" ng-show="searchCase.caseId.$error.minlength"><small>Invalid Length.</small></div>
+	                            <div class="text-danger" ng-show="someObject.msgFlg"><small>Please provide first {{input_length}} characters of case Id followed by '%'.</small></div>	
+                            </div>
+                           <!-- <div class="form-group col-sm-2" >
+	                            <span class="textcell_reports">FETCH FROM ARCHIVE:</span>
+	                           <select 
+									 name="chnl_fld"
+									 class="form-control upperCases" 
+									 ng-model="archived_value_mdl" 
+									 ng-dropdown  
+									 ng-options="option.name  for option in archive_value track by option.value"
+									 ng-change="archive_onChange(archived_value_mdl)"
+		 							>
+		                      </select>
+	                       </div> -->
+
+
+                        <div class="col-sm-12">
+                        <button 
+                         type="submit" 
+                         id="searchCase_submit" 
+                         class="btn btn-lg btn-danger" 
+                         ng-click="submitted=true"
+                         ng-disabled="someObject.msgFlg"
+                         >Submit
+                        </button></div></div>
+                       
+
+                    </form>
+                    <div class="tab-pane active searchUser" id="searchCases" ng-show="showDatatable" >
+						<div  class="showTotalRecords">
+							<strong >Total Records :<span ng-show="caseList.length > '0'">{{caseList.length}}</span><span ng-show="(caseList.length==0 || caseList == null || caseList == undefined)">0</span></strong>
+						</div>
+					<table  class="table  t-responsive" id="user_table" >
+							<thead>
+								<tr>
+									 <th scope="col" id="img"></th>
+								  	<th scope="col">Case&nbsp;Id
+										<span id="case_sort" class="fa fa-chevron-right calColor" ng-click="sort('caseId')" ng-class="caseIdSort?'fa-rotate-90':'fa-rotate-270'"></span>
+									</th>
+									<th scope="col">Alert Count
+										<span id="alert_count_sort" class="fa fa-chevron-right calColor" ng-click="sort('txnCount')" ng-class="alertCountsort?'fa-rotate-90':'fa-rotate-270'"></span>
+									</th>
+									<th scope="col">Creation Time
+										<span id="creation_time_sort" class="fa fa-chevron-right calColor" ng-click="sort('creationTs')" ng-class="creationTsSort?'fa-rotate-90':'fa-rotate-270'"></span>
+									</th>
+									<th scope="col">Locked&nbsp;To</th>
+
+								  <!-- 	<th scope="col">Card&nbsp;Number</th>	 -->
+								  	<th scope="col">Case&nbsp;Status</th>
+								  	<th scope="col">Manual/Auto</th>
+									<th scope="col">Fraud Score
+										<span id="risk_score_sort" class="fa fa-chevron-right calColor" ng-click="sort('calculateRiskScore')" ng-class="fraudScoreSort?'fa-rotate-90':'fa-rotate-270'"></span>
+									</th>
+
+									<th scope="col" id="action"  ng-class="authority == 'ROLE_NTS_MGMT'?'ntsMgm':''">Action</th>
+								</tr>
+							</thead>
+							
+							<tbody  dir-paginate="data in caseList|orderBy:sortKey:reverse|filter:searchData|itemsPerPage:selectedPage" pagination-id="caseList">
+							
+								<tr id="dataist_table_expand_row" ng-class="user.select?'expandColorTr':''">
+									<td data-label="Expand to more info" id="user_select">
+										<h5><span class="fa" ng-class="!user.select?'fa-plus':'fa-minus'" ng-init="user.select=false" ng-model="user.select" ng-click="user.select=!user.select;isSessionValid()"></span></h5>
+									</td>
+								 	<td data-label="Case Id" id="caseId" class="fixWidth"><p>{{ data.caseId}}</p></td>
+								 	<!-- <td data-label="txnId" id="txnId" class="fixWidth"><p class="Uname">{{ data.txnId}}</p></td> -->
+									<td data-label="txnCount" id="txnCount">{{ data.txnCount}}</td>
+									<td data-label="source channel">{{ data.creationTs!=null?(data.creationTs  | GMT):'NA'}}</td>
+									<td data-label="case id">{{ data.lockedByUserId }}</td>
+
+								  	<td data-label="Status" id="status">{{ data.caseStatus}}</td>
+									<td data-label="case type">{{ data.isManual == false ? 'AUTO' : 'MANUAL' }}</td>
+									<td data-label="risk score" id="riskScore">{{ data.calculateRiskScore}}</td>
+								  	<td data-label="Action" id="queue_action">
+								  		<div class="dropdown" id="queue_action_dropdown">
+										  <button class="btn dropdown-toggle button-width" type="button" data-toggle="dropdown"><span class="fa fa-cog" style="color:#be112c" aria-hidden="true"></span>
+										  </button>
+										  <ul class="dropdown-menu drop-downadj fa-eye-ul" id="queue_info_action_dropdown_action">
+										    <li  ng-click="searchCaseByCaseId(data.caseId,data.sourceChannel,data.assignedToOrig,SelectedPerspective,makeArchivefalse,data.caseStatus)"><a href="#" id="view" ><span  class="fa fa-eye" aria-hidden="true" >View</span></a></li>
+										    <!-- <li ng-click="assign(data.caseId)" ng-if="rolePermission.isPermissionGranted(1723019068) && loggedUserId != data.assignedToOrig"><a href="#" id="assign_case"><span class="glyphicon"  >&#xe013;Assign</span></a></li> -->
+										  	<li ng-click="assign(data.caseId,data.caseStatus)" ng-if="rolePermission.isPermissionGranted(1723019068) && data.caseStatus !='AUTO_EXPIRED' && (allowAssignAnalyst==true || chkAnalyist==false)"><a href="#" id="assign_case"><span class="glyphicon"  >&#xe013;Assign</span></a></li>
+										  </ul>										 
+										</div>
+								  	</td>		
+								  						  				  	
+								</tr>
+								<tr ng-show="user.select" id="user_select_row" class="expandColor">
+									<td colspan="10" >
+										<div class="row clearfix seacrhUserPadding">
+
+											<div class="col-sm-4" id="queue_code" ><strong>Last Updated Time :</strong> <span class="lastName">{{ data.lastUpdateTs!=null?(data.lastUpdateTs |GMT):'NA' }}</span></div>
+
+
+										</div>
+									</td>																						  	
+								</tr>
+																												
+							</tbody>
+						</table>
+						<div  ng-if="(caseList.length==0 || caseList == null || caseList == undefined)" class="text-center noData"><h6>No Records Found</h6></div>  
+						<div class="gridPagination clearfix" ng-show="(caseList.length != 0 && caseList != null && caseList != undefined)">
+							<div class="col-sm-1" style="padding-left:0px">
+								<select ng-model="selectedPage" name="pageSize" id="selectpage" ng-change="changePageSize(selectedPage)">
+									<option value="5">5</option>
+									<option value="10">10</option>
+									<option value="25">25</option>
+									<option value="50">50</option>
+									<option value="100">100</option>
+									<!-- <option value="ALL">Fetch All</option> -->
+								</select>
+							</div>
+						<div class="col-sm-8">
+							<dir-pagination-controls max-size="5"  direction-links="true" boundary-links="true" pagination-id="caseList"></dir-pagination-controls>
+						</div>
+					</div>
+				
+				</div>
+				
+				<div ><button  class="btn btn-lg btn-danger archiveBtn" ng-show="showArchiveBtn"  ng-click="fetchWithArchive()" >Click here for historic Data</button></div>
+				<!-- result from archive -->
+				
+				 <div class="tab-pane active searchUser"  ng-show="showDatatable2" >
+				     <br/>
+				     <h5>Historic Data</h5> 
+				     <div  class="showTotalRecords">
+				           
+							<strong >Total Records :<span ng-show="caseListArchive.length > '0'">{{caseListArchive.length}}</span><span ng-show="(caseListArchive.length==0 || caseListArchive == null || caseListArchive == undefined)">0</span></strong>
+						</div>
+					<table  class="table  t-responsive" id="user_table" >
+							<thead>
+								<tr>
+									 <th scope="col" id="img"></th>
+								  	<th scope="col">Case&nbsp;Id
+										<span id="case_sort_archive" class="fa fa-chevron-right calColor" ng-click="sort('caseId')" ng-class="caseIdSort?'fa-rotate-90':'fa-rotate-270'"></span>
+									</th>
+									<th scope="col">Alert Count
+										<span id="alert_count_sort_archive" class="fa fa-chevron-right calColor" ng-click="sort('txnCount')" ng-class="alertCountsort?'fa-rotate-90':'fa-rotate-270'"></span>
+									</th>
+									<th scope="col">Creation Time
+										<span id="creation_time_sort_archive" class="fa fa-chevron-right calColor" ng-click="sort('creationTs')" ng-class="creationTsSort?'fa-rotate-90':'fa-rotate-270'"></span>
+									</th>
+									<th scope="col">Locked&nbsp;To</th>
+
+								  <!-- 	<th scope="col">Card&nbsp;Number</th>	 -->
+								  	<th scope="col">Case&nbsp;Status</th>
+								  	<th scope="col">Manual/Auto</th>
+									<th scope="col">Fraud Score
+										<span id="risk_score_sort_archive" class="fa fa-chevron-right calColor" ng-click="sort('calculateRiskScore')" ng-class="fraudScoreSort?'fa-rotate-90':'fa-rotate-270'"></span>
+									</th>
+
+									<th scope="col" id="action"  ng-class="authority == 'ROLE_NTS_MGMT'?'ntsMgm':''">Action</th>
+								</tr>
+							</thead>
+							
+							<tbody  dir-paginate="data in caseListArchive|orderBy:sortKey:reverse|filter:searchData|itemsPerPage:selectedPage" pagination-id="caseListArchive">
+							
+								<tr id="dataist_table_expand_row" ng-class="user.select?'expandColorTr':''">
+									<td data-label="Expand to more info" id="user_select">
+										<h5><span class="fa" ng-class="!user.select?'fa-plus':'fa-minus'" ng-init="user.select=false" ng-model="user.select" ng-click="user.select=!user.select;isSessionValid()"></span></h5>
+									</td>
+								 	<td data-label="Case Id" id="caseId" class="fixWidth"><p>{{ data.caseId}}</p></td>
+								 	<!-- <td data-label="txnId" id="txnId" class="fixWidth"><p class="Uname">{{ data.txnId}}</p></td> -->
+									<td data-label="txnCount" id="txnCount">{{ data.txnCount}}</td>
+									<td data-label="source channel">{{ data.creationTs!=null?(data.creationTs  | GMT):'NA'}}</td>
+									<td data-label="case id">{{ data.lockedByUserId }}</td>
+
+								  	<td data-label="Status" id="status">{{ data.caseStatus}}</td>
+									<td data-label="case type">{{ data.isManual == false ? 'AUTO' : 'MANUAL' }}</td>
+									<td data-label="risk score" id="riskScore">{{ data.calculateRiskScore}}</td>
+								  	<td data-label="Action" id="queue_action">
+								  		<div class="dropdown" id="queue_action_dropdown">
+										  <button class="btn dropdown-toggle button-width" type="button" data-toggle="dropdown"><span class="fa fa-cog" style="color:#be112c" aria-hidden="true"></span>
+										  </button>
+										  <ul class="dropdown-menu drop-downadj fa-eye-ul" id="queue_info_action_dropdown_action">
+										    <li  ng-click="searchCaseByCaseId(data.caseId,data.sourceChannel,data.assignedToOrig,SelectedPerspective,makeArchivetrue)"><a href="#" id="view" ><span  class="fa fa-eye" aria-hidden="true" >View</span></a></li>
+										    <!-- <li ng-click="assign(data.caseId)" ng-if="rolePermission.isPermissionGranted(1723019068) && loggedUserId != data.assignedToOrig"><a href="#" id="assign_case"><span class="glyphicon"  >&#xe013;Assign</span></a></li> -->
+										  	<li ng-click="assign(data.caseId,data.caseStatus)" ng-if="rolePermission.isPermissionGranted(1723019068) && data.caseStatus !='AUTO_EXPIRED' && (allowAssignAnalyst==true || chkAnalyist==false)"><a href="#" id="assign_case"><span class="glyphicon"  >&#xe013;Assign</span></a></li>
+										  </ul>										 
+										</div>
+								  	</td>		
+								  						  				  	
+								</tr>
+								<tr ng-show="user.select" id="user_select_row" class="expandColor">
+									<td colspan="10" >
+										<div class="row clearfix seacrhUserPadding">
+
+											<div class="col-sm-4" id="queue_code" ><strong>Last Updated Time :</strong> <span class="lastName">{{ data.lastUpdateTs!=null?(data.lastUpdateTs |GMT):'NA' }}</span></div>
+
+
+										</div>
+									</td>																						  	
+								</tr>
+																												
+							</tbody>
+						</table>
+						<div  ng-if="(caseListArchive.length==0 || caseListArchive == null || caseListArchive == undefined)" class="text-center noData"><h6>No Records Found</h6></div>  
+						<div class="gridPagination clearfix" ng-show="(caseListArchive.length != 0 && caseListArchive != null && caseListArchive != undefined)">
+							<div class="col-sm-1" style="padding-left:0px">
+								<select ng-model="selectedPage2" name="pageSize" id="selectpage2" ng-change="changePageSize(selectedPage2)">
+									<option value="5">5</option>
+									<option value="10">10</option>
+									<option value="25">25</option>
+									<option value="50">50</option>
+									<option value="100">100</option>
+									<!-- <option value="ALL">Fetch All</option> -->
+								</select>
+							</div>
+						<div class="col-sm-8">
+							<dir-pagination-controls max-size="5"  direction-links="true" boundary-links="true" pagination-id="caseListArchive" ></dir-pagination-controls>
+						</div>
+					</div>
+				
+				</div>
+				
+				
+				
+				
+				
+				
+
+
+                </div>
+
+                
+            </div>
+
+
+
+        </div>
+    </div>
+</div>

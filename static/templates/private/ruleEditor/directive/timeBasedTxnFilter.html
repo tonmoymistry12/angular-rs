@@ -1,0 +1,232 @@
+<div class="timeBased tabBodyAlign">
+   <div class="row even-row no-margin rule-bottom-border" ng-show="metadata.channel!='AEPS'">
+      <div class="col-sm-12">
+         <h3>With Total On</h3>
+      </div>
+      <div class="col-sm-2">
+         <div class="form-group">
+            <label for="channel">Source</label>
+            <select class="form-control" ng-model="sources"  ng-change="sourcesChange(); mapingDaysChange();">
+               <option value="">-Select-</option>
+               <option ng-repeat="sources in getSources | uniq: 'name'" value="{{sources.value}}">{{sources.name}}</option>
+            </select>
+         </div>
+      </div>
+      <div class="col-sm-2">
+         <div class="form-group">
+            <label for="channel">Acceptance</label>
+            <select class="form-control" ng-model="acceptances" ng-change="acceptancesChange(); mapingDaysChange();" >
+               <option value="">-Select-</option>
+               <option ng-repeat="acceptance in getAcceptances | uniq: 'name'" value="{{acceptance.value}}">{{acceptance.name}}</option>
+            </select>
+         </div>
+      </div>
+   </div>
+   <div class="row odd-row no-margin rule-bottom-border">
+      <div class="col-sm-12" style="margin-bottom:10px;">
+         <div class="row">
+            <div class="col-sm-2">
+               PRESET-TIME
+            </div>
+            <div class="col-sm-2">
+               <select class="form-control" ng-model="timebasedfilter.presetTime">
+                  <option value=''>-Select-</option>
+                  <option value='Abnormal-Hours'>Abnormal Hours</option>
+                  <option value='Night-Hours'>Night Hours</option>
+               </select>
+            </div>
+            <div class="col-sm-6 col-sm-offset-2">
+               <div class="row">
+                  <div class="col-sm-4">
+                     Days Between
+                  </div>
+                  <div class="col-sm-1">From</div>
+                  <div class="col-sm-1">
+                     <select ng-model="timebasedfilter.dateBetween.from" ng-required="timebasedfilter.dateBetween.from.length>0">
+                        <option value="">DD</option>
+                        <option ng-repeat="i in getNumber(day) track by $index" value="{{$index+1 < 10 ? '0' : ''}}{{$index+1}}">{{$index+1 < 10 ? '0' : ''}}{{$index+1}}</option>
+                     </select>
+                  </div>
+                  <div class="col-sm-1 text-center">To</div>
+                  <div class="col-sm-1">
+                     <select ng-model="timebasedfilter.dateBetween.to"  ng-required="timebasedfilter.dateBetween.to.length>0" ng-disabled="timebasedfilter.dateBetween.from.length>0?false:true">
+                        <option value="">DD</option>
+                        <option ng-repeat="i in getNumber(day) track by $index" value="{{$index+1 < 10 ? '0' : ''}}{{$index+1}}" ng-disabled="({{$index+1 < 10 ? '0' : ''}}{{$index+1}})>timebasedfilter.dateBetween.from?false:true">{{$index+1 < 10 ? '0' : ''}}{{$index+1}}</option>
+                     </select>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="col-sm-12" style="margin-bottom:10px;">
+         <div class="row">
+            <div class="col-sm-6">
+               <div class="row">
+                  <div class="col-sm-4">
+                     <!-- <input type="text" class="form-control" ng-model="timebasedfilter.hourBetween" ng-disabled="!forTimebasedDateTime"/> -->
+                     Hour Between
+                  </div>
+                  <div class="col-sm-1">From</div>
+                  <div class="col-sm-1">
+                     <select ng-model="timebasedfilter.hourBetween.from.hour" ng-required="timebasedfilter.hourBetween.from.minute.length>0 && timebasedfilter.hourBetween.from.second.length>0" ng-change="timebasedfilter.hourBetween.from.minute='00';timebasedfilter.hourBetween.from.second='00'">
+                        <option value="">HH</option>
+                        <option value="00">00</option>
+                        <option ng-repeat="i in getNumber(hour) track by $index" value="{{$index+1 < 10 ? '0' : ''}}{{$index+1}}" >{{$index+1 < 10 ? '0' : ''}}{{$index+1}}</option>
+                     </select>
+                     <!--  <input type="text" ng-model="timebasedfilter.hourBetween.from" ng-change="times(timebasedfilter.hourBetween.from)"/> -->
+                  </div>
+                  <div class="col-sm-1">
+                     <select ng-model="timebasedfilter.hourBetween.from.minute"  ng-required="timebasedfilter.hourBetween.from.hour.length>0 && timebasedfilter.hourBetween.from.second.length>0" ng-change="timebasedfilter.hourBetween.from.second='00'">
+                        <option value="">MM</option>
+                        <option value="00">00</option>
+                        <option ng-repeat="i in getNumber(miniute) track by $index" value="{{$index+1 < 10 ? '0' : ''}}{{$index+1}}" >{{$index+1 < 10 ? '0' : ''}}{{$index+1}}</option>
+                     </select>
+                  </div>
+                  <div class="col-sm-1">
+                     <select ng-model="timebasedfilter.hourBetween.from.second"  ng-required="timebasedfilter.hourBetween.from.minute.length>0 && timebasedfilter.hourBetween.from.hour.length>0">
+                        <option value="">SS</option>
+                        <option value="00">00</option>
+                        <option ng-repeat="i in getNumber(second) track by $index" value="{{$index+1 < 10 ? '0' : ''}}{{$index+1}}" >{{$index+1 < 10 ? '0' : ''}}{{$index+1}}</option>
+                     </select>
+                  </div>
+                  <div class="col-sm-1 text-center">To</div>
+                  <div class="col-sm-1">
+                     <select ng-model="timebasedfilter.hourBetween.to.hour" ng-required="timebasedfilter.hourBetween.to.minute.length>0 && timebasedfilter.hourBetween.to.second.length>0" ng-change="timebasedfilter.hourBetween.to.minute='00'; timebasedfilter.hourBetween.to.second='00'">
+                        <option value="">HH</option>
+                        <option value="00">00</option>
+                        <option ng-repeat="i in getNumber(hour) track by $index" value="{{$index+1 < 10 ? '0' : ''}}{{$index+1}}">{{$index+1 < 10 ? '0' : ''}}{{$index+1}}</option>
+                     </select>
+                     <!--  <input type="text" formats="HH:mm" class="form-control"  ng-model="timebasedfilter.hourBetween.to" placeholder="To" ps-input-time/> -->
+                  </div>
+                  <div class="col-sm-1">
+                     <select ng-model="timebasedfilter.hourBetween.to.minute" ng-required="timebasedfilter.hourBetween.to.hour.length>0 && timebasedfilter.hourBetween.to.second.length>0" ng-change="timebasedfilter.hourBetween.to.second='00'">
+                        <option value="">MM</option>
+                        <option value="00">00</option>
+                        <option ng-repeat="i in getNumber(miniute) track by $index" value="{{$index+1 < 10 ? '0' : ''}}{{$index+1}}" >{{$index+1 < 10 ? '0' : ''}}{{$index+1}}</option>
+                     </select>
+                  </div>
+                  <div class="col-sm-1">
+                     <select ng-model="timebasedfilter.hourBetween.to.second"  ng-required="timebasedfilter.hourBetween.to.minute.length>0 && timebasedfilter.hourBetween.to.hour.length>0">
+                        <option value="">SS</option>
+                        <option value="00">00</option>
+                        <option ng-repeat="i in getNumber(second) track by $index" value="{{$index+1 < 10 ? '0' : ''}}{{$index+1}}" >{{$index+1 < 10 ? '0' : ''}}{{$index+1}}</option>
+                     </select>
+                  </div>
+               </div>
+            </div>
+            <div class="col-sm-6">
+               <div class="row">
+                  <div class="col-sm-4">
+                     Week
+                  </div>
+                  <div class="col-sm-4">
+                     <select ng-model="timebasedfilter.weekDay" class="form-control">
+                        <option value=""> - Select - </option>
+                        <option value="isBusinessHoliday">Business Holiday</option>
+                        <option value="weekday">weekday</option>
+                        <option value="saturday(holiday)">Saturday(holiday)</option>
+                        <option value="sunday">Sunday</option>
+                        <!--<option value="friday">Friday</option>
+                           <option value="saturday">Saturday</option>
+                           <option value="sunday">Sunday</option>-->
+                     </select>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="col-sm-12" style="margin-bottom:10px;">
+         <div class="row">
+            <div class="col-sm-6">
+               <div class="row">
+                  <div class="col-sm-4">
+                     Over 
+                  </div>
+                  <div class="col-sm-2">
+                     <select ng-model="timebasedfilter.over.unit" class="form-control" ng-change="changeOverUnit()" >
+                        <option value=""> - Unit - </option>
+                        <option value="Days">Days</option>
+                        <option value="Months">Months</option>
+                     </select>
+                     <!--  <input type="text" placeholder="Unit"  ng-model="timebasedfilter.over.unit" class="form-control"  ng-disabled="!forTimebasedOver"/> -->
+                  </div>
+                  <div class="col-sm-2" >
+                     <select ng-model="timebasedfilter.over.duration" class="form-control" ng-required="timebasedfilter.over.unit.length>0" ng-disabled="(timebasedfilter.over.unit.length>0)? false : true" ng-if="timebasedfilter.over.unit==='Days'">
+                        <option value=""> - select - </option>
+                        <!-- <option ng-repeat="day in getDays | filter:{ channel:channel} | uniq: 'day'" value="{{day.day}}">{{day.day}}</option>  -->
+                        <!--  <option ng-repeat="day in getDays | filter:{ channel:ruledata.ruleMetaData.channel}" value="{{day.day}}">{{day.day}}</option> -->
+                        <option ng-repeat="day in getDays 
+                           | filter:{channel:ruledata.ruleMetaData.channel}
+                           | filter:{endpoint:ruledata.usageAcrossDistinctEndpoint.endPointType}
+                           | filter:{mccin:mccIn}
+                           | filter:{types:txnType}
+                           | filter:{status:status}
+                           | filter:{presetTime:ruledata.timeBasedTxnFilter.presetTime}" value="{{day.day}}">{{day.day}}</option>
+                     </select>
+                     <input type="text" number placeholder="Duration" ng-model="timebasedfilter.over.duration" class="form-control" ng-required="timebasedfilter.over.unit.length>0" ng-disabled="(timebasedfilter.over.unit.length>0)? false : true" ng-if="timebasedfilter.over.unit==='Months'" /> 
+                  </div>
+               </div>
+            </div>
+            <div class="col-sm-6">
+               <div class="row">
+                  <div class="col-sm-4">
+                     Interday Or Intraday
+                  </div>
+                  <div class="col-sm-4">
+                     <select class="form-control transactionOperator" ng-model="timebasedfilter.intraOrIntraday.operator" ng-change="intraOrIntradayChange()" >
+                        <option value="">- Operator -</option>
+                        <option ng-repeat="operator in timebasedfilterOperators" value="{{operator.value}}">{{operator.name}} </option>
+                     </select>
+                  </div>
+                  <div class="col-sm-2">
+                     <input type="text" number placeholder="Duration" ng-model="timebasedfilter.intraOrIntraday.duration" class="form-control" ng-required="timebasedfilter.intraOrIntraday.operator.length>0 || timebasedfilter.intraOrIntraday.unit.length>0" ng-disabled="(timebasedfilter.intraOrIntraday.operator.length>0)? false : true"/>
+                  </div>
+                  <div class="col-sm-2">
+                     <select ng-model="timebasedfilter.intraOrIntraday.unit" class="form-control" ng-required="timebasedfilter.intraOrIntraday.operator.length>0 || timebasedfilter.intraOrIntraday.duration.length>0" ng-disabled="(timebasedfilter.intraOrIntraday.operator.length>0)? false : true">
+                        <option value=""> - Unit - </option>
+                        <!-- <option value="Months">Months</option> -->
+                        <!--  <option value="Days">Days</option> -->
+                        <option value="Hours">Hours</option>
+                        <option value="Mins">Minutes</option>
+                        <option value="Secs">Seconds</option>
+                     </select>
+                     <!--  <input type="text" placeholder="Unit (Day/Hour/Minute)"  ng-model="timebasedfilter.intraOrIntraday.unit" class="form-control" ng-disabled="!forisIntraDay" /> -->
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="row even-row no-margin  lastBoxPadd">
+      <div class="col-sm-12" style="margin-bottom:10px;">
+         <div class="row">
+            <div class="col-sm-2">Time difference between last TXN and this
+            </div>
+            <div class="col-sm-2">
+               <select class="form-control transactionOperator" ng-model="timebasedfilter.timeDifferenceWithLastTxn.operator" ng-change="timeDifferenceWithLastTxnChange()">
+                  <option value="">- Operator -</option>
+                  <option ng-repeat="operator in timebasedfilterOperators" value="{{operator.value}}">{{operator.name}} </option>
+               </select>
+            </div>
+            <div class="col-sm-1"><input class="form-control" number type="text" placeholder="Duration" ng-model="timebasedfilter.timeDifferenceWithLastTxn.duration" ng-required="timebasedfilter.timeDifferenceWithLastTxn.operator.length>0 || timebasedfilter.timeDifferenceWithLastTxn.unit.length>0" ng-disabled="(timebasedfilter.timeDifferenceWithLastTxn.operator.length>0)? false : true"/></div>
+            <div class="col-sm-1">
+               <select ng-model="timebasedfilter.timeDifferenceWithLastTxn.unit" class="form-control" ng-required="timebasedfilter.timeDifferenceWithLastTxn.operator.length>0 || timebasedfilter.timeDifferenceWithLastTxn.duration.length>0" ng-disabled="(timebasedfilter.timeDifferenceWithLastTxn.operator.length>0)? false : true">
+                  <option value=""> - Unit - </option>
+                  <option value="Days">Days</option>
+                  <option value="Hours">Hours</option>
+                  <option value="Mins">Minutes</option>
+                  <option value="Secs">Seconds</option>
+               </select>
+               <!--   <input type="text" placeholder="Unit" ng-model="timebasedfilter.timeDifferenceWithLastTxn.unit"/> -->
+            </div>
+            <div class="col-sm-12  checkbox-custom">
+               <label class="checkbox-inline">
+               <input type="checkbox" ng-model="timebasedfilter.isAbnormalDistance">Abnormal Distance 
+               </label>
+            </div>
+            <div class="col-sm-12 alert alert-info">The Abnormal Distance is a value greater than the distance that can be covered via air travel between the co-ordinates of the current TXN and TXN preceding it in the time elapsed between these two TXN.</div>
+         </div>
+      </div>
+   </div>
+   <div class="row odd-row no-margin"><span class="mandatory-field text-danger"> {{mandatory}}</span></div>
+</div>

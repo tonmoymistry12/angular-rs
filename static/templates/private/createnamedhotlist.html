@@ -1,0 +1,98 @@
+<div class="userDashboard container-fluid" id="insertHotListValue">
+	<div class="hasHeader">
+		<!-- Tabs start -->	
+		<div class="userTabs clearfix">
+			<div class="tab-content formStyle">
+				<div class="row">
+					<div class="col-md-6"><h5>Created Named List</h5></div>
+					
+					
+				</div>
+			  	<div class="tab-pane active" id="hotlistForm">
+					<form ng-submit="hotlistForm.$valid && hotlistFormSubmit()" name="hotlistForm" novalidate accessible-form>
+						
+						<div class="clearfix row" >
+						
+							<div class="form-group col-sm-3" >
+									<span class="textcell_reports">NAME OF THE LIST:</span> 
+									<input type="text"   class="form-control"   id="nameOfTheList" pattern="^[a-zA-Z][a-zA-Z0-9'_]+$" name="nameOfTheList" ng-model="hotlist.hotlistName"   placeholder="Enter Name Of The List" autocomplete="off"  required/>
+									<div class="text-danger" id="nameof_the_list_required_msg" ng-show="hotlistForm.nameOfTheList.$error.required && submitted"><small>This is a required field.</small></div>			
+									<div class="text-danger" id="nameof_the_list_error_msg" ng-show="submitted && hotlistForm.nameOfTheList.$error.pattern"><small id="patternmsg">Please Provide Valid Input.</small></div>																
+							</div>
+						
+							<div class="form-group col-sm-3" >
+								<span class="textcell_reports">ORGANISATION:</span> 
+								<select class="form-control upperCases" name="orgid" ng-model="hotlist.orgId"  required>
+				 						<option style="display:none" value="">PLEASE SELECT THE ORGANISATION</option>
+										<option  ng-repeat="data in orgarnisations" value="{{data.orgId}}">{{data.name}}</option>
+								</select>
+								<!--  <ui-select 
+							           id="organisation_fld"
+							           name="organisation_fld"
+							           ng-model="hotlist.orgId" 
+							           uiSelectNoAnimate
+							           theme="selectize"  
+							           title="Choose a organisation"
+							           
+							           append-to-body="true" 
+							           close-on-select="true" 		           
+							           ng-required="true"
+								   >
+      	 						<ui-select-match allow-clear placeholder="SELECT A ORGANISATION IN THE LIST...">{{$select.selected.name}}</ui-select-match>
+							     <ui-select-choices 
+							        repeat="option.orgId as option in orgarnisations | propsFilter:{name:$select.search} |  uppercase"
+							        position="down" 
+							        
+							        refresh-delay="300">
+							      <span ng-bind-html="option.name | highlight: $select.search"></span>
+							      <small ng-bind-html="option.orgId | highlight: $select.search"></small>
+							    </ui-select-choices>
+    						</ui-select> -->
+								<div class="text-danger" id="org_required_msg" ng-show="hotlistForm.orgid.$error.required && submitted"><small>This is a required field.</small></div>	
+							</div>
+							
+							<div class="form-group col-sm-3">
+								<span class="textcell_reports">CHANNEL:</span> 
+								<select class="form-control upperCases"  ng-model="hotlist.sourceChannel" name="sourceChannel" ng-change="getHotListEntity(hotlist.sourceChannel)"  required>
+				 						<option style="display:none" value="">PLEASE SELECT THE CHANNEL</option>
+										<option  ng-repeat="data in channel_code|orderBy:'channelDesc'" value="{{data.channelCode}}">{{data.channelDesc}}</option>
+								</select>
+								<div class="text-danger" id="org_required_msg" ng-show="hotlistForm.sourceChannel.$error.required && submitted"><small>This is a required field.</small></div>	
+							</div>
+							
+							<div class="form-group col-sm-3" >
+									
+									<span class="textcell_reports">ENTITY:</span> 
+									<select class="form-control upperCases" name="hotlistTypeCd" ng-change="chckValidation(hotlist.hotlistTypeCd)"  ng-model="hotlist.hotlistTypeCd" ng-disabled="desableme" required>
+					 						<option style="display:none" value="">PLEASE SELECT THE ENTITY</option>
+											<option  ng-repeat="data in hotlistEntityList|orderBy:'description'" value="{{data.hotlistTypeCd}}">{{data.description}}</option>
+									</select>
+									<div class="text-danger" id="org_required_msg" ng-show="hotlistForm.hotlistTypeCd.$error.required && submitted"><small>This is a required field.</small></div>									
+										
+							</div>
+							
+										
+						</div>
+										
+						<div class="clearfix row">
+								<div class="form-group col-sm-4">
+									<span class="textcell_reports">Description:</span> 
+									<textarea class="form-control" placeholder="Description" autocomplete="off"  ng-model="hotlist.description" name="notes" id="notes" maxlength="250"></textarea>
+								</div>	
+							
+							</div>
+					
+						<button type="submit" id="hotlistForm_submitted" class="btn btn-lg btn-danger" ng-click="submitted=true">Submit</button>
+						<button type="button" id="hotlistForm_submitted" ng-click="backToList()" class="btn btn-lg btn-danger" >Back</button>
+					</form>
+				</div>
+				
+				<!-- <div class="back_width">
+						
+							<i type="button"  class="btn btn-lg btn-danger" >Back</i>
+						
+				</div> -->
+			</div>
+		</div>
+	</div>
+</div>

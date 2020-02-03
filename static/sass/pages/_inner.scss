@@ -1,0 +1,503 @@
+.userDashboard{
+	.container{
+		@include MQ(SC) {
+			padding: 20px 20px;
+		}
+		.userTabs{
+			margin-top:10px;
+			.tab-pane{
+				margin:30px 0 80px;
+				.series{
+					margin-top:10px;
+				}
+				.contactNo{
+					@include MQ(SC) {
+						margin-left: 0px;
+						margin-right: 0px;
+					}
+				}
+				.searchCriteria{
+					margin:-30px -15px 30px;
+					padding:30px 0px;
+					font-weight:$semi-bold-weight;
+					.custBtn{
+						@include MQ(L) {
+							padding: 10px 16px;
+							width:100%;
+						}
+					}														
+				}
+				table {
+					thead {
+						border-bottom: 1px solid #cccccc;
+						tr {
+							td{	
+								position:relative;			
+								i {
+									margin-left:10px;						
+								}
+							}
+						}
+					}
+				}	
+			}
+			.formStyle{
+				@include MQ(L) {
+					padding: 0;
+				}
+				@include MQ(SC) {
+					margin: 50px 0 30px;
+				}
+				.userRole{
+					margin-bottom:30px;
+				}
+			}	
+		}
+	}
+	.hasHeader {
+    	margin-top: 20px;
+	}	
+}
+
+#admin{
+	margin-top:100px;
+}
+#changePassword{
+	padding-top: 0px;
+}
+.userinfo{
+	color:$primary-color;
+	font-weight:$bold-weight;
+}
+.lastColumn{
+	margin-bottom:20px;
+}
+#editPermission{
+	.btn.btn-default{
+		border-color: #adadad;
+	}
+}
+#userRole, #userRole1{
+	height:auto;
+	padding:13px;
+	text-transform:none;
+}
+#deactiveReason{
+	margin:20px 0; 
+	#userRole1{
+		margin-bottom:20px;
+	}
+}
+
+#csrSearch{
+	.displayTable{
+		height:60vh;	
+		.formStyle{
+			background:none;
+			@include MQ(M) {
+				padding: 50px 0;
+			}
+			@include MQ(L) {
+				padding: 0px 0;
+			}
+			.login{
+				padding:0px 0px 50px;
+				width:850px;
+				margin:0px auto;
+				.custBtn{
+					@include MQ(L) {
+						width:100%;
+					}
+				}
+				p{
+					font-size:14px;
+					padding-bottom:20px;
+				}
+			}
+		}
+	}
+	.hasHeader {
+		@include MQ(L) {
+    		margin-top:0px;
+    	}
+	}
+}
+#accountEdit{
+	.formStyle{
+		@include MQ(L) {
+			padding: 30px 0;
+		}
+		h2{
+			margin-bottom:50px;
+		}
+		#account{
+			margin-bottom:30px;
+		}
+		#employment{
+			margin:30px 0;
+		}
+		#card{
+			margin:50px -15px 130px;
+		}
+		#comments{
+			margin-bottom:150px;
+		}
+	}
+}
+#accountSummary{
+	.formStyle{
+		@include MQ(L) {
+			padding:30px;
+		}
+		@include MQ(SC) {
+			padding:0px;
+		}
+		h3,h4{
+			color:$primary-color;
+			margin-bottom:20px;
+			a{
+				font-size: 24px;
+				font-weight:$regular-weight;
+			}
+		}
+		.edit{
+			font-weight:$bold-weight;
+		}
+		.heading{
+			color:$primary-color;
+			font-weight:$medium-weight;
+			font-size:14px;
+		}
+		.grayed{
+			font-family:arial;
+		}
+		.series{
+			margin-bottom:20px;
+		}
+		.tname{
+			color:$secondary-color;
+			font-size:14px;
+		}
+		.tamt{
+			font-weight:$semi-bold-weight;
+		}
+		.custBtnReason{
+			margin-bottom: 10px;
+			font-size:14px;
+			color:$secondary-color;
+			font-weight:$medium-weight;
+			&:hover{
+				color:$default-color;
+			}			
+		}
+	}
+}
+#defaultConfig{
+	.formStyle{
+		@include MQ(L) {
+			padding:50px;
+		}
+		#accordion{
+			.card{
+				margin-bottom:70px;
+				.card-header{
+					position:relative;
+					a{
+						font-size: 22px;
+						font-weight:$medium-weight;
+						 i {
+						 	top:6px;
+						 	right:0;
+						 }
+					}			
+				}
+			}
+		}
+	
+	}
+}
+.bigCard{
+	background-image:url(#{$imgpath}/visual-card-back.png);
+	background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 100% top;
+    height:283px;
+    @include MQ(L) {    	
+		width:464px;
+    }
+    @include MQ(SC) {
+		width:auto;
+    }
+	height:283px;
+	width:464px;
+	margin-top:30px;
+	padding:30px;
+	color:#fff;		
+	font-weight:$semi-bold-weight;	
+	.name{
+		margin-top:170px;
+		font-size:18px;		
+	}
+	.accno{
+		font-size:20px;
+		font-family:arial;
+	}
+}
+.smallCard{
+	background-image:url(#{$imgpath}/virtual-card-icon-back.png);
+	background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 100% top;
+    @include MQ(L) {
+		width:240px;
+    }
+    @include MQ(SC) {
+		width:auto;
+    }	
+	height:146px;
+	margin-top:30px;
+	padding: 15px;
+	color:#fff;		
+	font-weight:$semi-bold-weight;	
+	.name{
+		margin-top: 75px;
+		font-size:13px;		
+	}
+	.accno{
+		font-size:14px;
+		font-family:arial;
+	}
+}
+.architectureBg {
+	background-image: url(#{$imgpath}/architecture-bg.png);
+	background-repeat: no-repeat;
+	background-position: center bottom;
+}
+.cardBg {
+	background-image: url(#{$imgpath}/combined-card.png);
+	background-repeat: no-repeat;
+	background-position: center center;
+	@include background-cover(cover);
+}
+
+/* Application status page style */
+
+.applicationStatus {
+	h2{
+		font-weight: $bold-weight;
+	}
+	img{
+		margin-bottom: 30px;
+	}
+}
+
+/* Congratulat status page style */
+
+.congratulations {
+	padding: 30px 0;
+	
+	@include MQ(M) {
+		padding: 50px 0;
+	}
+	@include MQ(L) {
+		padding: 90px 0;
+	}
+	h1 {
+		font-weight: $semi-bold-weight;
+	}
+	h2 {
+		color: $accent-color;
+		font-weight: $semi-bold-weight;
+	}
+	
+	.congratulationsImg {
+		background-image: url(#{$imgpath}/congrats-bg.png);
+		background-repeat: no-repeat;
+		background-position: center center;
+		@include background-cover(contain);
+		padding: 25px;
+		margin: 0 auto 30px;
+		width: 300px;
+		@include MQ(M) {
+			width: 350px;
+		}
+		@include MQ(XL) {
+			padding: 30px;
+			width: 430px;
+		}
+	}		
+}
+
+.nav-tabs {
+  float: left;
+  border-bottom: 0;  
+
+  li {
+    float: none;
+    margin: 0;
+    &.active{
+    	a{
+    		border: none;
+    		&:focus{
+    			border: none;
+    		}
+    	}
+    }    
+    a {
+      color: $default-color;
+      margin-right: 0;
+      border: none;
+      background-color: $warn-color;
+      @include border-radius(0px);
+      font-size: 20px;
+      @include MQ(M){
+      	padding-top: 15px;
+      	padding-bottom: 15px;
+      }      
+      em{
+      	display: none;
+      	font-style: normal;
+      	@include MQ(M){
+      		display: inline-block;
+      	}
+      }
+      &:hover {
+        background-color: transparentize($warn-color, 0.2);
+	        span{
+	        	color: $primary-color;
+	        }        
+      }
+    }
+  }
+}
+.accountDetails {
+	background-color: $warn-color;
+	margin-top: 30px;
+	margin-bottom: 30px;
+	
+	.tab-content {
+		background-color: $default-color;
+  		margin-left: 56px;
+  		padding: 15px;
+  		@include MQ(M){
+  			margin-left: 226px;
+      		padding: 20px;
+      	}
+      	@include MQ(L){
+      		padding: 30px;
+      	}
+	}
+}
+.accountInfo{
+	float: left;
+	width: 100%;
+	background-color: transparentize($accent-color, 0.95);
+	margin-top: 20px;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	hr{
+  		background-color: rgba(108, 108, 108, 0.09);
+  	}
+}
+#cardDetails {
+	padding-top: 20px; 
+}
+
+.settings {
+	.fa-plus-circle, .fa-user-times {
+		color : $warn-color; 
+	}
+	.fa-user-circle-o {
+		color : green;
+	}
+	button {
+		background-color : $warn-color;
+		border-color : $warn-color;
+		color : $default-color;
+		&:hover, &:focus {
+			background-color : $warn-color;
+			border-color : $warn-color;
+			color : $default-color;
+		}
+	}
+	.dropdown-menu {
+		.fa{
+			&:hover {
+			background-color : transparent;
+			color : $warn-color;
+			}
+		}
+	}
+	ul  {
+		text-align: center;
+		top: 38px; 
+		
+		li {
+			display: inline-block;
+			a{
+				&:hover {
+					background-color : transparent;
+				}
+			}
+		}
+	}
+}
+
+.searchUser {
+	table {
+		tbody + tbody {
+				border : none !important; 
+		}
+		table-layout: auto !important;
+		border: none !important;
+		thead {
+				border-bottom: none;
+				tr {
+			    	background-color: $default-color;
+					border: none;
+				}
+		}
+		tr {
+			    background-color: $default-color;
+			    border: none;
+		}
+		td {
+				border: none; 
+		}
+	}
+	
+	.expandColor {
+		background-color: lightgoldenrodyellow;
+	}
+}
+
+.gridPagination {
+	.fa-trash-o {
+		color : $warn-color  !important; 
+		font-size: 18px !important;   
+	}
+	.active > a{
+				background-color: $warn-color  !important;
+	    		border-color: $warn-color  !important;
+	}
+	ul {
+		li {
+			
+			a {
+				color: black;
+			}
+		}
+	}
+}
+
+.configBtn {
+    width: 83px !important;
+}
+
+.calColor {
+	color :  $warn-color !important;
+}
+
+.groupBtn {
+	height: 52px;
+}

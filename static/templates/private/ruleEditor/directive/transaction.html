@@ -1,0 +1,220 @@
+<div class="transaction tabBodyAlign">
+   <div class="row odd-row no-margin rule-bottom-border">
+      <!-- <div class="col-sm-2">
+         <div class="form-group">
+            <label for="channel">Transactions Type</label><br>
+            <select class="form-control transactionFields" ng-model="transactionTypes" ng-change="typeChange()">
+                     <option value="">- Select -</option>
+                     <option value="ALL">All</option>
+                     <option value="financial">Financial</option>
+                     <option value="nonFinancial">Non Financial</option>
+                  </select>
+         </div>
+         </div> -->
+      <div class="col-sm-2">
+         <div class="form-group" style="margin-top:20px;">
+            <input type="checkbox" ng-model="anyTxn" ng-change="anyTxnChange()"/> <label for="channel">Any Transaction</label>
+         </div>
+      </div>
+      <div class="col-sm-3">
+         <!-- Financial DROPDOWN START -->
+         <div class="form-group">
+            <label for="Financial">Financial TXN  </label>
+            <input type="text" ng-model="financial" readonly ng-required="transactionTypes==='financial'" style="position:absolute; visibility:hidden; left:-5000px;"/>
+            <!-- <multiselect class="input-xlarge" multiple="true" name="financial" empty="{{cleanMultiSelect()}}"
+               ng-model="financial"
+               options="financial for financial in financialDatas"
+               change="selected()"  ng-change="typeChange(financial)" ng-required="transactionTypes==='financial'" disabled="anyTxn"></multiselect> -->
+            <!-- <i class="fa fa-exclamation-circle text-info multiselectCnt" title="Transaction Type ( Financial )" data-toggle="popover" data-content="{{financial}}" data-trigger="hover" ng-show="(financial.length>0)? true : false"></i>
+               -->
+               <multiselect-json class="input-xlarge" multiple="true" name="financial" empty="{{cleanMultiSelect()}}"
+               ng-model="financial"
+               options="financial.name for financial in financialDatas"
+               change="selected()" ng-change="typeChange(financial)"></multiselect-json>
+         </div>
+         <div class="multiselect-info"><span ng-repeat="fin in financial track by $index">{{fin.name}}, </span></div>
+         <!-- Financial DROPDOWN END -->
+      </div>
+      <div class="col-sm-3">
+         <!-- Non-Financial DROPDOWN START -->
+         <div class="form-group">
+            <label for="exampleInputEmail1">Non Financial TXN</label>
+            <input type="text" ng-model="nonFinancial" readonly ng-required="transactionTypes==='nonFinancial'" style="position:absolute; visibility:hidden; left:-5000px;"/>
+            <!-- <multiselect class="input-xlarge" multiple="true" empty="{{cleanMultiSelect()}}"
+               ng-model="nonFinancial"
+               options="nonFinancial for nonFinancial in nonFinancialDatas"
+               change="selected()" ng-change="typeChange(nonFinancial)"  ng-required="transactionTypes==='nonFinancial'" disabled="anyTxn"></multiselect> -->
+            <!--  <i class="fa fa-exclamation-circle text-info multiselectCnt" title="Transaction Type ( Non Financial )" data-toggle="popover" data-content="{{nonFinancial}}" data-trigger="hover" ng-show="(nonFinancial.length>0)? true : false"></i> -->
+          <multiselect-json class="input-xlarge" multiple="true" name="nonFinancial" empty="{{cleanMultiSelect()}}"
+               ng-model="nonFinancial"
+               options="nonFinancial.name for nonFinancial in nonFinancialDatas"
+               change="selected()" ng-change="typeChange(nonFinancial)"></multiselect-json>
+         </div>
+         <div class="multiselect-info"><span ng-repeat="nonFin in nonFinancial track by $index">{{nonFin.name}}, </span></div>
+         <!-- Non-Financial DROPDOWN END -->
+      </div>
+      <div class="col-sm-2">
+         <!-- STATUS DROPDOWN START -->
+         <div class="form-group">
+            <label for="exampleInputEmail1">Status </label>
+            <multiselect class="input-xlarge" multiple="true"
+               ng-model="status" empty="true"
+               options="status for status in txnFilterStatus"
+               change="selected()" ng-change="statusChange()"></multiselect>
+            <!-- <i class="fa fa-exclamation-circle text-info multiselectCnt" title="Status" data-toggle="popover" data-content="{{status}}" data-trigger="hover" ng-show="(status.length>0)? true : false"></i> -->
+         </div>
+         <div class="multiselect-info"><span ng-repeat="sta in status">{{sta}}, </span></div>
+         <!-- STATUS DROPDOWN END -->
+      </div>
+   </div>
+   <div class="row even-row no-margin rule-bottom-border">
+      <div class="col-sm-12" style="margin-top:-15px;">
+         <div class="form-group">
+            <br>
+            <input type="checkbox" ng-model="forCurrentTxnOnly" ng-change="changeCurrentTxn()"/> For Current TXN Only
+         </div>
+      </div>
+      <div class="col-sm-12">
+         <div class="row">
+            <div class="col-sm-2">
+               <!-- CHANNEL DROPDOWN START -->
+               <div class="form-group">
+                  <label for="channel">Acceptance Entity </label>
+                  <multiselect class="input-xlarge" multiple="true" empty="true"
+                     ng-model="channelName"
+                     options="channel.name for channel in subChannel"
+                     change="selected()" ng-change="addChannelChange();"></multiselect>
+                  <!-- <i class="fa fa-exclamation-circle text-info multiselectCnt" title="Acceptance Entity" data-toggle="popover" data-content="{{txnfilter.channels[0].name}}" data-trigger="hover" ng-show="(channelName.length>0)? true : false"></i> -->
+               </div>
+               <div class="multiselect-info"><span ng-repeat="channel in channelName">{{channel.name}}, </span></div>
+               <!-- CHANNEL DROPDOWN END -->
+            </div>
+            <!-- <div class="col-sm-2" ng-show="channelName && metadata.excludeCurrentTxn===false">
+               <div class="form-group">
+               	<br>
+               	<input type="checkbox" ng-model="forCurrentTxnOnly"/> For Current Transaction Only
+               </div>
+               </div> -->
+            <div class="col-sm-2" ng-show="channelName">
+               <div class="form-group">
+                  <label for="exampleInputEmail1">TXN Fields</label>
+                  <select class="form-control transactionFields" ng-model="trans.txnFieldName" ng-change="transfiledChange()">
+                     <option value="">- Select -</option>
+                     <option ng-repeat="txnField in txnFieldDatas | orderBy:'name'| uniq: 'name'" value="{{txnField.name}}" >{{txnField.value }}</option>
+                  </select>
+               </div>
+            </div>
+            <!-- TRANSACTION FIELDS END -->
+            <!-- OPERATOR DROPDOWN START -->
+            <div class="col-sm-2">
+               <div class="form-group">
+                  <label for="exampleInputEmail1">Operator</label>
+                  <select class="form-control transactionOperator" ng-model="trans.operator" ng-change="operatorChange()" ng-disabled="isOptDisabled">
+                     <option value="">- Select -</option>
+                     <option ng-repeat="operator in txnOperators | orderBy:'name'" value="{{operator.value}}">{{operator.name}} </option>
+                  </select>
+               </div>
+            </div>
+            <!-- OPERATOR END -->
+            <div class="col-sm-2">
+               <div class="form-group">
+                  <br>
+                  value <input type="checkbox" ng-model="isValue" ng-change="isList=false;" ng-disabled="(trans.operator.length>0)? false :true"/>  
+                  list <input type="checkbox" ng-model="isList" ng-change="isValue=false;" ng-disabled="(trans.operator.length>0)? false :true"/>                
+               </div>
+            </div>
+            <!-- VALUE START -->
+            <div class="col-sm-2" ng-if="isList">
+               <div class="form-group">
+                  <label for="value">List </label>
+                  <multiselect class="input-xlarge" multiple="true" 
+                     ng-model="trans.list"
+                     options="list for list in txnList"
+                     change="selected()" disabled="listIsDisable" ng-required="isList" ng-change="addBtnDisable();"></multiselect>
+                  <!-- <i class="fa fa-exclamation-circle text-info multiselectCnt" title="List" data-toggle="popover" data-content="{{trans.list}}" data-trigger="hover" ng-show="(trans.list.length>0)? true : false"></i> -->
+               </div>
+               <div class="multiselect-info"><span ng-repeat="tl in trans.list">{{tl}}, </span></div>
+            </div>
+            <div class="col-sm-2" ng-if="isValue">
+               <div class="form-group">
+                  <label for="value">Value 1</label>
+                  
+                  <input placeholder="{{validationItems.placeholder}}" minlength='{{validationItems.minLength}}' maxlength='{{validationItems.maxLength}}' ng-pattern="(trans.operator==='in' || trans.operator==='notIn'|| trans.operator==='contains')?validationItems.regx:validationItems.regx2" type="text" class="form-control transactionValue1" name="value1" id="value1"  ng-model="trans.value1" ng-change="addBtnDisable();" ng-required="isValue" data-toggle="popover" data-content="{{validationItems.info}}" data-trigger="focus" data-placement="bottom">
+                <!--   <input ng-if="validationItems.isNumeric" ng-pattern-restrict placeholder="{{validationItems.placeholder}}" minlength='{{validationItems.minLength}}' maxlength='{{validationItems.maxLength}}' pattern="{{validationItems.regx}}" number type="text" class="form-control transactionValue1" name="value1" id="value1"  ng-model="trans.value1" ng-change="addBtnDisable();" ng-required="isValue"> -->
+               </div>
+            </div>
+            <!-- VALUE END -->
+            <!-- VALUE START -->
+            <div class="col-sm-2" ng-if="trans.operator==='between' && isValue">
+               <div class="form-group" >
+                  <label for="value">Value 2</label>
+                  <input placeholder="{{validationItems.placeholder}}" minlength='{{validationItems.minLength}}' maxlength='{{validationItems.maxLength}}' pattern="{{validationItems.regx}}" type="text" class="form-control transactionValue2" name="value2" id="value2" placeholder="value" ng-model="trans.value2" ng-change="addBtnDisable();"  ng-required="isValue && trans.operator==='between'" data-toggle="popover" data-content="{{validationItems.info}}" data-trigger="focus" data-placement="bottom">
+                 <!--  <input ng-if="validationItems.isNumeric" ng-pattern-restrict placeholder="{{validationItems.placeholder}}" minlength='{{validationItems.minLength}}' maxlength='{{validationItems.maxLength}}' pattern="{{validationItems.regx}}" number type="text" class="form-control transactionValue2" name="value2" id="value2" placeholder="value" ng-model="trans.value2" ng-change="addBtnDisable();"  ng-required="isValue && trans.operator==='between'"> -->
+               </div>
+            </div>
+            <!-- VALUE END -->
+            <!-- ADD BUTTON START -->
+            <div class="col-sm-1">
+               <div class="form-group">
+                  <button class="btn btn-danger" style="margin-top:25px;" ng-click="addChannel()" ng-if="isValue || isList" ng-disabled="(trans.list.length>0 || (trans.operator==='between' && (trans.value1.length>0 && trans.value2.length>0))||(trans.operator!=='between' && trans.value1.length>0))?false : true">Add</button>
+               </div>
+            </div>
+            <!-- ADD BUTTON END -->
+         </div>
+      </div>
+      <div class="col-sm-12 " style="padding-top:18px;" ng-if="allChannels.length>0">
+         <table class="table txnFieldTable">
+            <thead>
+               <!-- <tr class="alert-info"> -->
+               <tr >
+                  <th style="width:10%;font-weight:bold;">TXN Field</th>
+                  <th style="width:10%;font-weight:bold;">Operator</th>
+                  <th style="width:22%;font-weight:bold;">List</th>
+                  <th style="width:22%;font-weight:bold;">Value 1</th>
+                  <th style="width:22%;font-weight:bold;">Value 2</th>
+                  <th style="width:10%">&nbsp;</th>
+                  <th style="width:4% font-weight:bold;" ng-if="!isView && actiondisable">Action</th>
+               </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="channel in allChannels track by $index" style="border-bottom:1px solid #ccc;">
+               <!-- <tr ng-repeat="channel in allChannels track by $index" class="text-success" style="border-bottom:1px solid #ccc; font-weight:bold;"> -->
+                  <td>{{channel.txnFieldName}}</td>
+                  <td>{{channel.operator}}</td>
+                 
+                  <td ng-if="channel.txnFieldName!='country'">{{channel.list}}</td>
+                  <td ng-if="channel.txnFieldName==='country'">{{countryList(channel.list).split(',').join(', ')}}</td>
+                  <td>{{channel.value1.split(',').join(', ')}}</td>
+                  <td>{{channel.value2.split(',').join(', ')}}</td>
+                  <td><input type="checkbox" ng-model="channel.isOr" style="display:none;"/> <span style="display:none;">is Or</span></td>
+                  <td ng-if="!isView && actiondisable"><i class="fa fa-times ruleeditorActionIcon cursor" ng-click="removeTransField(channel)"></i></td>
+               </tr>
+            </tbody>
+         </table>
+      </div>
+   </div>
+   <div class="row odd-row no-margin lastBoxPadd">
+      <div class="col-sm-10 checkbox-custom">
+         <label class="checkbox-inline">
+         <input type="checkbox" ng-model="txnfilter.isPANKeyed">PAN Keyed TXN
+         </label>
+         <label class="checkbox-inline">
+         <input type="checkbox" ng-model="txnfilter.isTxnBelowLCLLimit">TXN Below LCL (Floor Limit)
+         </label>
+         <label class="checkbox-inline">
+            <div style="position: absolute;top: -36px;font-size: 0.8em;width: 170px;" ng-show="txnfilter.isHighRiskLocation">
+               <strong class="text-primary">High Value TXN</strong>
+               <div style="font-size: .6em; text-transform: uppercase;font-weight: bold;">( for configuration of high values, please contact the support team )</div>
+            </div>
+            <input type="checkbox" ng-model="txnfilter.isHighRiskLocation">High Risk Locations
+         </label>
+         <label class="checkbox-inline">
+         <input type="checkbox" ng-model="txnfilter.isSplit">Split
+         </label>
+         <label class="checkbox-inline">
+         <input type="checkbox" ng-model="txnfilter.isOffline">Offline
+         </label>
+      </div>
+   </div>
+   <div class="row odd-row no-margin"><span class="mandatory-field text-danger"> {{mandatory}}</span></div>
+</div>

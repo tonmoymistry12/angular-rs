@@ -1,0 +1,67 @@
+<div class="displayTable hasHeader">
+	
+	<toaster-container toaster-options="{'time-out': 1000}"></toaster-container>
+		
+	<div class="verticalMiddle architectureBg">
+		
+		<div ng-if="loading" id="roundSpinner" class="center-block text-center">
+			<svg class="roundSpinner" viewBox="0 0 50 50">
+			  <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+			</svg>
+		</div>
+		
+		<div ng-if="activationStatus" class="text-center">
+            <img ng-src="{{imagePath}}/duplicate.png" alt="Duplicate application" class="animated shake">
+            <p>&nbsp</p>
+			<h2 class="text-danger"><strong>Oops!</strong></h2>	
+            <h2><strong>{{statusText}}</strong></h2>
+            <p>Please call customer service line for further questions <strong class="text-danger"> 1-800-EFRM-PICK </strong></p>
+		</div>
+		
+		<div ng-if="activationForm" class="login formStyle">
+			<div class="logo text-center"><img ng-src="{{imagePath}}/logo-small.png" alt="Spectrum Logo"></div>
+			<br>
+			<form name="activationForm" ng-submit="activationForm.$valid && activationSubmit()" autocomplete="off" novalidate accessible-form>
+			
+				<div class="form-group">
+					<input type="email" name="userId" ng-model="forceChange.email" class="form-control" readonly>
+			   	</div>
+			   	
+			   	<div class="form-group" ng-class="{true: 'has-error'}[submitted && activationForm.userPassword.$invalid]">			   		
+			        <input type="password" placeholder="create password" name="userPassword" ng-model="forceChange.password" class="form-control" required ng-pattern="/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/">
+			        
+			        <img ng-src="{{imagePath}}/info.png" alt="password criteria" class="formHints" popover data-placement="top" data-container="body"
+			         data-content="Be at least 8 characters in length.
+			         Contain at least 1 lowercase, 1 uppercase letter, 1 special character (!@#$%^&*), 1 number (0-9)">
+			         
+					<p class="text-danger text-center" ng-show="submitted && activationForm.userPassword.$error.required"><small>This is a required field.</small></p>
+					<p class="text-danger text-center" ng-show="submitted && activationForm.userPassword.$error.pattern"><small>Password doesn't meet criteria.</small></p>
+			   	</div>
+			   
+			   <div class="form-group" ng-class="{true: 'has-error'}[submitted && activationForm.userRePassword.$invalid]">
+			        <input type="password" placeholder="confirm password" ng-model="forceChange.reTypePassword" name="userRePassword" class="form-control" required>
+					<p class="text-danger text-center" ng-show="submitted && activationForm.userRePassword.$error.required"><small>This is a required field.</small></p>
+			   </div>
+			   
+			   <p ng-if='errorMsg' class='text-danger text-center'><small>Password and confirm password is not same!</small></p>
+			
+			   <input type="submit" class="btn btn-block btn-lg btn-danger" value="Submit" ng-click="submitted=true">
+				
+				<div ng-show="spinner" id="roundSpinner" class="center-block text-center">
+					<svg class="roundSpinner" viewBox="0 0 50 50">
+					  <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+					</svg>
+                </div>
+                    
+			</form>		
+			
+		</div>
+		
+		
+	</div>
+	
+	
+</div>
+
+
+

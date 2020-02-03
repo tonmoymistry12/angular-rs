@@ -1,0 +1,395 @@
+<div class="userDashboard queueContainerFluid overflowHidden" id="assignQueue">
+	<div class="hasHeader">
+		<div class="widget">
+
+		
+			<div class="widget-list" id="unAssignQ">
+				<div class="userTabs clearfix">
+					<div class="tab-content assign-queue-formStyle ">
+						<!--<div class="pageHeading"><h5>Assign Queue</h5></div>-->
+						<div class="tab-pane active" id="unAssignQActive">
+							<!-- <span class="textcell_queue">QUEUE LIST:</span> -->
+							<fieldset>
+								<legend class="custom-style">Organisation</legend>
+								<div class="col-xs-3 col-lg-4">
+									<select class="form-control" ng-change="changeOrganization(selectedOrgId)" ng-disabled = "organisationDisabled" ng-model="selectedOrgId"  required>
+										<option style="display:none" value="">PLEASE SELECT THE ORGANISATION</option>
+										<option class="upperCases" ng-repeat="data in orgarnisations" value="{{data.orgId}}">{{data.name}}</option>
+									</select>
+									
+											 <!-- <ui-select 
+									           id="organisation_fld"
+									           name="organisation_fld"
+									           ng-model="selectedOrgId" 
+									           uiSelectNoAnimate
+									           theme="selectize"  
+									           title="Choose a organisation"
+									           append-to-body="true" 
+									           close-on-select="true" 
+									           ng-disabled = "organisationDisabled"
+									           on-select="changeOrganization(selectedOrgId)"
+									           ng-required="true"
+										   >
+		      	 						<ui-select-match placeholder="SELECT A ORGANISATION IN THE LIST...">{{$select.selected.name}}</ui-select-match>
+									     <ui-select-choices 
+									        repeat="option.orgId as option in orgarnisations | filter: $select.search | limitTo: 100 | uppercase"
+									        position="down" 
+									        limit="100"
+									        refresh-delay="300">
+									      <span ng-bind-html="option.name | highlight: $select.search"></span>
+									      <small ng-bind-html="option.orgId | highlight: $select.search"></small>
+									    </ui-select-choices>
+		    						</ui-select> -->
+								</div>
+
+							</fieldset>
+							
+							<fieldset ng-if="showChannel">
+								<legend class="custom-style">CHANNEL</legend>
+								<div class="col-xs-3 col-lg-4">
+									<select class="form-control" ng-change="changedValue(selectedOrgId,channel)"  ng-model="channel"  required>
+										<option value="">PLEASE SELECT THE CHANNEL</option>
+										<option class="upperCases" ng-repeat="data in channel_code|orderBy:'channelDesc'" value="{{data.channelCode}}">{{data.channelDesc}}</option>
+									</select>
+								</div>
+
+							</fieldset>
+							
+							<fieldset ng-if="show">
+								<legend class="custom-style">QUEUE LIST</legend>
+								<div class="text-center noData" id="no_data" ng-if="queueList.length == 0"> <h6>No queue list available</h6></div>
+									<div class="col-xs-3 col-lg-4">
+										<div class="userRole" ng-if="queueList.length != 0">
+											<select class="form-control" ng-model="selectedqueue" name="selectedqueue" id="selectedqueue" ng-change="fetchUser(selectedqueue)" required>
+												<option style="display:none" value="">SELECT QUEUE</option>
+												<option ng-repeat="item in queueList|orderBy:'queueName'" value="{{item}}">{{item.queueName}}</option>
+											</select>
+										</div>
+									</div>
+							</fieldset>
+							<fieldset ng-if="show">
+								<legend class="custom-style">Users For the queue selected</legend>
+								<span  class="transaction-text text-info" ng-if="queueUsers.length != 0" ><span class="text-danger">* </span>Please uncheck respective user(s) to remove from the selected queue. </span>
+								<div class="text-center noData" id="no_dataFound" ng-if="queueUsers.length == 0"> <h6>No users available</h6></div>
+								<div class="clearfix row" >
+									<div class="form-group col-sm-3" ng-repeat="item in queueUsers" id="{{item.userId}}">
+										<label class="checkbox-inline">
+											<input type="checkbox"  ng-click="uncheckUsers(updatedUsers,item)" ng-model="updatedUsers" ng-checked="updatedUsers" ng-init="updatedUsers=true">
+											<a class="queueDropdown" popover data-placement="top" data-container="body" value = {{item}}><span class="queueDropdown">{{item.email}}</span></a>
+										</label>
+									</div>
+								</div>
+								<button ng-if="queueUsers.length != 0" ng-disabled="removeFinalusers.length == 0" type="submit" id="unassign_submit" class="btn btn-lg btn-danger createQueue-Submitbtn" ng-click="updateQueueUsers()">Submit</button>
+							</fieldset>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="widget-list" id="assignQ">
+				<div class="userTabs clearfix">
+					<div class="tab-content assign-queue-formStyle ">
+						<!--<div class="pageHeading"><h5>Assign Queue</h5></div>-->
+						<div class="tab-pane active" id="assignQActive">
+							<!-- <span class="textcell_queue">QUEUE LIST:</span> -->
+							<form ng-submit="assignQueueSubmit()" name="assignQueueForm" novalidate accessible-form>
+								<fieldset>
+								  <legend class="custom-style">Organisation</legend>
+									<div class="col-xs-3 col-lg-4">
+										<select class="form-control"  ng-disabled = "organisationDisabled" ng-change="changeOrganization(selectedOrgId)"  ng-model="selectedOrgId"  required>
+						 						<option style="display:none" value="">PLEASE SELECT THE ORGANISATION</option>
+												<option class="upperCases" ng-repeat="data in orgarnisations" value="{{data.orgId}}">{{data.name}}</option>
+										</select> 
+										
+										 <!-- <ui-select 
+									           id="organisation_fld"
+									           name="organisation_fld"
+									           ng-model="selectedOrgId" 
+									           uiSelectNoAnimate
+									           theme="selectize"  
+									           title="Choose a organisation"
+									           append-to-body="true" 
+									           close-on-select="true" 
+									           ng-disabled = "organisationDisabled"
+									           on-select="changeOrganization(selectedOrgId)"
+									           ng-required="true"
+										   >
+		      	 						<ui-select-match placeholder="SELECT A ORGANISATION IN THE LIST...">{{$select.selected.name}}</ui-select-match>
+									     <ui-select-choices 
+									        repeat="option.orgId as option in orgarnisations | filter: $select.search | limitTo: 100 | uppercase"
+									        position="down" 
+									        limit="100"
+									        refresh-delay="300">
+									      <span ng-bind-html="option.name | highlight: $select.search"></span>
+									      <small ng-bind-html="option.orgId | highlight: $select.search"></small>
+									    </ui-select-choices>
+		    						</ui-select> -->
+									</div>
+
+								</fieldset>
+								
+								<fieldset ng-if="showChannel">
+								<legend class="custom-style">CHANNEL</legend>
+								<div class="col-xs-3 col-lg-4">
+									<select class="form-control" ng-change="changedValue(selectedOrgId,channel)"  ng-model="channel"  required>
+										<option value="">PLEASE SELECT THE CHANNEL</option>
+										<option class="upperCases" ng-repeat="data in channel_code|orderBy:'channelDesc'" value="{{data.channelCode}}">{{data.channelDesc}}</option>
+									</select>
+								</div>
+
+							</fieldset>
+								
+								<fieldset ng-if="showField">
+									<legend class="custom-style">QUEUE LIST</legend>
+									<span ng-if="checkBoxMsg" class="transaction-text text-warn"><span class="text-danger">* </span>Please select at least one queue. </span>
+									<span  class="transaction-text text-info" ng-if="queueList.length != 0" ><span class="text-danger">* </span>Please check the respective box before providing your inputs in the field box for assign queue. </span>
+									<div class="text-center noData" id="no_data_found" ng-if="queueList.length == 0"> <h6>No queue available</h6></div>
+									<div class="clearfix row" >
+										<div class="form-group col-sm-3" ng-repeat="item in queueList|orderBy:'queueName'" id="{{item.queueId}}">
+											<label class="checkbox-inline">
+												<input type="checkbox"  ng-click="sync(bool,item)" ng-model="bool" ng-checked="isChecked(item.queueId)">
+												<a class="queueDropdown" popover data-placement="top" data-container="body" data-content = {{item.condition}}><span class="queueDropdown">{{item.queueName}}</span></a>
+											</label>
+										</div>
+									</div>
+								</fieldset>
+
+								<fieldset ng-if="showField">
+									<legend class="custom-style">USER LIST</legend>
+									<span  class="transaction-text text-danger" ng-if="issueraccquirermsg" ><span class="text-danger">* </span>Please select at least one user from issuer perspective and one user from acquirer perspective. </span>
+									<span  class="transaction-text text-danger" ng-if="atleastoneacquirermsg" ><span class="text-danger">* </span>Please select at least one user from acquirer perspective. </span>
+									<span  class="transaction-text text-danger" ng-if="atleastoneissuerrmsg" ><span class="text-danger">* </span>Please select at least one user from issuer perspective. </span>
+									<span  class="transaction-text text-danger" ng-if="acquireramlmsg" ><span class="text-danger">* </span>Please select at least one user from acquirer perspective and one user from aml perspective. </span>
+									<span  class="transaction-text text-danger" ng-if="issuerandamlmsg" ><span class="text-danger">* </span>Please select at least one user from issuer perspective and one user from aml perspective. </span>
+									<span  class="transaction-text text-danger" ng-if="issueracquireramlmsg" ><span class="text-danger">* </span>Please select at least one user from issuer perspective and one user from aml perspective and one user from acquirer perspective. </span>
+									<span  class="transaction-text text-danger" ng-if="onlyissuermsg" ><span class="text-danger">* </span>Please select user from issuer perspective only. </span>
+									<span  class="transaction-text text-danger" ng-if="onlyacquiermsg" ><span class="text-danger">* </span>Please select user from acquirer perspective only. </span>
+									<span  class="transaction-text text-danger" ng-if="onlyamlmsg" ><span class="text-danger">* </span>Please select user from aml perspective only. </span>
+									<span  class="transaction-text text-danger" ng-if="anyofmsg" ><span class="text-danger">* </span>Please select a user from any perspective. </span>
+									<span  class="transaction-text text-danger" ng-if="myrequiredmsg" ><span class="text-danger">* </span>Please select a user. </span>
+									<span  class="transaction-text text-danger" ng-if="atleasetoneamlmsg" ><span class="text-danger">* </span>Please select at least one user from aml perspective. </span>
+									<div class="text-center noData" id="no_data_found" ng-if="issuerUserList.length == 0 && aqurierUserList.length == 0 && amlUserList.length == 0"> <h6>No  User available</h6></div>
+									
+									<div class="clearfix row">
+										<div class="form-group col-sm-3 labelMargintop"  ng-if="issuerUserList.length != 0">
+											 <span class="textcell_reports">USERS WITH ISSUER PERSPECTIVE:</span> 
+											<ui-select multiple ng-model="someObject.issuerSelectedPersion" theme="bootstrap"
+													   on-select="selectedIssuerUser(someObject.issuerSelectedPersion)"
+													   on-remove="selectedIssuerUser(someObject.issuerSelectedPersion)"
+													   remove-selected="false"
+													   close-on-select="true"
+													   style="width: 120% !important"
+													   title="Choose a User">
+												<ui-select-match allow-clear="true" placeholder="Select Fields...">{{$item.email}}</ui-select-match>
+												<ui-select-choices style="max-height: 110px;overflow-x:auto !important" repeat="person in issuerUserList | propsFilter: {email: $select.search} ">
+													<!-- <div ng-bind-html="person.email | highlight: $select.search"></div> -->
+													<div><span ng-bind-html="person.email | highlight: $select.search"></span> <span class="assignQueueOrgShow" ng-bind-html=" person.orgId | highlight: $select.search"></span></div>
+													
+												</ui-select-choices>
+												 <ui-select-no-choice style="max-height: 110px;overflow-x:auto !important;left: 0px !important">
+     												<div style="text-align:center;font-size: 18px"><span style="color:red">User does not exist for your organisation</span></div>
+   												 </ui-select-no-choice>
+  										</ui-select>
+											<!-- <div class="text-danger" id="assignqueue_required_msg" ng-if="showMultiSelectMsg"><small>This is a required field.</small></div> -->
+										</div>
+										
+										<div class="form-group col-sm-3 labelMargintop" style="margin-left:9%" ng-if="aqurierUserList.length != 0">
+											 <span class="textcell_reports">USERS WITH ACQUIRER PERSPECTIVE:</span> 
+											<ui-select multiple ng-model="someObject.acquierSelectedPersion" theme="bootstrap"
+													   on-select="selectedAcquierUser(someObject.acquierSelectedPersion)"
+													   on-remove="selectedAcquierUser(someObject.acquierSelectedPersion)"
+													   remove-selected="false"
+													   close-on-select="true"
+													   style="width: 120% !important;"
+													   title="Choose a User">
+												<ui-select-match allow-clear="true" placeholder="Select Fields...">{{$item.email}}</ui-select-match>
+												<ui-select-choices style="max-height: 110px;overflow-x:auto !important" repeat="person in aqurierUserList | propsFilter: {email: $select.search} ">
+													<div><span ng-bind-html="person.email | highlight: $select.search"></span> <span class="assignQueueOrgShow" ng-bind-html=" person.orgId | highlight: $select.search"></span></div>													
+												</ui-select-choices>
+												<ui-select-no-choice style="max-height: 110px;overflow-x:auto !important;left: 0px !important">
+     												<div style="text-align:center;font-size: 18px"><span style="color:red">User does not exist for your organisation</span></div>
+   												 </ui-select-no-choice>
+											</ui-select>
+											<!-- <div class="text-danger" id="assignqueue_required_msg" ng-if="showMultiSelectMsg"><small>This is a required field.</small></div> -->
+										</div>
+										
+										<div class="form-group col-sm-3 labelMargintop" style="margin-left:9%" ng-if="amlUserList.length != 0">
+											 <span class="textcell_reports">USERS WITH AML PERSPECTIVE:</span> 
+											<ui-select multiple ng-model="someObject.amlSelectedPersion" theme="bootstrap"
+													   on-select="selectedAmlUser(someObject.amlSelectedPersion)"
+													   on-remove="selectedAmlUser(someObject.amlSelectedPersion)"
+													   remove-selected="false"
+													   close-on-select="true"
+													   style="width: 120% !important;"
+													   title="Choose a User">
+												<ui-select-match allow-clear="true" placeholder="Select Fields...">{{$item.email}}</ui-select-match>
+												<ui-select-choices style="max-height: 110px;overflow-x:auto !important" repeat="person in amlUserList | propsFilter: {email: $select.search} ">
+													<!-- <div ng-bind-html="person.email | highlight: $select.search"></div> -->
+													<div><span ng-bind-html="person.email | highlight: $select.search"></span> <span class="assignQueueOrgShow" ng-bind-html=" person.orgId | highlight: $select.search"></span></div>													
+												</ui-select-choices>
+												<ui-select-no-choice style="max-height: 110px;overflow-x:auto !important;left: 0px !important">
+     												<div style="text-align:center;font-size: 18px"><span style="color:red">User does not exist for your organisation</span></div>
+   												 </ui-select-no-choice>
+											</ui-select>
+											<!-- <div class="text-danger" id="assignqueue_required_msg" ng-if="showMultiSelectMsg"><small>This is a required field.</small></div> -->
+										</div>
+										
+									</div>
+									<button type="submit" id="assign_queue_submit"  class="btn btn-lg btn-danger createQueue-Submitbtn" ng-click="submitted=true">Submit</button>
+								</fieldset>
+
+								
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="widget-list" id="viewQ">
+				<div class="userTabs clearfix">
+					<div class="tab-content assign-queue-formStyle ">
+						<!--<div class="pageHeading"><h5>Assign Queue</h5></div>-->
+						<div class="tab-pane active" id="viewQActive">
+							<!-- <span class="textcell_queue">QUEUE LIST:</span> -->
+							<fieldset>
+								<legend class="custom-style">Organisation</legend>
+								<div class="col-xs-3 col-lg-4">
+									 <select class="form-control" ng-change="changedValue(selectedOrgId,'channel')" ng-disabled = "organisationDisabled" ng-model="selectedOrgId"  required>
+										<option style="display:none" value="">PLEASE SELECT THE ORGANISATION</option>
+										<option class="upperCases" ng-repeat="data in orgarnisations" value="{{data.orgId}}">{{data.name}}</option>
+									</select> 
+									 <!-- <ui-select 
+									           id="organisation_fld"
+									           name="organisation_fld"
+									           ng-model="selectedOrgId" 
+									           uiSelectNoAnimate
+									           theme="selectize"  
+									           title="Choose a organisation"
+									           append-to-body="true" 
+									           close-on-select="true" 
+									           ng-disabled = "organisationDisabled"
+									           on-select="changedValue(selectedOrgId,'channel')"
+									           ng-required="true"
+										   >
+		      	 						<ui-select-match placeholder="SELECT A ORGANISATION IN THE LIST...">{{$select.selected.name}}</ui-select-match>
+									     <ui-select-choices 
+									        repeat="option.orgId as option in orgarnisations | filter: $select.search | limitTo: 100 | uppercase"
+									        position="down" 
+									        limit="100"
+									        refresh-delay="300">
+									      <span ng-bind-html="option.name | highlight: $select.search"></span>
+									      <small ng-bind-html="option.orgId | highlight: $select.search"></small>
+									    </ui-select-choices>
+		    						</ui-select> -->
+								</div>
+
+							</fieldset>
+
+							<fieldset ng-if="show">
+								<legend class="custom-style">User List</legend>
+								<div class="col-xs-3 col-lg-4">
+									<select class="form-control" ng-change="fetchValueUserID(selectedViewUser)"  ng-model="selectedViewUser"  required>
+										<option style="display:none" value="">PLEASE SELECT THE USER</option>
+										<option class="upperCases" ng-repeat="data in userList|orderBy:'email'" value="{{data.userId}}">{{data.email}}</option>
+									</select>
+								</div>
+
+							</fieldset>
+							
+
+							<fieldset ng-if="show">
+
+								<legend class="custom-style">CHANNEL</legend>
+								<div class="col-xs-3 col-lg-4">
+									<select class="form-control" ng-change="fetchValueUserIdchannel(selectedChannel)"  ng-model="selectedChannel"  required>
+										<option style="display:none" value="">PLEASE SELECT THE CHANNEL</option>
+										<option class="upperCases" ng-repeat="data in channel_code|orderBy:'channelDesc'" value="{{data.channelCode}}">{{data.channelDesc}}</option>
+									</select>
+								</div>
+
+							</fieldset>
+							
+							<fieldset ng-if="queueListShow">
+								<legend class="custom-style">Queue List</legend>
+								<div class="tab-pane active searchUser" id="searchQueue">
+									<table  class="table  t-responsive table_adj" id="user_table">
+										<thead>
+										<tr>
+											<th scope="col" id="img" class="first_row"></th>
+											<th scope="col">Queue Code<!-- <span class="fa fa-chevron-right calColor"  ng-click="sort('queueCode')" ng-class="queueCodeSort?'fa-rotate-90':'fa-rotate-270'"></span> --></th>
+											<th scope="col">Queue Name <!-- <span class="fa fa-chevron-right calColor"  ng-click="sort('queueName')" ng-class="queueNameSort?'fa-rotate-90':'fa-rotate-270'"></span> --></th>
+											<th scope="col">Channel<!-- <span class="fa fa-chevron-right calColor"  ng-click="sort('channel')" ng-class="channelSort?'fa-rotate-90':'fa-rotate-270'"></span> --></th>
+											<!-- <th scope="col">Priority <span class="fa fa-chevron-right calColor"  ng-click="sort('createdDate')" ng-class="createdDateSort?'fa-rotate-90':'fa-rotate-270'"></span></th> -->
+
+											<!-- <th scope="col">Action Type</th> -->
+										</tr>
+										</thead>
+										<!--  <tbody ng-repeat="queue in viewQueueData"> -->
+										<tbody  dir-paginate="queue in viewQueueData|orderBy:sortKey:reverse|filter:searchData|itemsPerPage:50">
+
+										<tr id="queue_table_expand_row" ng-class="queue.select?'expandColorTr':''">
+											<td data-label="Expand to more info" id="queue_select">
+												<h5><span class="fa" ng-class="!queue.select?'fa-plus':'fa-minus'" ng-init="queue.select=false" ng-model="queue.select" ng-click="queue.select=!queue.select;isSessionValid()"></span></h5>
+											</td>
+
+											<td data-label="Queue Code" id="queue_code" class="fixWidth"><p class="Uname">{{ queue.queueCode}}</p></td>
+											<td data-label="Queue Name" id="queue_name" class="fixWidth"><p class="Uname">{{ queue.queueName }}</p></td>
+											<td data-label="Queue Code" id="queue_code" class="fixWidth"><p class="Uname">{{channelDisplay(queue.channel) }}</p></td>
+											<!-- <td data-label="Created_Date">{{queue.priority}}</td> -->
+											<!-- <td data-label="Action Type" id="queue_action_type">{{ queue.userInformationDTO.actionType }}</td>	 -->
+
+										</tr>
+
+										<tr ng-show="queue.select" id="queue_select_row" class="expandColor">
+											<td colspan="10">
+
+
+
+												<div class="row clearfix seacrhUserPadding">
+													<div class="col-sm-offset-1 col-sm-7" id="queue_description" ><strong>Description:</strong> {{ queue.description}}</div>
+												</div>
+
+
+
+												<div class="row clearfix seacrhUserPadding">
+													<div class="col-sm-offset-1 col-sm-10" id="queue_condition" ><strong>Notes:</strong> {{ queue.notes}}</div>
+												</div>
+											</td>
+
+										</tr>
+
+										</tbody>
+									</table>
+								</div>
+								<div  ng-show="(viewQueueData|filter:searchData).length==0 || viewQueueData.length == '0' || viewQueueData == undefined" class="text-center noData"><h6>No Records Found</h6></div>
+								<!-- <div class="text-center noData" ng-show="viewQueueData.length == '0' || viewQueueData == undefined"> <h6>No Data Found</h6></div> -->
+
+
+								<div class="gridPagination clearfix" ng-show="viewQueueData.length != '0'">
+
+									<div class="col-sm-8">
+										<dir-pagination-controls max-size="5"  direction-links="true" boundary-links="true" ></dir-pagination-controls>
+									</div>
+								</div>
+							</fieldset>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<ul class="widget-tabs noPadding">
+
+				<li class="widget-tab tabWidth" ng-click="changeTab('unAssignQ')" ng-class="{active: selectedTab=='unAssignQ'}">
+					<a href="#unAssignQ" class="widget-tab-link"><div class="pageHeading"><h5>REMOVE ASSIGNED QUEUE</h5></div></a>
+				<li class="widget-tab tabWidth" ng-click="changeTab('assignQ')" ng-class="{active: selectedTab=='assignQ'}">
+					<a href="#assignQ" class="widget-tab-link"><div class="pageHeading"><h5>ASSIGN QUEUE</h5></div></a>
+				<li class="widget-tab tabWidth" ng-click="changeTab('viewQ')" ng-class="{active: selectedTab=='viewQ'}">
+					<a href="#viewQ" class="widget-tab-link"><div class="pageHeading"><h5>VIEW ASSIGNED QUEUE</h5></div></a>
+					<!-- Omitting the end tag is valid HTML and removes the space in-between inline blocks. -->
+
+
+			</ul>
+		</div>
+
+	</div>
+</div>

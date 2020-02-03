@@ -1,0 +1,185 @@
+<div class="userDashboard container-fluid" id="configuration">
+	<div class="hasHeader ">
+		<div class="userTabs settings clearfix">
+			<div class="tab-content formStyle">
+				<div class="pageHeading"><h5>Setup Default Parameters</h5></div>
+				<div class="row">
+					<div class="col-sm-3">
+						<select class="form-control" ng-model="selectedCofig" name="cofig" id="cofig" ng-change="fetchConfig('past')">
+							<option ng-repeat="param in parameters" value="{{param.parameterName}}">{{param.parameterDescription}}</option>
+						</select>
+					</div>
+					<div class="col-sm-4 nopad-left">
+						<button id="addNew" class="btn btn-primary btn-danger pull-left configBtn" ng-click="setNewConfig()">
+							New
+						</button>
+						<!--  <button id="rule" class="btn btn-primary btn-danger pull-left approvalBtn" ng-click="setRule()" ng-show="displayValue == 'CREDIT LIMIT'">
+							CL Approval
+						</button>-->
+					</div>
+				</div>
+				<br />
+				<!--  <div class="row" ng-show="displayValue == 'CREDIT LIMIT'">
+					<div class="col-sm-12"><h6>Credit Limit Approval</h6></div>
+				</div>
+				<div class="row activeConfig" ng-show="displayValue == 'CREDIT LIMIT'">					
+					<table id="ruleTable" class="table t-responsive">
+						<thead>
+							<tr>
+								<th scope="col">CSR</th>
+								<th scope="col">CSR Supervisor</th>
+								<th scope="col">CSR Manager</th>								
+								<th scope="col">Effective Date</th>
+								<th scope="col">Created By</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="white-space" ng-repeat="limit in result">
+								<td data-label="CSR" align="center">{{dollar?'$':''}}{{limit.csrMaxLimit}}{{percentage?'%':''}}</td>
+								<td data-label="CSR Supervisor" align="center">{{dollar?'$':''}}{{limit.csrSupMaxLimit}}{{percentage?'%':''}}</td>
+								<td data-label="CSR Manager" align="center">{{dollar?'$':''}}{{limit.csrSupMaxLimit}}{{percentage?'%':''}}</td>
+								<td data-label="Effective Date" align="center">{{active.effectiveDate}}</td>
+								<td data-label="Created By" align="center">{{limit.createdBy}}</td>								
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<br />-->
+				<div class="row">
+					<div class="col-sm-12"><h6>Active configuration for {{displayValue}}</h6></div>
+				</div>
+				<div class="row activeConfig">
+					<!-- <div class="col-sm-3" ng-if="selectedCofig != 'BFR'">{{dollar?'$':''}}{{active.paramValue}}{{percentage?'%':''}}</div>
+					<div class="col-sm-3" ng-if="selectedCofig == 'BFR'">{{filterBFR(active.paramValue)}}</div>
+					<div class="col-sm-6">effected on {{active.effectiveDate}}</div>
+					<div class="col-sm-3"> by {{active.createdBy}}</div> -->
+					<table id="activeTable" class="table t-responsive">
+						<thead>
+							<tr>
+								<th scope="col">{{displayValue}}</th>
+								<th scope="col">Effective Date</th>
+								<th scope="col">Created By</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="white-space">
+								<td ng-if="selectedCofig != 'BFR'" data-label="{{displayValue}}" align="center">{{dollar?'$':''}}{{active.paramValue}}{{percentage?'%':''}}</td>
+								<td ng-if="selectedCofig == 'BFR'" data-label="{{displayValue}}" align="center">{{filterBFR(active.paramValue)}}</td>
+								<td data-label="Effective Date" align="center">{{active.effectiveDate}}</td>
+								<td data-label="Created By" align="center">{{active.createdBy}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<br />
+				
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="btn-group btn-toggle" id="configBttn"> 
+						    <button class="btn btn-sm" ng-click="setOption('p')" ng-class="page.timeline=='past'? 'active btn-danger' : 'notActive'">Past</button>
+						    <button class="btn btn-sm btn-primary" ng-click="setOption('f')" ng-class="page.timeline=='future'? 'active btn-danger' : 'notActive'">Future</button>
+						</div>
+					</div>
+				</div>
+				<br />
+				<div class="row searchCriteria configPadding">
+					<table id="table1" class="table t-responsive">
+						<thead>
+							<tr>
+								<th scope="col">{{displayValue}}</th>
+								<th scope="col">Effective Date</th>
+								<th scope="col">Created By</th>
+								<th scope="col">Status</th>
+								<th scope="col">Action</th>
+							</tr>
+						</thead>
+						<tbody ng-if="records.length == undefined">
+							<tr class="white-space">
+								<td colspan="5"><div class="text-center noData"><h6>No Data Found</h6></div></td>
+							</tr>
+						</tbody>
+						<tbody ng-if="records.length != undefined">
+							<tr  ng-repeat="r in records" class="white-space">
+								<td ng-if="selectedCofig != 'BFR'" data-label="{{displayValue}}" align="center">{{dollar?'$':''}}{{r.paramValue}}{{percentage?'%':''}}</td>
+								<td ng-if="selectedCofig == 'BFR'" data-label="{{displayValue}}" align="center">{{filterBFR(r.paramValue)}}</td>
+								<td data-label="Effective Date" align="center">{{r.effectiveDate}}</td>
+								<td data-label="Created By" align="center">{{r.createdBy}}</td>
+								<td data-label="Status" align="center">{{ds.getReasonCode('PRODUCT_CONFIG_STATUS', r.status)}}</td>
+								<td data-label="Action" align="center">
+									<span ng-if="moment().diff(r.effectiveDate, 'days') <= 0 && r.status==2" class="fa fa-trash-o" data-toggle="tooltip" data-placement="left" title="Delete" tooltip ng-click="deleteConfig(r.id)" style="cursor: pointer"></span>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<div class="gridPagination">
+						<pagination boundary-links="true" max-size="3" total-items="totalItems" items-per-page="page.pageSize" ng-model="currentPage" ng-change="loadMoreConfigs()"></pagination>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 
+<div class="tab-pane active" id="editPermission">
+	<div class="clearfix">
+		<div class="col-sm-4">
+			<div class="userRole">
+				<select class="form-control" ng-model="selectedCofig" name="cofig"
+					id="cofig" ng-change="fetchConfig()">
+					<option ng-repeat="param in parameters"
+						value="{{param.parameterName}}">{{param.parameterDescription}}</option>
+				</select>
+			</div>
+		</div>
+		<div class="col-sm-4">
+			<button id="addNew"
+				class="btn btn-primary btn-danger custBtn pull-left configBtn"
+				ng-click="setNewConfig()">
+				<span class="fa fa-plus-square" aria-hidden="true"></span> New
+			</button>
+		</div>
+	</div>
+	<div class="btn-group" id="status" data-toggle="buttons">
+		<label class="btn btn-default btn-on btn-xs active"> <input
+			type="radio" value="1" name="past" checked="checked">PAST
+		</label> <label class="btn btn-default btn-off btn-xs "> <input
+			type="radio" value="0" name="future">FUTURE
+		</label>
+	</div>
+	<div id="demoScroll" class="gridPagination searchCriteria">
+		<table id="table1" class="table t-responsive">
+			<table class="table t-responsive" >
+			<thead>
+				<tr>
+					<th scope="col"><h5>{{displayValue}}</h5></th>
+					<th scope="col"><h5>Effective Date</h5></th>
+					<th scope="col"><h5>Created By</h5></th>
+					<th scope="col"><h5>Status</h5></th>
+					<th scope="col"><h5>Action</h5></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="r in records">
+					<td ng-if="selectedCofig != 'BFR'" data-label="{{displayValue}}"
+						align="center">{{dollar?'$':''}}{{r.paramValue}}{{percentage?'%':''}}</td>
+					<td ng-if="selectedCofig == 'BFR'" data-label="{{displayValue}}"
+						align="center">{{filterBFR(r.paramValue)}}</td>
+					<td data-label="Effective Date" align="center">{{r.effectiveDate}}</td>
+					<td data-label="Created By" align="center">{{r.createdBy}}</td>
+					<td data-label="Status" align="center">{{ds.getReasonCode('PRD_CFG_STS',
+						r.status)}}</td>
+					<td data-label="Action" align="center"><span
+						ng-if="moment().diff(r.effectiveDate, 'days') <= 0 && r.status==2"
+						class="fa fa-trash-o" data-toggle="tooltip" data-placement="left"
+						title="Delete the Config" tooltip ng-click="deleteConfig(r.id)"
+						style="cursor: pointer"></span></td>
+				</tr>
+			</tbody>
+		</table>
+		<pagination class="searchCriteria" boundary-links="true" max-size="3"
+			total-items="totalItems" items-per-page="page.pageSize"
+			ng-model="currentPage" ng-change="loadMoreConfigs()"></pagination>
+	</div>
+</div>
+ -->

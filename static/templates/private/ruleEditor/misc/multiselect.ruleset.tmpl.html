@@ -1,0 +1,20 @@
+<div class="ruleset" style="box-shadow: 0 2px 1px -1px rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12);">
+<div><input class="input-block-level form-control" type="text" ng-model="searchText.label" autofocus="autofocus" placeholder="Filter" /></div>
+  <div ng-show="multiple">
+      <button class="btn-link btn-small" ng-click="checkAll()" style="font-size:1.5em;"><i class="fa fa-check" style="font-size:1.3em;"></i> Check all</button>
+      <button class="btn-link btn-small" ng-click="uncheckAll()" style="font-size:1.5em;"><i class="fa fa-times" style="font-size:1.3em;"></i> Uncheck all</button>
+    </div>
+  <ul style="height: 200px;padding:0px;overflow-y: scroll;">
+   <!--  <li>
+      <input class="input-block-level form-control" type="text" ng-model="searchText.label" autofocus="autofocus" placeholder="Filter" />
+    </li> -->
+   <!--  <li ng-show="multiple">
+      <button class="btn-link btn-small" ng-click="checkAll()"><i class="fa fa-check"></i> Check all</button>
+      <button class="btn-link btn-small" ng-click="uncheckAll()"><i class="fa fa-times"></i> Uncheck all</button>
+    </li> -->
+   <li ng-repeat="i in items | filter:searchText" style="margin-top:-1px;" class="rule">
+      <a ng-click="select(i); focus()" style="display:block;">
+        <i ng-class="{'fa fa-check': i.checked, 'icon-empty': !i.checked}"></i>{{i.label}}</a>
+    </li>
+  </ul>
+</div>

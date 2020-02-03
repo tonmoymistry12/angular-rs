@@ -1,0 +1,373 @@
+<!-- Html Code start -->
+
+
+
+
+<!-- Start Left Side Bar-->
+<div class="menu_pkg">
+<span class="menu_logo" >	
+<a  class="npci_header_logo" ui-sref="dashboard.alertsInQueue" ui-sref-opts="{reload: true}" >
+<i class="fa fa-home" aria-hidden="true"><span class="menu_text">Home</span></i>
+</a>
+</span>
+	<span class="menu_logo" ng-click="visible=!visible;"><i class="fa fa-bars" aria-hidden="true"><span class="menu_text">Menu</span></i></span>
+	<span class="menu_logo" ng-show="rolePermission.isPermissionGranted(1723019075) || rolePermission.isPermissionGranted(1723019062)" ><i class="fa fa-refresh" aria-hidden="true" ng-click="refresh()"><span class="menu_text">Refresh</span></i></span>
+	<!-- <span class="menu_logo" ><i class="fa fa-refresh" aria-hidden="true" ng-click="refreshRule()"><span class="menu_text">Refresh Rule</span></i></span>
+	<span class="menu_logo" ><i class="fa fa-refresh" aria-hidden="true" ng-click="refreshHotlist()"><span class="menu_text">Refresh List</span></i></span>
+	<span class="menu_logo" ><i class="fa fa-refresh" aria-hidden="true" ng-click="refreshconfigparams()"><span class="menu_text">Refresh Configparams</span></i></span>
+	<span class="menu_logo" ><i class="fa fa-refresh" aria-hidden="true" ng-click="refreshAccountProviders()"><span class="menu_text">Refresh Banks</span></i></span> -->
+	<!-- <span class="menu_logo" ><i class="fa fa-question-circle" aria-hidden="true"><span class="menu_text">FAQ</span></i></span> -->
+	<span class="menu_logo"><a href="mailto:EFRM-Support@rssoftware.co.in?Subject=Support" target="_top"><i class="fa fa-envelope-o" aria-hidden="true"><span class="menu_text">Contact Us</span></i></a></span>
+
+</div>
+<aside ng-class="{'is-visible':visible}" id="mySidenav" class=" menu left-sidebar sidenav scrollbar" data-sidebarbg="skin5" ng-controller="headerNavController">
+
+	<!-- Sidebar scroll-->
+	<div class="scroll-sidebar force-overflow">
+		<!-- Sidebar navigation-->
+		<nav class="sidebar-nav" >
+			<ul id="accordion" class="accordion">
+				<li class="npci_logo_border">
+					<a  class="npci_header_logo"> <img
+							ng-src="{{imagePath}}/npcilogo.png" alt="npci" class="light-logo-menu" />
+
+					</a>
+					<a ng-click="openNav2();"><i class="fa fa-arrow-circle-o-left left-arrow" ></i></a>
+
+				</li>
+				<li  ng-show="rolePermission.isPermissionGranted(1723019073)" id="data_chart2" class="sidebar-item" ><div class="link2" ng-class="{link2: isActive('/dashboard/operationalDashboard')}"><a
+						class="sidebar-link waves-effect waves-dark sidebar-link" id="frauds1" ui-sref="dashboard.operationalDashboard" ui-sref-opts="{reload: true}"
+						aria-expanded="false"><i class="fa fa-bar-chart"></i><span
+						class="hide-menu">Dashboard </span></a>
+				</div>
+				</li>
+				 <li ng-show="rolePermission.isPermissionGranted(1723019071)" id="data_chart1" class="sidebar-item" ><div class="link2" ng-class="{link2: isActive('/dashboard/frauds')}"><a
+						class="sidebar-link waves-effect waves-dark sidebar-link" id="frauds2" ui-sref="dashboard.frauds" ui-sref-opts="{reload: true}"
+						aria-expanded="false"><i class="fa fa-dashboard"></i><span
+						class="hide-menu">CPP/AML Dashboard </span></a>
+				</div>
+				</li> 
+
+
+				<!-- <li class="sidebar-item"><a
+                                   class="sidebar-link waves-effect waves-dark sidebar-link"
+                                   aria-expanded="false"><i class="fa fa-window-maximize"></i><span
+                                       class="hide-menu">Case Mangement</span></a>
+               </li> -->
+				<li id="user">
+					<div class="link"
+						 ng-class="{link: isActive('/dashboard/create') || isActive('/dashboard/adminSearch') || isActive('/dashboard/unapprovedList') }"><i class="fa fa-user "></i><span
+							class="hide-menu">User Mangement</span><i class="fa fa-chevron-down pull-right"></i></div >
+
+
+					<ul class="submenu" id="user-submenu">
+						<li ng-show="rolePermission.isPermissionGranted(1723019059)">
+							<a id="create-user" ui-sref="dashboard.create" ui-sref-opts="{reload: true}">
+								<i class="fa fa-plus-square-o"></i>Create User</a>
+						</li>
+						<li ng-show="rolePermission.isPermissionGranted(1723019059)">
+							<a id="unapprovedList" ui-sref="dashboard.unapprovedList" ui-sref-opts="{reload: true}">
+								<i class="fa fa-navicon"></i>Approve / Pending</a>
+						</li>
+						<li>
+							<a id="search-user" ui-sref="dashboard.search" ui-sref-opts="{reload: true}">
+								<i class="fa fa-search"></i>View User</a>
+						</li>
+						
+
+					</ul>
+
+				</li>
+
+				<li id="role">
+					<div class="link"
+						 ng-show="rolePermission.isPermissionGranted(1723019058)"
+						 ng-class="{link: isActive('/dashboard/adminEditPermission') || isActive('/dashboard/adminCreatePermission') || isActive('/dashboard/unapprovedRoles') || isActive('/dashboard/resetroleapprove') }"><i
+							class="fa fa-tasks"></i><span
+							class="hide-menu">Role
+							Mangement</span><i class="fa fa-chevron-down pull-right"></i></div >
+					<ul class="submenu" id="role-submenu">
+						<li ng-show="rolePermission.isPermissionGranted(1723019058)">
+							<a  id ="createPermisson" ui-sref="dashboard.createPermission"
+								ui-sref-opts="{reload: true}"><i class="fa fa-plus-square-o"></i>Create Permission</a>
+						</li>
+						
+						<li ng-show="rolePermission.isPermissionGranted(1723019058)">
+							<a  id ="editPermisson" ui-sref="dashboard.editPermission"
+								ui-sref-opts="{reload: true}"><i class="fa fa-pencil-square-o"></i>Edit Permission</a>
+						</li>
+
+						<li ng-show="rolePermission.isPermissionGranted(1723019058)">
+							<a  id ="unapprovedRole" ui-sref="dashboard.unapprovedRoleList"
+								ui-sref-opts="{reload: true}"><i class="fa fa-navicon"></i>Approve / Pending</a>
+						</li>
+						
+						<li ng-show="rolePermission.isPermissionGranted(1723019058)">
+							<a  id ="resetRole" ng-click="resetRole()"
+								ui-sref-opts="{reload: true}"><i class="fa fa-undo"></i>Reset Role</a>
+						</li>
+						
+						<li ng-show="rolePermission.isPermissionGranted(1723019058)">
+							<a  id ="resetApprove" ui-sref="dashboard.resetroleapprove"
+								ui-sref-opts="{reload: true}"><i class="fa fa-navicon"></i>Reset Role Approval</a>
+						</li>
+						
+						
+
+					</ul>
+
+				</li>
+
+				<li id="case_mangement">
+					<div class="link" ng-show="rolePermission.isPermissionGranted(1723019063)"
+						 ng-class="{link: isActive('/dashboard/createqueue') || isActive('/dashboard/searchqueue') || isActive('/dashboard/assignqueue') || isActive('/dashboard/approvependingassignment') || isActive('/dashboard/approvependingqueue') || isActive('/dashboard/unassignedQueue') || isActive('/dashboard/alertsInQueue')}"><i class="fa fa-server"></i><span
+							class="hide-menu">Queue Mangement</span><i class="fa fa-chevron-down pull-right"></i></div >
+
+
+					<ul class="submenu" id="case_mangement_submenu">
+						
+						<li ng-show="rolePermission.isPermissionGranted(1723019063)">
+							<a id="create-queue" ui-sref="dashboard.createqueue" ui-sref-opts="{reload: true}">
+								<i class="fa fa-plus-square-o"></i>Create Queue</a>
+						</li>
+						
+						<li ng-show="rolePermission.isPermissionGranted(1723019063)">
+							<a id="approvependingqueue" ui-sref="dashboard.approvependingqueue" ui-sref-opts="{reload: true}">
+								<i class="fa fa-navicon"></i>Approve / Pending Queue</a>
+						</li>
+						
+						<li ng-show="rolePermission.isPermissionGranted(1723019063)">
+							<a id="approvependingassignment"  ui-sref="dashboard.approvependingassignment" ui-sref-opts="{reload: true}">
+								<i class="fa fa-navicon"></i>Approve Assignment</a>
+						</li>
+					
+						<li ng-show="rolePermission.isPermissionGranted(1723019063)">
+							<a id="assignqueue" ui-sref="dashboard.assignqueue" ui-sref-opts="{reload: true}">
+								<i class="fa fa-navicon"></i>Manage Queue</a>
+						</li>
+
+						<li ng-show="rolePermission.isPermissionGranted(1723019063)">
+							<a id="unassignedqueue" ui-sref="dashboard.unassignedQueue" ui-sref-opts="{reload: true}">
+								<i class="fa fa-navicon"></i>View Unassigned Queues</a>
+						</li>
+						
+						<li ng-show="rolePermission.isPermissionGranted(1723019063)">
+							<a id="searchqueue" ui-sref="dashboard.searchqueue" ui-sref-opts="{reload: true}">
+								<i class="fa fa-search"></i>View Queues</a>
+						</li>
+					</ul>
+
+				</li>
+
+				<li id="case_management_new">
+					<div class="link" ng-show="rolePermission.isPermissionGranted(1723019069) || rolePermission.isPermissionGranted(1723019064) || rolePermission.isPermissionGranted(1723019067) || rolePermission.isPermissionGranted(1723019068) || rolePermission.isPermissionGranted(1723019070) || rolePermission.isPermissionGranted(1723019066)"
+						 ng-class="{link: isActive('/dashboard/mycases') || isActive('/dashboard/reviewcases') ||
+						 isActive('/dashboard/unassignedcases') || isActive('/dashboard/viewTransactions') ||
+						 isActive('/dashboard/caseinqueue') || isActive('/dashboard/searchCases') ||
+						 isActive('/dashboard/unassignedAlerts') }">
+						<i class="fa fa-briefcase" aria-hidden="true"></i><span
+							class="hide-menu">Case Management</span><i class="fa fa-chevron-down pull-right"></i>
+					</div >
+
+
+					<ul class="submenu" id="case_management_new-submenu">
+						<li ng-show="rolePermission.isPermissionGranted(1723019069)">
+							<a id="mycases" ui-sref="dashboard.mycases" ui-sref-opts="{reload: true}">
+								<i class="fa fa-tags" aria-hidden="true"></i>My Current  Cases</a>
+						</li>
+						
+						<li ng-show="rolePermission.isPermissionGranted(1723019064)">
+							<a id="alertsInQueue" ui-sref="dashboard.alertsInQueue" ui-sref-opts="{reload: true}">
+								<i class="fa fa-link" aria-hidden="true"></i>My Cases</a>
+						</li>
+
+						<li ng-show="rolePermission.isPermissionGranted(1723019067)">
+							<a id="search-case" ui-sref="dashboard.searchCases" ui-sref-opts="{reload: true}">
+								<i class="fa fa-search"></i>Search Case</a>
+						</li>
+						
+						<li ng-show="rolePermission.isPermissionGranted(1723019067)">
+							<a id="reviewcases" ui-sref="dashboard.reviewcases" ui-sref-opts="{reload: true}">
+								<i class="fa fa-file-text-o"></i>View Cases</a>
+						</li>
+						
+						<li ng-show="rolePermission.isPermissionGranted(1723019065)">
+							<a id="unassignedAlerts" ui-sref="dashboard.unassignedAlerts" ui-sref-opts="{reload: true}">
+								<i class="fa fa-tasks" aria-hidden="true"></i>Assign Alerts</a>
+						</li>
+						
+						<li ng-show="rolePermission.isPermissionGranted(1723019070)">
+							<a id="case_transaction" ui-sref="dashboard.caseTransactions" ui-sref-opts="{reload: true}">
+								<i class="fa fa-money" aria-hidden="true"></i>Create Manual Case</a>
+						</li>
+
+						<li ng-show="rolePermission.isPermissionGranted(1723019068)">
+							<a id="unassigned_cases" ui-sref="dashboard.unassignedcases" ui-sref-opts="{reload: true}">
+								<i class="fa fa-tasks" aria-hidden="true"></i>Assign Manual Cases</a>
+						</li>
+						
+						<!-- <li ng-show="rolePermission.isPermissionGranted(1723019064)">
+							<a id="alertsInQueue" ui-sref="dashboard.alertsInQueue" ui-sref-opts="{reload: true}">
+								<i class="fa fa-link" aria-hidden="true"></i>Alerts In Queue</a>
+						</li>
+ -->
+
+
+					</ul>
+
+				</li>
+
+				<li id="view_rule">
+               <div class="link" ng-show="rolePermission.isPermissionGranted(1723019061)"
+                  ng-class="{link: isActive('/dashboard/createRule') || isActive('/dashboard/viewRule') ||
+                  isActive('/dashboard/hotlist')||isActive('/dashboard/createRuleSets') || isActive('/dashboard/viewRuleSets')}">
+				   <i class="fa fa-gavel" aria-hidden="true"></i>
+				   <span class="hide-menu">Rule Management</span><i class="fa fa-chevron-down pull-right"></i>
+			   </div >
+               <ul class="submenu" id="view_rule-submenu">
+                  <li ng-show="rolePermission.isPermissionGranted(1723019061)">
+                     <a id="create-rule" ui-sref="dashboard.createRule" ui-sref-opts="{reload: true}">
+                     <i class="fa fa-plus-square-o"></i>Create Rule</a>
+                  </li>
+                  <li>
+                     <a id="view-rule" ui-sref="dashboard.viewRule" ui-sref-opts="{reload: true}">
+                     <i class="fa fa-search"></i>View Rule</a>
+                  </li>
+                  <li class="impExp">
+                     <a id="view-rule" ui-sref="dashboard.importExportRules" ui-sref-opts="{reload: true}">
+                     <i class="fa fa-share-square-o"></i>Export / Import</a>
+                  </li>
+                  <li ng-show="rolePermission.isPermissionGranted(1723019061)">
+                     <a id="create-rule-set" ui-sref="dashboard.createRuleSets" ui-sref-opts="{reload: true}">
+                     <i class="fa fa-plus-square-o"></i>Create Rule Set</a>
+                  </li>
+                  <li>
+                     <a id="view-rule-set" ui-sref="dashboard.viewRuleSets" ui-sref-opts="{reload: true}">
+                     <i class="fa fa-search"></i>View Rule Sets</a>
+                  </li>
+                  <li ng-show="rolePermission.isPermissionGranted(1723019074)">
+                     <a id="hotlist" ui-sref="dashboard.hotlist" ui-sref-opts="{reload: true}">
+                     <i class="fa fa-navicon" aria-hidden="true"></i>Manage List</a>
+                  </li>
+               </ul>
+            </li>
+
+				<li id="abnormal_hours">
+					<div class="link" ng-show="rolePermission.isPermissionGranted(1723019074)"
+						 ng-class="{link: isActive('/dashboard/configAbnormal') || isActive('/dashboard/viewAbnormal') || isActive('/dashboard/approvependingAbnormal') }"><i class="fa fa-user-times" aria-hidden="true"></i><span
+							class="hide-menu">Abnormal Hours</span><i class="fa fa-chevron-down pull-right"></i></div >
+
+
+					<ul class="submenu" id="abnormal_hours-submenu">
+						<li ng-show="rolePermission.isPermissionGranted(1723019074)">
+							<a id="configAbnormal" ui-sref="dashboard.configAbnormal" ui-sref-opts="{reload: true}">
+								<i class="fa fa-tags" aria-hidden="true"></i>Create Abnormal Hours</a>
+						</li>
+						
+						<li ng-show="rolePermission.isPermissionGranted(1723019074)">
+							<a id="approvependingAbnormal" ui-sref="dashboard.approvependingAbnormal" ui-sref-opts="{reload: true}">
+								<i class="fa fa-navicon"></i>Approve/Pending</a>
+						</li>
+
+						<li ng-show="rolePermission.isPermissionGranted(1723019074)">
+							<a id="viewAbnormal" ui-sref="dashboard.viewAbnormal" ui-sref-opts="{reload: true}">
+								<i class="fa fa-file-text-o"></i>View Abnormal Hours</a>
+						</li>
+					</ul>
+
+				</li>
+
+				<li id="view_reports">
+					<div class="link" ng-show="rolePermission.isPermissionGranted(1723019072)"
+						 ng-class="{link: isActive('/dashboard/createReports') || isActive('/dashboard/myReports') }"><i class="fa fa-line-chart" aria-hidden="true"></i><span
+							class="hide-menu">Reports</span><i class="fa fa-chevron-down pull-right"></i></div >
+
+
+					<ul class="submenu" id="reports_new-submenu">
+						<li ng-show="rolePermission.isPermissionGranted(1723019072)">
+							<a id="create_reports" ui-sref="dashboard.createReports" ui-sref-opts="{reload: true}">
+								<i class="fa fa-tags" aria-hidden="true"></i>Create Reports</a>
+						</li>
+
+						<!-- <li ng-show="rolePermission.isPermissionGranted(1723019072)">
+							<a id="my_reports" ui-sref="dashboard.myReports" ui-sref-opts="{reload: true}">
+								<i class="fa fa-file-text-o"></i>My Reports</a>
+						</li> -->
+
+
+
+						<!-- <li>
+							<a id="hotlist" ui-sref="dashboard.hotlistinsert" ui-sref-opts="{reload: true}">
+							<i class="fa fa-plus" aria-hidden="true"></i>Insert To Hot List</a>
+						</li> -->
+
+					</ul>
+
+				</li>
+				
+				<li id="chargeback">
+					<div class="link" ng-show="rolePermission.isPermissionGranted(1723019072)"
+						 ng-class="{link: isActive('/dashboard/createchargeback') || isActive('/dashboard/viewcharegeback') || isActive('/dashboard/checkcharegeback') }"><i class="fa  fa-undo" aria-hidden="true"></i><span
+							class="hide-menu">Charge Back</span><i class="fa fa-chevron-down pull-right"></i></div >
+
+
+					<ul class="submenu" id="chargeback-submenu">
+						<li ng-show="rolePermission.isPermissionGranted(1723019072)">
+							<a id="createchargeback" ui-sref="dashboard.createchargeback" ui-sref-opts="{reload: true}">
+								<i class="fa fa-plus-square-o" aria-hidden="true"></i>Create Charge Back</a>
+						</li>
+						
+						<li ng-show="rolePermission.isPermissionGranted(1723019072)">
+							<a id="viewchargeback" ui-sref="dashboard.viewchargeback" ui-sref-opts="{reload: true}">
+								<i class="fa fa-align-justify" aria-hidden="true"></i>View Charge Back</a>
+						</li>
+						
+						<li ng-show="rolePermission.isPermissionGranted(1723019072)">
+							<a id="checkchargeback"  ng-click="checkChargeBack()" ui-sref-opts="{reload: true}">
+								<i class="fa fa-search" aria-hidden="true"></i>Check Charge Back</a>
+						</li>
+
+					</ul>
+
+				</li>
+
+
+
+
+				<!--  <li id="config"> <div class="link"
+                                    ng-show="rolePermission.isPermissionGranted(3317860870)"
+                                    ng-class="{link: isActive('/dashboard/config') }"><i
+                                        class="fa fa-gear "></i><span
+                                        class="hide-menu">Configuration</span><i class="fa fa-chevron-down pull-right"></i></div >
+                                    <ul class="submenu" id="config-submenu">
+                                        <li><a id ="setup" ui-sref="dashboard.config"
+                                            ui-sref-opts="{reload: true}"><i class="fa fa-cogs"></i>Setup Default Parameters</a></li>
+                                    </ul>
+                </li>  -->
+
+               <!--  <li   id="fileUpload" class="sidebar-item" ><div class="link2" ng-class="{link2: isActive('/dashboard/fileUpload')}"><a
+						class="sidebar-link waves-effect waves-dark sidebar-link" id="fileUpload1" ui-sref="dashboard.fileUpload" ui-sref-opts="{reload: true}"
+						aria-expanded="false"><i class="fa fa-bar-chart"></i><span
+						class="hide-menu">Upload Data </span></a>
+				</div>
+				</li> -->
+
+			</ul>
+
+		</nav>
+
+	</div>
+
+</aside>
+
+
+
+<!-- End Left Sidebar -->
+
+
+
+
+
+
+
+

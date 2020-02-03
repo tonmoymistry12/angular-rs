@@ -1,0 +1,258 @@
+
+
+<input class="case_button" id="tab1" type="radio" name="tabs" checked>
+<label class="sectionLabel" for="tab1">Case Details</label>
+
+<section class="sectionTab" id="content1">
+    <div class="userDashboard container-fluid">
+        <div class="hasHeader">
+            <div class="formStyle userTabs clearfix settings">
+                
+                <span class="search_sub_header searchCaseHeading">Alert Details</span>
+                <div class="tab-pane active searchUser">
+                    <div>
+                        <table class="table  t-responsive">
+                            <thead>
+                            <tr>
+                                <th scope="col" class="label-small vertical_align_middle"><strong>Alert Id</strong></th>
+                                <th scope="col" class="label-small vertical_align_middle"><strong>Alert Count</strong></th>
+                                <th scope="col" class="label-small vertical_align_middle"><strong>Alert Status</strong></th>
+                                <th scope="col" class="label-small vertical_align_middle"><strong>Rule Id</strong></th>
+                                <th scope="col" class="label-small vertical_align_middle"><strong>Rule name</strong></th>
+                                <th scope="col" class="label-small vertical_align_middle" id="createdTime">Creation Time</th>
+                                <th scope="col" class="label-small vertical_align_middle" id="updatedTime">Last Updated Time</th>
+                                <!-- <th scope="col" class="label-small vertical_align_middle" id="action">Action</th> -->
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr  ng-show="data.alert.length!=0&&!angular.isUndefined(data.alert)" >
+                                <td data-label="Alert Id">{{data.alert.alertId}}</td>
+                                <td data-label="Alert Id">{{data.txnCount}}</td>
+                                <td data-label="Alert Type">{{data.alert.userInformationDTO.actionType}}</td>
+                                <td data-label="Rule Id">{{data.alert.ruleId}}</td>
+                                <td data-label="Rule Name">{{data.alert.ruleName}}</td>
+                                <td data-label="Alert Created Time">{{data.alert.creationTs==null || angular.isUndefined(data.alert.creationTs)?'NA':data.alert.creationTs| date: 'yyyy-MM-dd HH:mm:ss Z '  | GMT}}</td>
+                                <td data-label="Alert Updated Time">{{data.alert.lastUpdateTs==null|| angular.isUndefined(data.alert.lastUpdateTs)?'NA':data.alert.lastUpdateTs| date: 'yyyy-MM-dd HH:mm:ss Z ' | GMT}}</td>
+                                <!-- <td data-label="Action" id="alert_action">
+                                    <div class="dropdown" id="alert_action_dropdown1" >ng-if="rolePermission.isPermissionGranted(1723019066)"
+                                        <button class="btn dropdown-toggle button-width" type="button" data-toggle="dropdown" ng-disabled="closeAlertDisable || hideAction"><span class="fa fa-cog" aria-hidden="true"></span>
+                                        </button>
+
+                                        <ul class="dropdown-menu closeAlertWidth" id="alert_info_action_dropdown_action1">
+                                            <li><a href="#" class="text-center" id="update_alert" ng-click="closeAlertModel(data.alert.alertId)" ><span   class="fa fa-times" aria-hidden="true" > Close Alert</span></a></li>
+
+                                        </ul>
+                                    </div>
+                                </td> -->
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="label-medium text-center noData" ng-show="data.alert.length =='0' || angular.isUndefined(data.alert)"> <h6>No Data Found</h6></div>
+                </div>
+                <div><p><br></p></div>
+
+                <div class="tab-pane active searchUser">
+                    <span class="search_sub_header searchCaseHeading">Case Details</span>
+                    <table class="table  t-responsive">
+                        <thead>
+                        <tr>
+                            <th scope="col" class="label-small vertical_align_middle"><strong>Case Id</strong></th>
+                            <th scope="col" class="label-small vertical_align_middle"><strong>Source Channel</strong></th>
+                            <th scope="col" class="label-small vertical_align_middle"><strong>Fraud Score</strong></th>
+
+                        </tr>
+                        </thead>
+                        <tbody ng-show="data.alert!=null&&!angular.isUndefined(data.alert)">
+                        <tr id="caseDetails">
+                            <td data-label="case id">{{ data.alert.caseId}}</td>
+                            <td data-label="source channel">{{ channelDisplay(data.alert.txnChannelList)}}</td>
+                            <td data-label="risk score">{{ data.alert.riskScoreDetails}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div><p><br></p></div>
+
+                <div class="tab-pane active searchUser">
+                    
+                    <span class="search_sub_header searchCaseHeading display_inline_alert">
+                    <a class="btn btn-lg btn-danger makeTextWhite" ng-click="showBoxOne = !showBoxOne">
+   					 Notes Details
+ 					 </a>
+  					</span>
+  				    <button class="btn btn-lg btn-danger" ng-if="rolePermission.isPermissionGranted(1723019066)" type="button" ng-click="addAlertNotesModal()" class="btn btn-lg btn-danger" ng-disabled = "hideAction">Add Note</button>
+                        <!--ng-if="data.alert.alertNotes!=null"-->
+                    <div class="box-one" ng-show="showBoxOne">
+                    <div class="searchUser" ng-show="data.alert.alertNotes.length!=0&&!angular.isUndefined(data.alert.alertNotes)">
+                        <table class="table  t-responsive">
+                            <thead>
+                            <tr>
+                                <th scope="col" class="label-small vertical_align_middle"><strong>Notes Created By</strong></th>
+                                <th scope="col" class="label-small vertical_align_middle"><strong>Note</strong></th>
+                                <th scope="col" class="label-small vertical_align_middle"><strong>Creation Time</strong></th>
+                            </tr>
+                            </thead>
+                            <tbody dir-paginate="i in data.alert.alertNotes|orderBy:sortKey:reverse|filter:search|itemsPerPage:5" pagination-id="alertNotes">
+                            <tr>
+                                <td data-label="Note">{{i.userInformationDTO.userId}}</td>
+                                <td data-label="Note" class="wordBreak">{{i.notes}}</td>
+                                <td data-label="Note Type">{{i.creationTs!=null?(i.creationTs | date: 'yyyy-MM-dd HH:mm:ss Z '|GMT):'NA' }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    
+                    <div class="text-center noData" ng-show="data.alert.alertNotes.length =='0' || angular.isUndefined(data.alert.alertNotes) || data.alert.alertNotes == null"> <h6>No Data Found</h6></div>
+
+                    <div class="gridPagination clearfix">
+                        <dir-pagination-controls max-size="5"  direction-links="true" boundary-links="true" pagination-id="alertNotes"></dir-pagination-controls>
+                    </div>
+                    </div>
+                    </div>
+                </div>
+               <!--  <div><p><br></p></div>
+                <span class="search_sub_header searchCaseHeading">Alerted transaction details</span> <br>
+                <div id="example-table"></div>
+
+                <div class="dropdownHeight">
+                    <div class="tab-pane active searchUser">
+                        <span class="search_sub_header searchCaseHeading">Transaction Details</span>
+                        <table class="table  t-responsive">
+                            <thead>
+                            <tr>
+                                <th scope="col" id="img1"></th>
+                                <th scope="col"><strong>Transaction Id</strong></th>
+                                <th scope="col"><strong>Channel</strong></th>
+                                <th scope="col" ng-if="perspective=='AML'"><strong>AML Type</strong></th>
+                                <th scope="col"><strong>Fraud Type</strong></th>
+                                <th scope="col"><strong>Source</strong></th>
+                                <th scope="col"><strong>Transaction Type</strong></th>
+                                <th scope="col"><strong>Time</strong></th>
+                                <th scope="col"><strong>Action</strong></th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-show="data.caseTransactionDetail.length!=0&&!angular.isUndefined(data.caseTransactionDetail)">
+                                <td data-label="Expand to more info" id="queue_select">
+                                    <h5 class="fa" ng-class="!i.select?'fa-plus':'fa-minus'" ng-init="i.select=false" ng-model="i.select" ng-click="i.select=!i.select"></h5>
+                                </td>
+                                <td>
+                                    <h5><span ng-if="data.caseTransactionDetail.offline == false"  ><span class="greendot"></span></span><span ng-if="data.caseTransactionDetail.offline != false"><span class="reddot" ></span></span></h5>
+                                </td>
+                                <td data-label="Txn Id">{{data.caseTransactionDetail.txnId}}</td>
+                                <td data-label="Channel">{{data.caseTransactionDetail.channel}}</td>
+                                <td data-label="Aml Type" ng-if="perspective=='AML'">{{data.caseTransactionDetail.amlTypeDesc}}</td>
+                                <td data-label="Fraud Type">{{data.caseTransactionDetail.fraudTypeDesc}}</td>
+                                <td data-label="Source"><span ng-if="i.offline == false"><div class="led-yellow"></div><span class = "onlineColor">Online</span></span><span ng-if="i.offline != false"><div class="led-red"></div><span class = "onlineColor">Offline</span></span></td>
+                                <td data-label="Tax Date">{{data.caseTransactionDetail.txnType}}</td>
+                                <td data-label="Tax Date">{{data.caseTransactionDetail.txnDateTime!=null?(data.caseTransactionDetail.txnDateTime| date: 'yyyy-MM-dd HH:mm:ss Z '|GMT):'NA'}}</td>
+                                <td data-label="Action" id="case_action" >ng-if="rolePermission.isPermissionGranted(1723019066)"
+                                    <div class="dropdown" id="case_action_dropdown">
+                                        <button class="btn dropdown-toggle button-width" type="button" data-toggle="dropdown"
+                                                ng-disabled="((data.caseTransactionDetail.fraudType != null && data.caseTransactionDetail.fraudType != '' &&
+                                            data.caseTransactionDetail.amlType != null && data.caseTransactionDetail.amlType != '' && orgidcheck != 'NPCI') ||
+                                            hideAction==true)"><span class="fa fa-cog" aria-hidden="true"></span>
+                                        </button>
+                                        <ul class="dropdown-menu alertDropdown fa-eye-ul" id="case_info_action_dropdown_action">
+                                            <li ng-if = "(data.caseTransactionDetail.fraudType == null  || data.caseTransactionDetail.fraudType == '')&& !perspective.includes('AML')" ng-click="tagFraud(data.caseTransactionDetail.txnId,data.caseTransactionDetail.channel)"><a href="#" id="tagFraud1"><span class="fa fa-tag" aria-hidden="true" >Confirm Fraud</span></a></li>
+                                            <li ng-if = "orgidcheck == 'NPCI' && perspective.includes('AML') && (data.caseTransactionDetail.amlType == null  || data.caseTransactionDetail.amlType == '')" ng-click="tagAml(data.caseTransactionDetail.txnId,data.caseTransactionDetail.channel)"><a href="#" id="tagAml"><span class="fa fa-tag" aria-hidden="true" >Tag AML</span></a></li>
+                                            <li ng-if = "(data.caseTransactionDetail.fraudType != null && data.caseTransactionDetail.fraudType != '') && !perspective.includes('AML')" ng-click="untagFraud(data.caseTransactionDetail.txnId,data.caseTransactionDetail.channel)"><a href="#" id="tagFraud2"><span class="fa fa-tag" aria-hidden="true" >Untag Fraud</span></a></li>
+                                            <li ng-if = "orgidcheck == 'NPCI' &&  perspective.includes('AML') && (data.caseTransactionDetail.amlType != null  && data.caseTransactionDetail.amlType != '')" ng-click="untagAml(data.caseTransactionDetail.txnId,data.caseTransactionDetail.channel)"><a href="#" id="untagAml"><span class="fa fa-tag" aria-hidden="true" >Untag AML</span></a></li>
+                                            <li ng-if="!perspective.includes('AML')" ng-repeat="j in tagByOther"
+                                                ng-click="tagOthers(i.txnId,i.channel,j)"><a href="#" id="view_case"><span class="fa fa-tag"
+                                                                                                                           aria-hidden="true" value={{j.value}}>{{j.name}}</span></a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr ng-show="i.select" id="case_select_row" class="expandColor">
+                                <td colspan="12" class="caseTable">
+
+                                    <div class="clearfix">
+                                        <div class="col-sm-12" id="Cardno" ><strong>Card Number :</strong> <span class="lastName">{{ data.caseTransactionDetail.cardNumber }}</span></div>
+                                    </div>
+
+                                    <div class="clearfix">
+                                        <div class="col-sm-3" id="mid"><strong>MID :</strong> <span class="firstName">{{data.caseTransactionDetail.mid }}</span> </div>
+                                        <div class="col-sm-3" id="tid" ><strong>TID :</strong> <span class="lastName">{{data.caseTransactionDetail.tid }}</span></div>
+                                        <div class="col-sm-3" id="mcc"><strong>MCC :</strong> <span class="lastName">{{data.caseTransactionDetail.mcc }}</span></div>
+                                        <div class="col-sm-3" id="txnAmount"><strong>Transaction Amount :</strong> <span class="firstName">{{data.caseTransactionDetail.txnAmount }}</span> </div>
+
+                                    </div>
+
+                                    <div class="clearfix">
+                                        <div class="col-sm-3" id="acqInstId" ><strong>Acquirer BIN :</strong> <span class="lastName">{{data.caseTransactionDetail.acqInstId }}</span></div>
+                                        <div class="col-sm-3" id="responseCode"><strong>Response Code :</strong> <span class="firstName">{{data.caseTransactionDetail.responseCode }}</span> </div>
+                                    </div>
+
+                                    <div class="clearfix" ng-if="(data.caseTransactionDetail.channel == 'RuPayAtm') || (data.caseTransactionDetail.channel == 'RuPayPos')">
+                                        <div class="col-sm-3" id="aquirerRiskScore" ><strong>Aquirer Risk Score :</strong> <span class="lastName">{{data.caseTransactionDetail.aquirerRiskScore }}</span></div>
+                                        <div class="col-sm-3" id="aquirerModelScore" ><strong>Aquirer Model Score :</strong> <span class="lastName">{{data.caseTransactionDetail.aquirerModelScore }}</span></div>
+                                    </div>
+
+                                    <div class="clearfix" ng-if="(data.caseTransactionDetail.channel == 'RuPayAtm') || (data.caseTransactionDetail.channel == 'RuPayPos')">
+                                        <div class="col-sm-3" id="issuerRiskScore"><strong>Issuer Risk Score :</strong> <span class="lastName">{{data.caseTransactionDetail.issuerRiskScore }}</span></div>
+                                        <div class="col-sm-3" id="issuerModelScore"><strong>Issuer Model Score :</strong> <span class="lastName">{{data.caseTransactionDetail.issuerModelScore }}</span></div>
+                                    </div>
+
+                                    <div class="clearfix"  ng-if="(data.caseTransactionDetail.channel == 'UPI') || (data.caseTransactionDetail.channel == 'IMPS')">
+                                        <div class="col-sm-3" id="remitterRiskScore" ><strong>Remitter Risk Score :</strong> <span class="lastName">{{data.caseTransactionDetail.remitterRiskScore }}</span></div>
+                                        <div class="col-sm-3" id="remitterModelScore" ><strong>Remitter Model Score :</strong> <span class="lastName">{{data.caseTransactionDetail.remitterModelScore }}</span></div>
+                                    </div>
+
+                                    <div class="clearfix"  ng-if="(data.caseTransactionDetail.channel == 'UPI') || (data.caseTransactionDetail.channel == 'IMPS')">
+                                        <div class="col-sm-3" id="beneficiaryModelScore"><strong>Beneficiary Risk Score :</strong> <span class="lastName">{{data.caseTransactionDetail.beneficiaryRiskScore }}</span></div>
+                                        <div class="col-sm-3" id="beneficiaryRiskScore"><strong>Beneficiary Model Score :</strong> <span class="lastName">{{data.caseTransactionDetail.beneficiaryModelScore }}</span></div>
+
+                                    </div>
+
+
+                                    <div class="clearfix">
+                                        <div class="col-sm-12" id="stip">
+                                            <strong>Transaction Data :</strong><textarea type="/pre" rows="20" cols="50"  class="form-control">{{formated(data.caseTransactionDetail.txnjson)}}</textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="row clearfix">
+                                        <div class="col-sm-12" id="stip">
+                                            <h5 class="txn_data_text">Transaction Data :</h5>
+                                            <div class="trns_block">
+                                                <li class="trns_sn_data"
+                                                    ng-repeat="(key, value) in newJsonData">
+                                                    <span class="key_name">{{key}} :</span> <span class="value_name">{{value}}</span>
+                                                    <span class="value_name" ng-show="!value.length">No Data
+														Found</span></li>
+                                            </div>
+
+
+
+
+
+                                        </div>
+                                    </div>
+
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div class="text-center noData" ng-hide="data.caseTransactionDetail.length!='0'&&!angular.isUndefined(data.caseTransactionDetail)"> <h6>No Data Found</h6></div>
+
+                    </div>
+                </div>
+
+ -->
+            <div class="back_width">
+
+                    <button type="button" class="btn btn-lg btn-danger"  ng-click="goBackAlert()" > Back</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+
+

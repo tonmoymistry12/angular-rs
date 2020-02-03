@@ -1,0 +1,163 @@
+<div class="payee tabBodyAlign">
+   <div class="row odd-row no-margin rule-bottom-border">
+      <div class="col-sm-3">
+         <!-- Jurisdiction Checkbox START -->
+         <div class="form-group">
+            <label for="channel">Juridiction</label><br>
+            <label class="checkbox-inline">
+            <input type="checkbox" ng-model="jurisdictionDomistic" ng-change="jurisdictionInternational=false;payeeJuridictionChange('Domestic');">Domestic
+            </label>
+            <label class="checkbox-inline">
+            <input type="checkbox" ng-model="jurisdictionInternational" ng-change="jurisdictionDomistic=false;payeeJuridictionChange('International');">International
+            </label>
+         </div>
+         <!-- Jurisdiction Checkbox END -->
+      </div>
+      <!-- Business Name Start -->
+      <div class="col-sm-4" style="display:none;">
+         <div class="form-group">
+            <label for="value">Business Criterion</label>
+            <div class="row">
+               <div class="col-sm-6">
+                  <input type="checkbox" ng-model="businessCriterion" ng-change="businessCriterionChange()">
+               </div>
+               <div class="col-sm-6" style="display:none;">
+                  <input type="text" class="form-control" id="value" placeholder="value">
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- Business Name End -->
+      <!-- Merchant Name Start -->
+      <div class="col-sm-4" style="display:none;">
+         <div class="form-group">
+            <label for="value">Merchant Name</label>
+            <div class="row">
+               <div class="col-sm-6">
+                  <input type="text" class="form-control" id="value" placeholder="value">
+               </div>
+               <div class="col-sm-6">
+                  <input type="text" class="form-control" id="value" placeholder="value">
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- Merchant NameEnd -->
+   </div>
+   <div class="row even-row no-margin rule-bottom-border">
+      <div class="col-sm-12">
+         <div class="row">
+            <!-- MccType DROPDOWN START -->
+            <div class="col-sm-2">
+               <div class="form-group">
+                  <label for="mccType">MCC Type</label>
+                  <select class="form-control" ng-model="mccType" ng-change="mccTypeChange()">
+                     <option>- Select -</option>
+                     <option value="highRisk"> High Risk </option>
+                     <option value="normal"> Normal</option>
+                  </select>
+               </div>
+            </div>
+            <!-- MccType END -->
+            <div class="col-sm-2">
+               <label class="radio-inline"><br>
+               <input type="checkbox" name="mccTypeIn" ng-model="mccTypeIn" ng-change="mccTypeNotIn=false">In
+               </label>
+               <label class="radio-inline"><br>
+               <input type="checkbox" name="mccTypeNotIn" ng-model="mccTypeNotIn" ng-change="mccTypeIn=false">Not In
+               </label>
+            </div>
+         </div>
+         <div class="row">
+            <!-- Dual Switch box start -->
+            <div class="col-sm-4">
+               <div>
+                  <select multiple data-ng-options="mcc.name as mcc.name for mcc in mccList | filter:mccType" data-ng-model="selectedMcc" data-multi-select="mccList" data-ms-options="searchOptionForDualList"></select>
+               </div>
+               <div style="margin-top:15px;">
+                  <button class="btn btn-danger" ng-click="mccTypeAction()" ng-disabled="!mccTypeIn && !mccTypeNotIn">Add</button>
+               </div>
+               <!--<select  multiple data-ng-options="MccListNormal as MccListNormal for MccListNormal in obj.MccListNormal" ng-model="selectedMcc" data-multi-select="options"></select>-->
+               <!-- <pre>{{selectedOptions}}</pre>-->
+            </div>
+            <!-- Dual Switch box end -->
+            <div class="col-sm-1">&nbsp;</div>
+            <div class="col-sm-7 mccInNotIn">
+               <div class="row">
+                  <div class="col-sm-6" ng-show="payeefilter.mccIn.length>0? true : false">
+                     <table class="table table-striped table-fixed">
+                        <thead>
+                           <tr style="border-bottom:1px solid #ccc">
+                              <th style="font-weight:bold; border-bottom-color:transparent">MCC In</th>
+                             
+                           </tr>
+                           <tr style="background-color:#d8d8d8;">
+                           <th style="font-weight:bold; width:55px; border-bottom-color:transparent">MCC</th>
+                           <th style="font-weight:bold; border-bottom-color:transparent">Description</th>
+                           
+                           </tr>
+                        </thead>
+                        <tbody>
+                           <tr ng-repeat="mccIn in payeefilter.mccIn track by $index">
+                              <td class="col-xs-2" >{{mccIn}}</td>
+                              <td class="col-xs-9" >{{mccDesc(mccIn)}}</td>
+                              <td class="col-xs-1" ><i class="fa fa-times ruleeditorActionIcon cursor" ng-click="removeFrmMccIn($index)"></i></td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </div>
+                  <div class="col-sm-6">
+                    <table class="table table-striped table-fixed" ng-show="payeefilter.mccNotIn.length>0? true : false">
+                         <thead>
+                           <tr style="border-bottom:1px solid #ccc">
+                              <th style="font-weight:bold; border-bottom-color:transparent">MCC Not In</th>
+                             
+                           </tr>
+                           <tr style="background-color:#d8d8d8;">
+                           <th style="font-weight:bold; width:55px; border-bottom-color:transparent">MCC</th>
+                           <th style="font-weight:bold; border-bottom-color:transparent">Description</th>
+                           
+                           </tr>
+                        </thead>
+                        <tbody>
+                           <tr ng-repeat="mccNotIn in payeefilter.mccNotIn track by $index">
+                             <td class="col-xs-2" >{{mccNotIn}}</td>
+                             <td class="col-xs-9" >{{mccDesc(mccNotIn)}}</td>
+                              <td class="col-xs-1" ><i class="fa fa-times ruleeditorActionIcon cursor" ng-click="removeFrmMccNotIn($index)"></i></td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </div>
+               </div>
+            </div>
+           
+         </div>
+      </div>
+   </div>
+   <div class="row odd-row no-margin lastBoxPadd">
+      <div class="col-sm-12">
+         <!--  Checkbox START -->
+         <div class="form-group" style="padding-top:10px;">
+            <label class="checkbox-inline">
+            <input type="checkbox" ng-model="payeefilter.isClosedRetailer">Closed Retailer
+            </label>
+            <label class="checkbox-inline">
+            <input type="checkbox" ng-model="payeefilter.isFirstVisitInLast6Months">First Visit in 6 months by Account
+            </label>
+            <label class="checkbox-inline" ng-show="metadata.channel==='RuPayPos'">
+            <input type="checkbox" ng-model="payeefilter.isFavourite" >Favourite Merchant
+           
+            </label>
+             <label class="checkbox-inline"  ng-show="metadata.channel==='UPI'">
+           
+            <input type="checkbox" ng-model="payeefilter.isFavourite">Favourite Payee
+            </label>
+            <label class="checkbox-inline">
+            <input type="checkbox" ng-model="payeefilter.isNew">New Merchant
+            </label>
+         </div>
+         <!--  Checkbox END -->
+      </div>
+   </div>
+   <div class="row odd-row no-margin"><span class="mandatory-field text-danger"> {{mandatory}}</span></div>
+</div>

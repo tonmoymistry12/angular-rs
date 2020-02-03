@@ -1,0 +1,55 @@
+<div class="container-fluid navbar headerSubNav clearfix">	
+	<div id="subNav" class="container">
+		<ul class="nav navbar-nav">
+			<li ng-show="rolePermission.isPermissionGranted(2) || rolePermission.isPermissionGranted(28) || rolePermission.isPermissionGranted(29)" 
+				class="dropdown first" ng-class="getClass('/dashboard')"><img ng-src="{{imagePath}}/icons-customer.png" alt="Spectrum Logo" class="hidden-xs"/><a class="dropdown-toggle" data-toggle="dropdown" href="#">User<i class="arrow down"></a></i>
+				  <ul class="dropdown-menu">
+   					<li ng-show="rolePermission.isPermissionGranted(2)">
+   						<a ui-sref="dashboard.create" ng-click="">Create User</a>
+   					</li>
+   					<li ng-show="rolePermission.isPermissionGranted(28)">
+   						<a ui-sref="dashboard.search">Search User</a>
+   					</li>
+   					<li ng-show="rolePermission.isPermissionGranted(29)">
+   						<a ui-sref="dashboard.csrSearch">Search CardHolder</a>
+   					</li>
+   				</ul>
+			</li>
+			<li ng-show="rolePermission.isPermissionGranted(7) && rolePermission.isPermissionGranted(9)" class="dropdown" ng-class="getClass('/adminEditPermission')"><img src="img/icons-customer.png" alt="Spectrum Logo" class="hidden-xs"/><a href="#" class="dropdown-toggle" data-toggle="dropdown">Role<i class="arrow down"></i></a>
+				<ul class="dropdown-menu">
+					<!-- <li ng-show="rolePermission.isPermissionGranted(7)">
+   						Add Role
+   					</li> -->
+   					<li ng-show="rolePermission.isPermissionGranted(9)">
+   						<a ui-sref="dashboard.editPermission">Edit Permission</a>
+   					</li>
+   				</ul>
+			</li>
+			<li ng-show="rolePermission.isPermissionGranted(10)" class="dropdown" ng-class="getClass('/defaultConfig')"><img src="{{imagePath}}/icons-services.png" alt="Spectrum Logo"/><a href="#" class="dropdown-toggle" data-toggle="dropdown">Configuration<i class="arrow down"></i></a>
+				<ul class="dropdown-menu">
+   					<li>
+   						<a ui-sref="dashboard.config">Setup Default<br> Parameters</a>
+   					</li>
+   				</ul>
+			</li>
+			<li ng-show="rolePermission.isPermissionGranted(10)" class="dropdown" ng-class="getClass('/defaultConfig')"><img src="{{imagePath}}/icons-services.png" alt="Spectrum Logo"/><a href="#" class="dropdown-toggle" data-toggle="dropdown">Reports<i class="arrow down"></i></a>
+				<ul class="dropdown-menu">
+   					<li>
+   						<a ui-sref="dashboard.accountReport"># of new Accounts</a>
+   					</li>
+   					<li>
+   						<a ui-sref="dashboard.authReport">Authorization Trends</a>
+   					</li>
+   				</ul>
+			</li>
+			<li ng-show="rolePermission.isPermissionGranted(29)" class="dropdown" ng-class="getClass('/defaultConfig')"><img src="{{imagePath}}/icons-services.png" alt="Spectrum Logo"/><a href="#" class="dropdown-toggle" data-toggle="dropdown">Cards<i class="arrow down"></i></a>
+				<ul class="dropdown-menu">
+   					<li>
+   						<a ui-sref="dashboard.csrForRegistration">New User Registration</a>
+   					</li>
+   				</ul>
+			</li>
+		</ul>
+	</div>
+</div>
+

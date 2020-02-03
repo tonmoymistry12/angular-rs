@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <base href="/">
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="format-detection" content="telephone=no">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+	  <meta http-equiv="Pragma" content="no-cache" />
+	  <meta http-equiv="Expires" content="0" />
+      <title>Enterprise Fraud and Risk Management Portal</title>
+      
+      <!-- CSS -->
+      <link rel="shortcut icon" type="image/x-icon" href="./img/npcilogo.png" />
+      <link rel="stylesheet" href="./css/vendor/bootstrap.css">
+      <link href="css/style1.css" rel="stylesheet" type="text/css">
+      <!-- Custom CSS -->
+      <link href="css/vendor/angular-bootstrap-toggle.css" rel="stylesheet" type="text/css">
+      <link href="css/vendor/jquery-ui.css" rel="stylesheet" type="text/css">
+      <link rel='stylesheet' href='css/vendor/angular-bootstrap-toggle.css' type='text/css' media='all' />
+      <link rel='stylesheet' href='css/vendor/angular-toast.css' type='text/css' media='all' />
+      <link rel='stylesheet' href='css/angular-confirm.css' type='text/css' media='all' />
+      <link rel='stylesheet' href='css/angular-loading-bar.css' type='text/css' media='all' />
+      <link rel='stylesheet' href='css/vendor/font-awesome.min.css' type='text/css' media='all' />
+      <link rel='stylesheet' href='css/angular-moment-datepicker.css' type='text/css' media='all' />
+      <link rel='stylesheet' href='css/bootstrap-datetimepicker.css' type='text/css' media='all' />
+      <link rel='stylesheet' href='css/bootstrap-datetimepicker-standalone.css' type='text/css' media='all' />
+      <!-- <link rel="stylesheet" href="css/vendor/select.css"> -->
+      <link rel="stylesheet" href="css/vendor/select2.css">
+      <link rel="stylesheet" type="text/css" href="css/vendor/vis.css">
+      <link href="css/vendor/jquery.qtip.css" rel="stylesheet" type="text/css"/>
+      <link href="css/vendor/ng-tags-input.css" rel="stylesheet" type="text/css"/>
+      <link href="css/vendor/dual-selectbox.css" rel="stylesheet"/>
+      <link href="css/vendor/tabulator.css" rel="stylesheet"/>
+      <link rel="stylesheet" href="css/rule-editor.css" />
+      <link rel="stylesheet" href="css/ADM-dateTimePicker.css" />
+      <link rel="stylesheet" href="css/ngDialog.css" />
+      <link rel="stylesheet" href="css/ngDialog-theme-default.css" />
+   </head>
+   <body ng-app="efrm" ng-init="spinner=true" ng-cloak ng-class="preload?'loaded':''">
+      <div class="main-cont">
+         <div id="loading-bar-container"></div>
+         <div id="main" ng-class="spinner ? 'blurElm' : ''">
+            <div id="main-wrapper" class="cardBg"  ui-view></div>
+         </div>
+         <div ng-show="spinner" class="spinnerWrap">
+            <div id="spinner" class="loader loader--style6 text-center" >
+               <svg version="1.1" x="0px" y="0px"
+                  width="44px" height="50px" viewBox="0 0 24 30" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+                  <rect x="0" y="13" width="4" height="5" fill="#333">
+                     <animate attributeName="height" attributeType="XML"
+                        values="5;21;5" 
+                        begin="0s" dur="0.6s" repeatCount="indefinite" />
+                     <animate attributeName="y" attributeType="XML"
+                        values="13; 5; 13"
+                        begin="0s" dur="0.6s" repeatCount="indefinite" />
+                  </rect>
+                  <rect x="10" y="13" width="4" height="5" fill="#333">
+                     <animate attributeName="height" attributeType="XML"
+                        values="5;21;5" 
+                        begin="0.15s" dur="0.6s" repeatCount="indefinite" />
+                     <animate attributeName="y" attributeType="XML"
+                        values="13; 5; 13"
+                        begin="0.15s" dur="0.6s" repeatCount="indefinite" />
+                  </rect>
+                  <rect x="20" y="13" width="4" height="5" fill="#333">
+                     <animate attributeName="height" attributeType="XML"
+                        values="5;21;5" 
+                        begin="0.3s" dur="0.6s" repeatCount="indefinite" />
+                     <animate attributeName="y" attributeType="XML"
+                        values="13; 5; 13"
+                        begin="0.3s" dur="0.6s" repeatCount="indefinite" />
+                  </rect>
+               </svg>
+               <p><small>Processing ...</small></p>
+            </div>
+         </div>
+         <div class="scroll-top-wrapper ">
+            <span class="scroll-top-inner">
+            <span class="fa fa-2x fa-arrow-circle-up"></span>
+            </span>
+         </div>
+      </div>
+	   <!-- JS lib -->
+      <script src="lib/vendor/jquery.js"></script>
+      <script src="lib/vendor/jquery-ui.min.js"></script>
+      <script src="lib/vendor/modernizr.js"></script>
+      <script src="lib/vendor/bootstrap.js"></script>	
+      <script src="lib/vendor/lodash.js"></script>	
+      <script src="lib/vendor/moment.js"></script>
+      <script src="lib/vendor/moment-timezone.js"></script>
+      <script src="lib/vendor/moment-timezone-data.js"></script>
+      <script src="lib/vendor/bootstrap-datetimepicker.js"></script>
+      <script src="lib/vendor/chart.js"></script>
+      <script src="lib/vendor/fileSaver.js"></script>
+      <script src="lib/vendor/BlobConverter.js"></script>
+      <script src="lib/vendor/scrollTop.js"></script>
+      <script src="lib/vendor/pdf.js"></script>
+      <script src="lib/vendor/xlsx.js"></script>
+      
+      <script src="lib/vendor/canvas2image.js"></script>
+      <script src="lib/vendor/jPdf.js"></script>
+      <script src="lib/vendor/jpdf.worker.js"></script> 
+      <script src="lib/vendor/jquery.inputmask.bundle.js"></script>
+      <script type="text/javascript" src="lib/vendor/vis.js"></script>
+      <script type="text/javascript" src="lib/vendor/notify.js"></script>
+      <script type="text/javascript" src="lib/vendor/notify.min.js"></script>
+      <script src="lib/vendor/d3.min.js"></script>
+      <script src="lib/vendor/d3.tip.js"></script>
+      <script src="lib/vendor/jquery.qtip.js"></script>
+      <script src="lib/vendor/tabulator.js"></script>
+       <script src="lib/vendor/tabulator-excel-download.js"></script>
+      <script type="text/javascript" src="lib/vendor/crypto.js"></script>
+      
+     
+      <!-- Angular js lib -->
+      <script src="lib/angular/angular.js"></script>
+      <script src="lib/vendor/angular-sanitize.js"></script>
+      <!-- <script src="lib/vendor/select.min.js"></script> -->
+      <script src="lib/vendor/select2.min.js"></script>
+      <script src="lib/angular/angular-ui-router.min.js"></script>
+      <script src="lib/angular/angular-animate.js"></script>
+      <script src="lib/angular/angular-resource.js"></script>
+      <script src="lib/angular/angular-bootstrap-toggle.js"></script>
+      <script src='lib/angular/angular-loading-bar.js'></script>
+      <script src='lib/angular/angular-toast.js'></script>
+      <script src="lib/angular/dirPagination.js"></script>
+      <script src="lib/angular/angular-confirm.js"></script>
+      <script src="lib/angular/angular-moment-datepicker.js"></script>
+      <script src="lib/vendor/ui-bootstrap.min.js"></script>
+      <script src="lib/angular/angular-chart.js"></script>
+      <script src="lib/angular/angular-filter.js"></script>
+      <script src="lib/angular/angular-pdf-viewer.js"></script>
+      <script src="lib/vendor/sha256.js"></script>
+      <script src="lib/angular/ng-tags-input.min.js"></script>
+      <script src="lib/angular/ui-bootstrap-tpls.js"></script>
+      <!-- table to pdf -->
+      <!-- <script src="lib/vendor/pdfmakermin.js"></script> -->
+      <script src="lib/vendor/html2canvas.js"></script>
+       <script src="lib/vendor/table2excel.js"></script>
+      <!-- <script src="lib/angular/ng-file-upload-all.min.js"></script> -->
+      
+      <!-- Application js -->
+      <script src="js/efrmModules.js"></script>
+      <script src="js/efrmRoute.js"></script>
+      <script src="js/efrmApp.js"></script>
+      <!-- <script src="js/efrmController.js"></script> -->
+      <script src="js/common/efrm.common.service.module.js"></script>
+      <script src="js/common/efrmCommonDataService.js"></script>
+      <script src="js/common/efrmDataService.js"></script>
+      <script src="js/common/efrmRestService.js"></script>
+      <script src="js/efrmConfig.js"></script>
+      <script src="js/common/efrmFilters.js"></script>
+      <script src="js/common/efrmDirectives.js"></script>
+      <!-- public module js -->
+      <script src="js/public/controllers/signInController.js"></script>
+      <script src="js/public/controllers/forgetPasswordController.js"></script>
+      <script src="js/public/controllers/resetTempPassController.js"></script>
+      <script src="js/public/controllers/headerNavController.js"></script>
+       <script src="js/public/controllers/updatePassBySecurityQuesController.js"></script>
+      
+      <!-- private module js -->
+		<script src="js/private/dashboardRoute.js"></script>
+		<script src="js/private/dashboardController.js"></script>
+		<script src="js/private/controllers/createController.js"></script>
+		<script src="js/private/controllers/accountSettingsController.js"></script>
+		<script src="js/private/controllers/updateSecurityQuestionController.js"></script>
+     
+		<script src="js/private/controllers/createQueueController.js"></script>
+		<script src="js/private/controllers/searchQueueController.js"></script>
+		<script src="js/private/controllers/assignQueueController.js"></script>
+		<script src="js/private/controllers/searchController.js"></script>
+      <!-- <script src="js/private/controllers/adminUserManagementController.js"></script> -->
+		<script src="js/private/controllers/editPermissionController.js"></script>
+		<script src="js/private/controllers/configurationController.js"></script>
+		<script src="js/private/controllers/chartController.js"></script>
+		<script src="js/private/controllers/myCasesController.js"></script>
+		<script src="js/private/controllers/reviewCasesController.js"></script>
+		<script src="js/private/controllers/unassignedCasesController.js"></script>
+		<script src="js/private/controllers/viewCaseController.js"></script>
+		<script src="js/private/controllers/viewTransactionsController.js"></script>
+		<script src="js/private/controllers/searchCasesController.js"></script>
+		<script src="js/private/controllers/myReportsController.js"></script>
+		<script src="js/private/controllers/createReportsController.js"></script>
+		<script src="js/private/controllers/viewRuleController.js"></script>
+		<script src="js/private/controllers/createRuleController.js"></script>
+		<script src="js/private/controllers/unapprovedListController.js"></script>
+		<script src="js/private/controllers/hotlistController.js"></script>
+		<script src="js/private/controllers/insertHotlistController.js"></script>
+		<script src="js/private/controllers/unapprovedRoleController.js"></script>
+		<script src="js/private/controllers/viewAbnormalController.js"></script>
+		<script src="js/private/controllers/configAbnormalController.js"></script>
+		<script src="js/private/controllers/unassignedAlertsController.js"></script>
+		<script src="js/private/controllers/myAlertsController.js"></script>
+		<script src="js/private/controllers/alertsInQueueController.js"></script>
+		<script src="js/private/controllers/approvePendingQueueController.js"></script>
+		<script src="js/private/controllers/viewAlertController.js"></script>
+		<script src="js/private/controllers/operationalDashboardController.js"></script>
+		<script src="js/private/controllers/ruleByEditorController.js"></script>
+	  <!-- <script src="js/private/controllers/fileUploadController.js"></script> -->
+		<script src="js/private/controllers/unassignedQueueController.js"></script>
+		<script src="js/private/controllers/approvependingassignmentController.js"></script>
+		<script src="js/private/controllers/changePreferencesController.js"></script>
+		<script src="js/private/controllers/myReportsDetailsController.js"></script>
+		<script src="js/private/controllers/myActivityReportsController.js"></script>
+		<script src="js/private/controllers/resetroleapproveController.js"></script>
+		<script src="js/private/controllers/createnamedhotlistController.js"></script>
+	   
+      <!-- reports -->
+      
+       <!-- CHARGE BACK START -->
+	       <script src="js/private/controllers/createchargebackController.js"></script>
+		   <script src="js/private/controllers/viewcharegebackController.js"></script>
+        <!-- CHARGE BACK END -->
+      
+      <!-- RULE EDITOR START -->
+      
+      <script src="js/private/controllers/createRuleSetsController.js"></script>
+     
+      <script src="js/private/controllers/ruleImportExportController.js"></script>
+      <script src="js/private/controllers/viewRuleSetController.js"></script>
+      <script src="js/private/controllers/viewRuleSetsController.js"></script>
+     <script src="js/private/controllers/viewSimulationController.js"></script>
+
+
+      <script src="js/private/controllers/createBinController.js"></script>
+      <script src="js/private/controllers/viewBinController.js"></script>
+
+
+      <script src="js/private/controllers/notGeneratedRules.js"></script>
+      <script src="js/private/ruleEditor/lib/ng-pattern-restrict.min.js"></script>
+      <script src="js/private/ruleEditor/lib/jquery.multi-select.js"></script>
+      <script src="js/private/ruleEditor/lib/jquery.quicksearch.js"></script>
+      <script src="js/private/ruleEditor/lib/angular.multi-select.js"></script>
+      <script src="lib/angular/angular-drag-and-drop-lists.min.js"></script>
+      <script src="js/private/ruleEditor/lib/ADM-dateTimePicker.js"></script>
+      <script src="js/private/ruleEditor/lib/ngDialog.min.js"></script>
+      <script src="js/private/ruleEditor/lib/angular-idle.js"></script>
+
+      <script src="js/private/ruleEditor/rule.module.js"></script>
+      <script src="js/private/ruleEditor/rule.component.js"></script>
+      <script src="js/private/ruleEditor/rule.script.component.js"></script>
+      <script src="js/private/ruleEditor/rule.data.service.js"></script>
+      <script src="js/private/ruleEditor/directive/rule.transaction.directive.js"></script>
+      <script src="js/private/ruleEditor/directive/rule.payer.directive.js"></script>
+      <script src="js/private/ruleEditor/directive/rule.payee.directive.js"></script>
+      <script src="js/private/ruleEditor/directive/rule.acceptanceEndPoint.directive.js"></script>
+      <script src="js/private/ruleEditor/directive/rule.timebasedfilter.directive.js"></script>
+      <script src="js/private/ruleEditor/directive/rule.withamountwhereamount.directive.js"></script>
+      <script src="js/private/ruleEditor/directive/rule.withcountwherecount.directive.js"></script>
+      <script src="js/private/ruleEditor/directive/rule.view.directive.js"></script>
+      <script src="js/private/ruleEditor/misc/multiselect.js"></script>
+      <script src="js/private/ruleEditor/misc/multiselect-ruleset.js"></script>
+      <script src="js/private/ruleEditor/misc/multiselect-jsonStc.js"></script>
+      <script src="js/private/ruleEditor/misc/multiselect-org.js"></script>
+      <script src="lib/angular/sortable.js"></script>
+
+      <!-- RULE EDITOR END -->
+   </body>
+</html>

@@ -1,0 +1,37 @@
+.footerWide {
+	background-color: $primary-color;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	@include MQ(M) {
+		height: 70px;
+	}	
+	
+	p {
+		color: $default-color;
+		margin-bottom: 0px;
+		text-align: center;
+		@include MQ(M) {
+			text-align: left;
+		}
+	}
+	ul{
+		text-align: center;
+		@include MQ(M) {
+			text-align: right;
+		}
+		li{
+			display: block;
+			@include MQ(S) {
+  				display: inline-block;
+  			}
+  			a{
+ 				&:hover, &:focus {
+    				background-color: transparent;
+    			}
+    			@include MQ(M) {
+					padding: 0px 10px;
+				}
+  			}
+		}
+	}
+}

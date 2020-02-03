@@ -1,0 +1,40 @@
+/*=== FONT FAMILY ==*/
+$primary-font: 'Raleway', sans-serif;
+/* $secondary-font: 'Roboto', sans-serif;
+$accent-font: 'Roboto', sans-serif; */
+
+/*=== FONT WEIGHT ==*/
+
+$thin-weight: 100;
+$extra-light-weight: 200;
+$light-weight: 300;
+$regular-weight: 400;
+$medium-weight: 500;
+$semi-bold-weight: 600;
+$bold-weight: 700;
+$extra-bold-weight: 800;
+$black-weight: 900;
+ 
+/*=== COLOR ==*/
+/* background-color: transparentize($colorName, 0.7); */
+$primary-color: rgba(0, 0, 0, 1); /* black */
+$secondary-color: rgba(74, 144, 226, 1); /* blue */
+$accent-color: rgba(108, 108, 108, 1); /* gray */
+$warn-color: rgba(190, 17, 44, 1); /* brick red */
+$warm-gray: #f5f5f5; /* gray */
+$danger-color: rgba(208, 2, 27, 1); /* red */
+$default-color: rgba(255, 255, 255, 1); /* white */
+
+/*=== PREDEFINED BREAK POINTS ==*/
+
+$S: 480px;   
+$M: 768px;     
+$L: 992px;  
+$XL: 1200px;
+
+$imgpath: "../img";
+
+/*.header {    
+    background-image: url(#{$imgpath}/logo.jpg) repeat-x fixed 0 0;    
+}*/
+

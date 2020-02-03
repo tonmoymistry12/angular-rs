@@ -1,0 +1,396 @@
+<div class="userDashboard container-fluid">
+	<div class="hasHeader">
+		<div class="userTabs clearfix ">
+			<div class="tab-content formStyle">
+				<div class="row">
+					<div class="col-md-3"><h5 ng-if="!isNamedList">Manage List</h5><h5 ng-if="isNamedList">Approve/Pending Named List</h5></div>
+					<div class="col-md-9" ng-if="!isNamedList">
+						<!--<li class="float-right">
+							<a href="#" class="btn" ng-click="createRole()">Create Role<i class="fa fa-plus-square"></i></a></li>-->
+						<div class="pull-right">
+							<i type="button" ng-click="addToList()" class="btn btn-lg btn-danger fa fa-plus new_btn_padding"> Add To List</i>
+						</div>
+						<div class="pull-right">
+							<i type="button" ng-click="createNamedList()" class="btn btn-lg btn-danger fa fa-plus new_btn_padding"> Create Named List</i>
+						</div>
+						<div class="pull-right">
+							<i type="button" ng-click="approvependingNamedList()" class="btn btn-lg btn-danger fa fa-list new_btn_padding"> Approve/Pending Named List</i>
+						</div>
+					</div>
+				</div>
+
+				
+				<form name="myForm">
+					<div class="row searchCriteria">
+						
+						
+						<div class="col-xs-3 col-lg-4">
+							<span class="textcell_reports">ORGANISATION:</span> 
+							<select class="form-control upperCases" ng-change="changeOrganisation(selectedOrgid.selected)" ng-model="selectedOrgid.selected"  required>
+			 						<option style="display:none" value="">PLEASE SELECT THE ORGANISATION</option>
+									<option  ng-repeat="data in orgarnisations" value="{{data.orgId}}">{{data.name}}</option>
+							</select>
+							<!--  <ui-select 
+							           id="organisation_fld"
+							           name="organisation_fld"
+							           ng-model="selectedOrgid.selected" 
+							           uiSelectNoAnimate
+							           theme="selectize"  
+							           title="Choose a organisation"
+							           on-select="changeOrganisation(selectedOrgid.selected)"
+							           append-to-body="true" 
+							           close-on-select="true" 		           
+							           ng-required="true"
+								   >
+      	 						<ui-select-match allow-clear placeholder="SELECT A ORGANISATION IN THE LIST...">{{$select.selected.name}}</ui-select-match>
+							     <ui-select-choices 
+							        repeat="option.orgId as option in orgarnisations | propsFilter:{name:$select.search}  | uppercase"
+							        position="down" 
+							        
+							        refresh-delay="300">
+							      <span ng-bind-html="option.name | highlight: $select.search"></span>
+							      <small ng-bind-html="option.orgId | highlight: $select.search"></small>
+							    </ui-select-choices>
+    						</ui-select> -->
+						</div>
+						
+						<div class="col-xs-3 col-lg-4">
+							<span class="textcell_reports">CHANNEL:</span> 
+							<select class="form-control upperCases"  ng-model="selectedChannel" ng-change="getHotListEntity(selectedChannel)"  required>
+			 						<option style="display:none" value="">PLEASE SELECT THE CHANNEL</option>
+									<option  ng-repeat="data in channel_code|orderBy:'channelDesc'" value="{{data.channelCode}}">{{data.channelDesc}}</option>
+							</select>
+						</div>
+						
+						<div class="col-xs-3 col-lg-4">
+							<span class="textcell_reports">ENTITY:</span> 
+							<select class="form-control upperCases" ng-change="changeEntity(selectedHotListEntity)" ng-model="selectedHotListEntity" ng-disabled="desableme" required>
+			 						<option style="display:none" value="">PLEASE SELECT THE ENTITY</option>
+									<option  ng-repeat="data in hotlistEntityList|orderBy:'description'" value="{{data.hotlistTypeCd}}">{{data.description}}</option>
+							</select>
+						</div>
+					</div>
+					<div class="clearfix row" ng-if="!isNamedList">
+					
+						<div class="col-xs-3 col-lg-4">
+							<span class="textcell_reports">ACTION TYPE:</span> 
+							<select class="form-control upperCases" ng-change="changeActionType(selectedActionType)" ng-model="selectedActionType"  required>
+			 						<option style="display:none" value="">PLEASE SELECT THE ACTION TYPE</option>
+									<option  ng-repeat="data in statusList|orderBy:'name'" value="{{data.val}}">{{data.name}}</option>
+							</select>
+						</div>
+						
+						<div class="col-xs-3 col-lg-4" >
+							<span class="textcell_reports">LIST TYPE:</span> 
+							<select class="form-control upperCases" ng-change = "changeListType(selectedHotlistType)" ng-model="$parent.selectedHotlistType"  required>
+			 						<option style="display:none" value="">PLEASE SELECT THE LIST TYPE</option>
+									<option  ng-repeat="data in hotlistTypeList|orderBy:'name'" value="{{data.val}}">{{data.name}}</option>
+									<option  value="others">Others</option>
+							</select>
+						</div>
+						
+						
+						
+						<div class="col-xs-3 col-lg-4" ng-if="showNamedList">
+									<span class="textcell_reports">NAMED LIST:</span> 
+									<select 
+									       class="form-control upperCases" 
+									       ng-disabled="!showNamedList" 
+									       name="namedList"
+									       ng-change="changeNamedList(hotlistName)" 
+									       ng-model="hotlistName"  required>
+					 						<option style="display:none" value="">PLEASE SELECT THE LIST</option>
+											<option  ng-repeat="data in namedHotList" value="{{data.hotlistName}}">{{data.hotlistName}}</option>
+											
+									</select>
+						</div>
+						
+						
+						
+						<div class="col-xs-3 col-lg-12">
+
+							<button type="submit" id="hotlist_submit" ng-if="!isNamedList" style="margin-top:2%"
+								class="btn btn-lg btn-danger " ng-click="onHotListSubmit()"
+								ng-disabled="myForm.$invalid">Search</button>
+								
+							<!-- <button type="submit" id="hotlist_submit" ng-if="isNamedList"
+								class="btn btn-lg btn-danger hotlistbtnPddingTop" ng-click="submitApprovependingNamedList()"
+								ng-disabled="myForm.$invalid">Search</button>
+								
+							<button type="button" id="hotlist_submit" ng-if="isNamedList"
+								class="btn btn-lg btn-danger hotlistbtnPddingTop" ng-click="backToMangeList()()"
+								>Back</button> -->
+						</div>
+					</div>
+					
+					<div class="clearfix row" ng-if="isNamedList">
+						
+						<!-- <div class="col-xs-3 col-lg-4" >
+							<span class="textcell_reports">LIST TYPE:</span> 
+							<select class="form-control upperCases"  ng-model="selectedHotlistType"  required>
+			 						<option style="display:none" value="">PLEASE SELECT THE LIST TYPE</option>
+									<option  ng-repeat="data in hotlistTypeList|orderBy:'name'" value="{{data.val}}">{{data.name}}</option>
+									<option  value="others">Others</option>
+							</select>
+						</div> -->
+						
+						<div class="col-xs-3 col-lg-4">
+							<span class="textcell_reports">ACTION TYPE:</span> 
+							<select class="form-control upperCases" ng-change="changeActionType(selectedActionType)"  ng-model="selectedActionType"  required>
+			 						<option style="display:none" value="">PLEASE SELECT THE ACTION TYPE</option>
+									<option  ng-repeat="data in statusList1|orderBy:'name'" value="{{data.val}}">{{data.name}}</option>
+							</select>
+						</div>
+						
+						<div class="col-xs-3 col-lg-4">
+
+							<!-- <button type="submit" id="hotlist_submit" ng-if="!isNamedList"
+								class="btn btn-lg btn-danger hotlistbtnPddingTop" ng-click="onHotListSubmit()"
+								ng-disabled="myForm.$invalid">Search</button> -->
+								
+							<button type="submit" id="hotlist_submit" ng-if="isNamedList"
+								class="btn btn-lg btn-danger hotlistbtnPddingTop" ng-click="submitApprovependingNamedList()"
+								ng-disabled="myForm.$invalid">Search</button>
+								
+							<button type="button" id="hotlist_submit" ng-if="isNamedList"
+								class="btn btn-lg btn-danger hotlistbtnPddingTop" ng-click="backToMangeList()"
+								>Back</button>
+						</div>
+					</div>
+					
+				</form>
+				<div class="tab-pane active searchUser" id="searchUser" ng-if="showDatatable">
+					<div class="row">
+										<div class="col-sm-4">
+											<span class="textcell_reports">Search By Entity Value</span>
+											<input type="text" name="search_entity_value" autocomplete="off" class="form-control"  placeholder="Enter Entity Value" ng-model="searchData.hotlistValue"  autocomplete="off"/>
+										</div>
+					</div>
+					<span  ng-if="loggedInOrgId == 'NPCI' && hotlistdata.length != 0">
+							<button type="submit" id="search_user_submit" class="btn  btn-danger" style="margin-bottom:.3%;float: right" ng-click="Export()"><i class="fa fa-file-excel-o"></i>Export</button>
+					 </span>
+					<table id="hotlist_table" class="table  t-responsive table_adj" id="user_table" style="margin-bottom:0px;margin-bottom:1% !important">
+							<thead>
+								<tr>
+									<th scope="col" ng-if="(hotlistdata.length != 0 && finalSerachType != 'DEACTIVATED')" class="noExport"><input ng-model="model.allItemsSelected" ng-change="selectAll()"   type="checkbox"></th>
+									<th scope="col" ng-if="(hotlistdata.length != 0 && finalSerachType == 'DEACTIVATED')" class="noExport"><input disabled  type="checkbox"></th>
+								  	<th scope="col" id="img" class="noExport"></th>
+								  	<th scope="col">Entity</th>
+								  	<th scope="col">Entity Value</th>
+									<th scope="col">Created By</th>
+								  	<th scope="col">Effective From Date <span class="fa fa-chevron-right calColor"  ng-click="sort('fromDate')" ng-class="fromDateSort?'fa-rotate-90':'fa-rotate-270'"></span></th>
+								  	<th scope="col">Effective To Date <span class="fa fa-chevron-right calColor"  ng-click="sort('toDate')" ng-class="toDateSort?'fa-rotate-90':'fa-rotate-270'"></span></th>
+								  	<th scope="col" ng-show="false">Created By</th>
+								  	<th scope="col" ng-show="false">Creation Time</th>
+								  	<th scope="col" ng-show="false">Last Edited By</th>
+								  	<th scope="col" ng-show="false">Last Edited Time</th>
+								  	<th scope="col" ng-show="false">Last Deactivated  By</th>
+								  	<th scope="col" ng-show="false">Last Deactivated Time</th>
+								  	<th scope="col" ng-show="false">Last Rejected  By</th>
+								  	<th scope="col" ng-show="false">Last Rejected Time</th>
+								  	<th scope="col" ng-show="false">Last Approved  By</th>
+								  	<th scope="col" ng-show="false">Last Approved Time</th>
+								  	
+								  	
+									<th scope="col" id="action" class="noExport" ng-class="authority == 'ROLE_NTS_MGMT'?'ntsMgm':''">Action</th>
+								</tr>
+							</thead>
+							
+							<tbody  dir-paginate="data in hotlistdata|orderBy:sortKey:reverse|filter:searchData|itemsPerPage:50">
+							
+								<tr id="hotlist_table_expand_row">
+									<td ng-if="(hotlistdata.length != '0' && data.userInformationDTO.actionType !='DEACTIVATED' && data.userInformationDTO.updatedByUserIdOrig == null)" data-label="Expand to more info" id="user_select" class="noExport">
+										<span ng-if="userId!=data.userInformationDTO.userIdOrig"><input type="checkbox"  ng-model="data.isChecked" ng-change="selectEntity()" ng-click="sync(data.isChecked,data)" ></span>
+										<span ng-if="userId == data.userInformationDTO.userIdOrig"><input type="checkbox" disabled></span>
+									</td>
+									
+									<td ng-if="(hotlistdata.length != '0' && data.userInformationDTO.actionType !='DEACTIVATED' && data.userInformationDTO.updatedByUserIdOrig != null)" data-label="Expand to more info" id="user_select" class="noExport">
+										<span ng-if="userId!=data.userInformationDTO.updatedByUserIdOrig"><input type="checkbox"  ng-model="data.isChecked" ng-change="selectEntity()" ng-click="sync(data.isChecked,data)" ></span>
+										<span ng-if="userId == data.userInformationDTO.updatedByUserIdOrig"><input type="checkbox" disabled></span>
+									</td>
+									<td ng-if="(hotlistdata.length != '0' && data.userInformationDTO.actionType =='DEACTIVATED')" data-label="Expand to more info" id="user_select" class="noExport">
+										<span><input type="checkbox" disabled></span>
+									</td>
+									
+									<td data-label="Expand to more info" id="user_select" class="noExport">
+										<h5><span class="fa" ng-class="!user.select?'fa-plus':'fa-minus'" ng-init="user.select=false" ng-model="user.select" ng-click="user.select=!user.select;isSessionValid()"></span></h5>
+									</td>
+								 	<td data-label="Hotlist Type Code" id="htypecode" class="fixWidth"><p>{{ data.hotlistTypeCd}}</p></td>
+								 	<td data-label="Hotlist Value" id="hvalue" class="fixWidth"><p>{{ data.hotlistValue }}</p></td>
+									<td data-label="Hotlist Value" id="createdBy" class="fixWidth"><p class="Uname">{{ data.userInformationDTO.userId }}</p></td>
+									<td data-label="fromdate" id="fromdate">{{ dateFormat(data.fromDate)}}</td>
+								  	<td data-label="To Date" id="todate">{{ dateFormat(data.toDate)}}</td>
+								  	<td data-label="createdBy1" ng-show="false" >{{data.userInformationDTO.userId}}</td>
+								  	<td data-label="creationts1" ng-show="false" >{{data.creationTs | GMT}}</td>
+								  	<td data-label="editedBy1" ng-show="false" ><span ng-if="data.userInformationDTO.updatedByUserId != null">{{data.userInformationDTO.updatedByUserId}}</span><span ng-if="data.userInformationDTO.updatedByUserId == null">NA</span></td>
+								  	<td data-label="editts1" ng-show="false" ><span ng-if="data.lastUpdateTs != null">{{data.lastUpdateTs | GMT}}</span><span ng-if="data.lastUpdateTs == null">NA</span></td>
+								  	<td data-label="ditedBy1" ng-show="false" ><span ng-if="data.userInformationDTO.deactivatedByUserId != null">{{data.userInformationDTO.deactivatedByUserId}}</span><span ng-if="data.userInformationDTO.deactivatedByUserId == null">NA</span></td>
+								  	<td data-label="ditts1" ng-show="false" ><span ng-if="data.userInformationDTO.deactivatedByUserId != null">{{data.deactivationTs | GMT}}</span><span ng-if="user.lastDeactivatedBy == null">NA</span></td>
+								  	<td data-label="rejactedBy1" ng-show="false" ><span ng-if="data.userInformationDTO.rejectedByUserId != null">{{data.userInformationDTO.rejectedByUserId}}</span><span ng-if="data.userInformationDTO.rejectedByUserId == null">NA</span></td>
+								  	<td data-label="rejectts1" ng-show="false" ><span ng-if="data.userInformationDTO.rejectedByUserId != null">{{data.rejectionTs | GMT}}</span><span ng-if="user.lastRejectedBy == null">NA</span></td>
+								  	<td data-label="rejactedBy1" ng-show="false" ><span ng-if="data.userInformationDTO.approvedByUserId != null">{{data.userInformationDTO.approvedByUserId}}</span><span ng-if="data.userInformationDTO.approvedByUserId == null">NA</span></td>
+								  	<td data-label="rejectts1" ng-show="false" ><span ng-if="data.approvalTs  != null">{{data.approvalTs | GMT}}</span><span ng-if="data.approvalTs == null">NA</span></td>
+								  	<td class="noExport" data-label="Action" id="queue_action" ng-class="authority == 'ROLE_NTS_MGMT'?'ntsMgm':''">
+								  		<div class="dropdown" ng-if="data.userInformationDTO.updatedByUserIdOrig == null" id="queue_action_dropdown" >
+										  <button ng-disabled="userId==data.userInformationDTO.userIdOrig || data.userInformationDTO.actionType =='DEACTIVATED' || (loggedInOrgId != 'NPCI' && data.orgId != loggedInOrgId)" class="btn dropdown-toggle button-width" type="button" data-toggle="dropdown"><span class="fa fa-cog" style="color:#be112c" aria-hidden="true"></span>
+										  </button>
+										  <ul ng-if="userId!=data.userInformationDTO.userIdOrig && data.userInformationDTO.actionType !='DEACTIVATED'" class="dropdown-menu drop-downadj fa-eye-ul" id="queue_info_action_dropdown_action" >
+										    <li ng-if="data.userInformationDTO.actionType == 'PENDING_REVIEW' || data.userInformationDTO.actionType == 'PENDING_DEACTIVATION'" ng-click="queueModel(data,'DEACTIVATED','Reject')"><a href="#" id="reject_queue" ><span    class="fa fa-close" aria-hidden="true" >Reject</span></a></li>
+										    <li ng-if="data.userInformationDTO.actionType == 'PENDING_REVIEW' || data.userInformationDTO.actionType == 'PENDING_DEACTIVATION'" ng-click="queueModel(data,'ACTIVE','Active')"><a  id="approve_queue" href="#" ><span  class="fa fa-check" aria-hidden="true" > Approve</span></a></li>
+										    <li ng-if="data.userInformationDTO.actionType == 'ACTIVE'" ng-click="queueModel(data,'DEACTIVATED','Deactive')"><a href="#" id="reject_queue" ><span class="fa fa-close" aria-hidden="true" >Deactive</span></a></li>
+										  </ul>										 
+										</div>
+										
+										<div class="dropdown" ng-if="data.userInformationDTO.updatedByUserIdOrig != null" id="queue_action_dropdown" >
+										  <button ng-disabled="userId==data.userInformationDTO.updatedByUserIdOrig || data.userInformationDTO.actionType =='DEACTIVATED' || (data.userInformationDTO.orgId == 'NPCI' && data.orgId != loggedInOrgId && loggedInOrgId != 'NPCI')" class="btn dropdown-toggle button-width" type="button" data-toggle="dropdown"><span class="fa fa-cog" style="color:#be112c" aria-hidden="true"></span>
+										  </button>
+										  <ul ng-if="userId!=data.userInformationDTO.updatedByUserIdOrig && data.userInformationDTO.actionType !='DEACTIVATED'" class="dropdown-menu drop-downadj fa-eye-ul" id="queue_info_action_dropdown_action" >
+										    <li ng-if="data.userInformationDTO.actionType == 'PENDING_REVIEW' || data.userInformationDTO.actionType == 'PENDING_DEACTIVATION'" ng-click="queueModel(data,'DEACTIVATED','Reject')"><a href="#" id="reject_queue" ><span    class="fa fa-close" aria-hidden="true" >Reject</span></a></li>
+										    <li ng-if="data.userInformationDTO.actionType == 'PENDING_REVIEW' || data.userInformationDTO.actionType == 'PENDING_DEACTIVATION'" ng-click="queueModel(data,'ACTIVE','Active')"><a  id="approve_queue" href="#" ><span  class="fa fa-check" aria-hidden="true" > Approve</span></a></li>
+										    <li ng-if="data.userInformationDTO.actionType == 'ACTIVE'" ng-click="queueModel(data,'DEACTIVATED','Deactive')"><a href="#" id="reject_queue" ><span class="fa fa-close" aria-hidden="true" >Deactive</span></a></li>
+										  </ul>										 
+										</div>
+								  	</td>
+								</tr>
+								<tr ng-if="user.select" id="user_select_row" class="expandColor">
+									<td colspan="8" >
+										<div class="row clearfix seacrhUserPadding">
+											
+											<div class="col-sm-4 col-sm-offset-1" id="created_by"><strong>Created By :</strong> {{data.userInformationDTO.userId}}</div>
+											<div class="col-sm-3" id="created_time"><strong>Creation Time :</strong> {{data.creationTs | GMT}}</div>
+										</div>
+										<div class="row clearfix seacrhUserPadding" ng-if="data.userInformationDTO.lastEditedBy != null">
+											
+											<div class="col-sm-4 col-sm-offset-1" id="updated_by"><strong>Last Edited By :</strong> {{data.userInformationDTO.updatedByUserId}}</div>
+											<div class="col-sm-3" id="updated_time"><strong>Last Edited Time :</strong> {{data.lastUpdateTs | GMT}}</div>
+										</div>
+										<div class="row clearfix seacrhUserPadding" ng-if="data.userInformationDTO.approvedByUserId != null">
+											
+											<div class="col-sm-4 col-sm-offset-1" id="approved_by"><strong>Last Approved  By :</strong> {{data.userInformationDTO.approvedByUserId}}</div>
+											<div class="col-sm-3" id="approved_time"><strong>Last Approved Time :</strong> {{data.approvalTs | GMT}}</div>
+										</div>
+										<div class="row clearfix seacrhUserPadding" ng-if="data.userInformationDTO.rejectedByUserId != null">
+											
+											<div class="col-sm-4 col-sm-offset-1" id="rejected_by"><strong>Last Rejected  By :</strong> {{data.userInformationDTO.rejectedByUserId}}</div>
+											<div class="col-sm-3" id="rejected_time"><strong>Last Rejected Time :</strong> {{data.rejectionTs | GMT}}</div>
+										</div>
+										<div class="row clearfix seacrhUserPadding" ng-if="data.userInformationDTO.rejectedByUserId != null">
+											
+											<div class="col-sm-4 col-sm-offset-1" id="deactivate_by"><strong>Deactivated  By :</strong> {{data.userInformationDTO.deactivatedByUserId}}</div>
+											<div class="col-sm-3" id="deactivate_time"><strong>Deactivated Time :</strong> {{data.deactivationTs | GMT}}</div>
+										</div>
+										
+									</td>
+								</tr>
+																												
+							</tbody>
+						</table>
+						<div  ng-show="(hotlistdata.length==0 || hotlistdata.length == '0' || hotlistdata == undefined)" class="text-center noData"><h6>No Records Found</h6></div>  
+						<div class="gridPagination clearfix" ng-show="data.length != '0'">
+						
+							<div class="col-sm-8">
+								<dir-pagination-controls max-size="5"  direction-links="true" boundary-links="true" ></dir-pagination-controls>
+							</div>
+						</div>
+						<!-- <div  ng-if="customErrorMessage">
+							<div class="text-danger" style="margin-bottom: 1%;" id="org_required_msg" ng-if="customErrorMessage"><small>Please select respective box  for further process.</small></div>	
+						</div> -->
+						
+						<div ng-show="hotlistdata.length != '0'">	
+								<button type="button" style="padding-left:2%;padding-right:2%" id="hotlist_submit" ng-disabled="!customErrorMessage" ng-if="finalSerachType == 'PENDING_REVIEW' || finalSerachType == 'PENDING_DEACTIVATION'"
+										class="btn btn-lg btn-danger" ng-click="approveSubmit('ACTIVE','Active')"
+										>Approve</button>
+										
+								<button type="button" id="hotlist_submit" style="padding-left:2%;padding-right:2%" ng-disabled="!customErrorMessage" ng-if="finalSerachType == 'PENDING_REVIEW' || finalSerachType == 'PENDING_DEACTIVATION'"
+											class="btn btn-lg btn-danger" ng-click="approveSubmit('DEACTIVATED','Reject')"
+											>Reject</button>
+											
+								<button type="button" id="hotlist_submit" style="padding-left:2%;padding-right:2%" ng-disabled="!customErrorMessage" ng-if="finalSerachType == 'ACTIVE'"
+												class="btn btn-lg btn-danger " ng-click="approveSubmit('DEACTIVATED','Deactive')"
+												>Deactivate</button>
+					</div>
+				</div>
+				
+				<div class="tab-pane active searchUser" id="customhotlist" ng-if="showDatatableForCustom">
+					<table  class="table  t-responsive table_adj" id="customhotlist_table">
+							<thead>
+								<tr>
+								  	<th scope="col">Hotlist Name</th>
+									<th scope="col">Created By</th>
+								  	<th scope="col">Created Date</th>
+								  	<th scope="col">Updated By</th>
+								  	<th scope="col">Updated Date</th>
+								  	<th scope="col">Status</th>
+									<th scope="col" id="action"  ng-class="authority == 'ROLE_NTS_MGMT'?'ntsMgm':''">Action</th>
+								</tr>
+							</thead>
+							
+							<tbody  dir-paginate="data in customhotlistdata|orderBy:sortKey:reverse|filter:searchData|itemsPerPage:50">
+							
+								<tr id="customhotlist_row">
+								 	<td data-label="Hotlist Nmae" id="hname" class="fixWidth">{{ data.hotlistName}}</td>
+								 	<td data-label="hcreatedby" id="hcreatedby" class="fixWidth">{{ data.createdByUserId }}</td>
+									<td data-label="hcreationts" id="hcreationts" class="fixWidth"><p class="Uname">{{ dateFormat(data.creationTS) }}</p></td>
+									<td data-label="hupdatedby" id="hupdatedby"><p class="Uname" ng-if="data.updatedByUserId != null">{{ data.updatedByUserId}}</p><p ng-if="data.updatedByUserId == null">NA</p></td>
+								  	<td data-label="hupdatedts" id="hupdatedts">{{ dateFormat(data.updationTS)}}</td>
+								  	<td data-label="hstatus" id="hstatus"><p class="Uname" ng-if="data.status == 'ACTIVE' && data.makerChecker == 2">Activation Pending</p><p ng-if="data.status == 'DEACTIVE' && data.makerChecker == 2">Deactivation Pending</p><p ng-if="data.status == 'ACTIVE' && data.makerChecker == 0">Active</p><p ng-if="data.status == 'DEACTIVE' && data.makerChecker == 0">Deactivated</p></td>
+								  	<td data-label="Action" id="h_action" ng-class="authority == 'ROLE_NTS_MGMT'?'ntsMgm':''">
+								  		<div class="dropdown" id="h_action_dropdown" ng-if="data.updatedByUserId == null">
+										  <button ng-disabled="email==data.createdByUserId || chkactionType =='DEACTIVATED' || (loggedInOrgId != 'NPCI' && data.orgId != loggedInOrgId)" class="btn dropdown-toggle button-width" type="button" data-toggle="dropdown"><span class="fa fa-cog" style="color:#be112c" aria-hidden="true"></span>
+										  </button>
+										  <ul ng-if="email != data.createdByUserId && chkactionType !='DEACTIVATED'" class="dropdown-menu drop-downadj fa-eye-ul" id="queue_info_action_dropdown_action" >
+										    <li ng-if="chkactionType == 'PENDING_REVIEW'" ng-click="customHotlistModel(data,'DEACTIVATED','Reject')"><a href="#" id="reject_queue" ><span    class="fa fa-close" aria-hidden="true" >Reject</span></a></li>
+										    <li ng-if="chkactionType == 'PENDING_REVIEW'" ng-click="customHotlistModel(data,'ACTIVE','Active')"><a  id="approve_queue" href="#" ><span  class="fa fa-check" aria-hidden="true" > Approve</span></a></li>
+										    <li ng-if="chkactionType == 'ACTIVE'" ng-click="customHotlistModel(data,'DEACTIVATED','Deactive')"><a href="#" id="reject_queue" ><span class="fa fa-close" aria-hidden="true" >Deactive</span></a></li>
+										  </ul>										 
+										</div>
+										
+										<div class="dropdown" id="h_action_dropdown" ng-if="data.updatedByUserId != null">
+										  <button ng-disabled="email==data.updatedByUserId || chkactionType =='DEACTIVATED' || (data.userInformationDTO.orgId == 'NPCI' && data.orgId != loggedInOrgId && loggedInOrgId != 'NPCI')" class="btn dropdown-toggle button-width" type="button" data-toggle="dropdown"><span class="fa fa-cog" style="color:#be112c" aria-hidden="true"></span>
+										  </button>
+										  <ul ng-if="email!=data.updatedByUserId && chkactionType !='DEACTIVATED'" class="dropdown-menu drop-downadj fa-eye-ul" id="queue_info_action_dropdown_action" >
+										    <li ng-if="chkactionType == 'PENDING_REVIEW'" ng-click="customHotlistModel(data,'DEACTIVATED','Reject')"><a href="#" id="reject_queue" ><span    class="fa fa-close" aria-hidden="true" >Reject</span></a></li>
+										    <li ng-if="chkactionType == 'PENDING_REVIEW'" ng-click="customHotlistModel(data,'ACTIVE','Active')"><a  id="approve_queue" href="#" ><span  class="fa fa-check" aria-hidden="true" > Approve</span></a></li>
+										    <li ng-if="chkactionType == 'ACTIVE'" ng-click="customHotlistModel(data,'DEACTIVATED','Deactive')"><a href="#" id="reject_queue" ><span class="fa fa-close" aria-hidden="true" >Deactive</span></a></li>
+										  </ul>										 
+										</div>
+								  	</td>
+								</tr>
+																												
+							</tbody>
+						</table>
+						<div  ng-show="(customhotlistdata.length==0 || customhotlistdata.length == '0' || customhotlistdata == undefined)" class="text-center noData"><h6>No Records Found</h6></div>  
+						<div class="gridPagination clearfix" ng-show="customhotlistdata.length != '0'">						
+							<div class="col-sm-8">
+								<dir-pagination-controls max-size="5"  direction-links="true" boundary-links="true" ></dir-pagination-controls>
+							</div>
+						</div>
+						
+						<!-- <div class="gridPagination clearfix" ng-show="customhotlistdata.length != '0'">	
+								<button type="button" id="hotlist_submit" ng-if="selectedActionType == 'PENDING_REVIEW'"
+										class="btn btn-lg btn-danger hotlistbtnPddingTop" ng-click="approveSubmit('ACTIVE','Active')"
+										>Approve</button>
+										
+								<button type="button" id="hotlist_submit" ng-if="selectedActionType == 'PENDING_REVIEW'"
+											class="btn btn-lg btn-danger hotlistbtnPddingTop" ng-click="approveSubmit('DEACTIVATED','Reject')"
+											>Reject</button>
+											
+								<button type="button" id="hotlist_submit" ng-if="selectedActionType == 'ACTIVE'"
+												class="btn btn-lg btn-danger hotlistbtnPddingTop" ng-click="approveSubmit('DEACTIVATED','Deactive')"
+												>Deactivate</button>
+					</div> -->
+				
+				</div>
+				
+				<!-- <div class="back_width" ng-if ="isNamedList">
+						
+							<i type="button" ng-click="backToMangeList()" class="btn btn-lg btn-danger" >Back</i>
+						
+				</div> -->
+
+
+			</div>
+		</div>
+	</div>
+
+</div>

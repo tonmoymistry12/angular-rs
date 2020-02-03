@@ -1,0 +1,96 @@
+<div class="displayTable hasHeader" id="resetPass">
+	
+	<toaster-container toaster-options="{'time-out': 3000}"></toaster-container>
+		
+	<div class="verticalMiddle architectureBg">
+		
+		<div ng-if="loading" id="roundSpinner" class="center-block text-center">
+			<svg class="roundSpinner" viewBox="0 0 50 50">
+			  <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+			</svg>
+		</div>
+		<div ng-if="resetTempStatus" class="text-center">
+            <img src="../img/duplicate.png" alt="Duplicate application" class="animated shake">
+            <p>&nbsp</p>
+			<h2 class="text-danger"><strong>Oops!</strong></h2>	
+            <h2><strong>{{statusText}}</strong></h2>
+            <p>Please call customer service line for further questions <strong class="text-danger"> 1-800-EFRM-PICK </strong></p>
+		</div>
+		
+		<div ng-if="resetTempPassForm" class="login formStyle reset-password">
+			<div class="logo text-center"><img ng-src="../img/npcilogo.png" alt="Npci Logo"></div>
+			<br>
+			<form name="resetTempPassForm" ng-submit="resetTempPassForm.$valid && resetTempSubmit()" autocomplete="off" novalidate accessible-form>
+			
+				<div class="form-group">
+					<input type="email" name="userId" ng-model="forceChange.id" class="form-control" ng-value="forceChange.id" readonly>
+			   	</div>
+			   	
+			   	<!-- <div class="form-group" ng-class="{true: 'has-error'}[submitted && resetTempPassForm.tempPassword.$invalid]">
+			   		<input type="password" placeholder="temporary password" name="tempPassword" ng-model="forceChange.tempPassword" class="form-control" required/>
+			   		<p class="text-danger" ng-show="submitted && resetTempPassForm.tempPassword.$error.required"><small>This is a required field.</small></p>
+			   	</div> -->
+			   	
+			   	<div class="form-group" ng-class="{'has-error':resetTempPassForm.userRePassword.$invalid && !resetTempPassForm.userRePassword.$pristine}">   		
+			        <input type="password" placeholder="create password" name="userPassword" ng-model="forceChange.password" class="form-control" minlength="8" maxlength="20" required ng-pattern="/^(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,20}$/"/>
+			        <a class="formHints" popover data-placement="top" data-container="body"
+					   data-html="true"
+					   data-content="<div id='my-data-content'><p>The password must have at least 8 character(s).<br>
+					  At least 1 digit(s).<br>
+					  At least 1 lower case letter(s).<br>
+					  At least 1 upper case letter(s).<br>
+					  At least 1 non-alphanumeric character(s).<br></p></div>"><img src="../img/info.png" alt="password criteria"></a>
+					<p class="text-danger" ng-show="resetTempPassForm.userPassword.$error.required && !resetTempPassForm.userPassword.$pristine"><small>This is a required field.</small></p>
+					<p class="text-danger" ng-show="resetTempPassForm.userPassword.$error.pattern"><small>Minimum eight characters, at least one letter, one number and one special character.</small></p>					
+			   	</div>
+			   
+			   <div class="form-group"  ng-class="{'has-error':resetTempPassForm.userRePassword.$invalid && !resetTempPassForm.userRePassword.$pristine}">
+			        <input type="password" ng-change="checkRetypePassword(forceChange.reTypePassword)" placeholder="confirm password" ng-model="forceChange.reTypePassword" name="userRePassword" class="form-control" minlength="8" maxlength="20" password-verify="{{forceChange.password}}" required>
+					<p class="text-danger" ng-show="resetTempPassForm.userRePassword.$error.required && !resetTempPassForm.userRePassword.$pristine"><small>This is a required field.</small></p>
+					<p class="text-danger" ng-show="resetTempPassForm.userRePassword.$error.pattern"><small>Minimum eight characters, at least one letter, one number and one special character.</small></p>
+					<p class="text-danger" ng-show="resetTempPassForm.userRePassword.$error.passwordVerify && !resetTempPassForm.userRePassword.$pristine"><small>Password and confirm password is not same!</small></p>
+			   </div>
+			   
+			   <div class='form-group' ng-class="{true: 'has-error'}[submitted && resetTempPassForm.primaryQuestion.$invalid]" >
+			        <select class="form-control" ng-model="userSelection.primaryQuestion" placeholder="Select security question" 
+			        ng-change="showSecondQuestion(userSelection.primaryQuestion)" name="primaryQuestion" ng-disabled="disabledBanknameDropdown" required>
+			        <option  value="">SELECT SECURITY QUESTION</option>
+				     <option ng-repeat="item in questions" value="{{item.questionId}}">{{item.question}}</option>
+				    </select>
+				    <p class="text-danger" style="color:red"  ng-show = "submitted && resetTempPassForm.primaryQuestion.$error.required">Please select security question</p>
+			   </div>
+			   
+			   <div class='form-group'  ng-class="{true: 'has-error'}[submitted && resetTempPassForm.primaryAnswer.$invalid]" >
+			       <input type="text" class="form-control" placeholder="Enter Answer" name="primaryAnswer" ng-model="userSelection.primaryAnswer" required autofocus="autofocus"/>
+			          <p class="text-danger" style="color:red"  ng-show = "submitted && resetTempPassForm.primaryAnswer.$error.required">Answer Required</p>
+			   </div>
+			    <div class='form-group'  ng-class="{true: 'has-error'}[submitted && resetTempPassForm.secoundQues.$invalid]"  >
+			        <select class="form-control" ng-model="userSelection.secondryQuestion" placeholder="Select security question" ng-hide="true"
+			         ng-show="secoundQues" name="secoundQues" id="secoundQues" ng-change="showSecondryAnswer(userSelection.secondryQuestion)" ng-disabled="disabledBanknameDropdown" required>
+			         <option  value="">SELECT SECURITY QUESTION</option>
+				     <option ng-repeat="item in secQues" value="{{item.questionId}}" >{{item.question}}</option>
+				    </select>
+				     <p class="text-danger" style="color:red"  ng-show = "submitted && resetTempPassForm.secoundQues.$error.required && secoundQues" >Please select security question</p>
+			   </div>
+			    <div class='form-group' ng-class="{true: 'has-error'}[submitted && resetTempPassForm.secondryAnswer.$invalid]"  >
+			       <input type="text" class="form-control" placeholder="Enter Answer" ng-model="userSelection.secondryAnswer" name="secondryAnswer" ng-hide="true" ng-show="showSecAnswer" required />
+			         <p class="text-danger" style="color:red"  ng-show = "submitted && resetTempPassForm.secondryAnswer.$error.required && showSecAnswer" >Answer Required</p>
+			   </div>
+			   
+			   <input type="submit" ng-disabled="resetTempPassForm.userPassword.$error.pattern || resetTempPassForm.userPassword.$error.required || resetTempPassForm.userRePassword.$error.passwordVerify" class="btn btn-block btn-lg btn-danger" value="Submit" ng-click="submitted=true"/>
+				
+				<!--  <div ng-show="spinner" id="roundSpinner" class="center-block text-center">
+					<svg class="roundSpinner" viewBox="0 0 50 50">
+					  <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+					</svg>
+                </div>-->
+                    
+			</form>		
+			
+		</div>
+		
+		
+	</div>
+	
+	
+</div>

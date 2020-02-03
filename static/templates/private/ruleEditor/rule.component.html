@@ -1,0 +1,545 @@
+ <div>
+   <form name="createRule" class="form-validation" role="form" novalidate autocomplete="off">
+      <div class="animate-switch-container" ng-switch on="stage" ng-class="{forward: direction, backward:!direction}">
+         <div class="animate-switch" ng-switch-default>
+            <div>
+               <!-- <fieldset ng-disabled="isView" class="ruleEditorFieldset"> -->
+               <div class="clearfix row custMargin">
+                  <div class="form-group col-md-3">
+                     <span class="textcell_reports">Rule Name <span class="text-danger rule-mandatory">*</span> </span>
+                     <input ng-space ng-blur="visitedRuleID=true;" class="form-control" type="text" name="ruleId" id="ruleId" ng-model="formParams.ruleMetaData.ruleName" unique-rule-name ng-disabled="isEdit || isView" placeholder="Enter Rule Name" autocomplete="off" ng-pattern="/^[a-zA-Z0-9_.-]*$/" ng-pattern-restrict data-toggle="popover" data-content="Rule Name can only consist of alphabet, number, underscore, dot and hyphen" data-trigger="focus" data-placement="bottom" required><!--(RuleService.getCopyFlag()=='true')?false:true-->
+                     <div ng-messages="createRule.ruleId.$error" ng-show="createRule.ruleId.$error.required && visitedRuleID">
+                        <div ng-message="required" class="text-danger">Please Enter Rule Name.</div>
+                     </div>
+                     <div ng-messages="createRule.ruleId.$error" ng-show="createRule.ruleId.$error.unique && visitedRuleID">
+                        <div ng-message="unique" class="text-danger">Rule name already exists.</div>
+                     </div>
+                     <div ng-messages="createRule.ruleId.$error" ng-show="createRule.ruleId.$error.pattern && visitedRuleID">
+                        <div ng-message="pattern" class="text-danger">No space and special characters are allowed except _-.</div>
+                     </div>
+                  </div>
+                  <div class="form-group col-md-3">
+                     <span class="textcell_reports">Channel <span class="text-danger rule-mandatory">*</span></span>
+                     <select ng-blur="visitedChannel=true" ng-model="formParams.ruleMetaData.channel" name="selectedChannel" id="selectedChannel" ng-disabled="isView" class="form-control" ng-change="onChannelChange(formParams.ruleMetaData.channel);" required>
+                        <option style="display:none" value="">- Select -</option>
+                        <!--  <option value="ALL"> All </option> -->
+                        <!-- <option value="All"> Cards (ATM+ POS+ECOM) </option> -->
+                        <!--   <option value="RuPayAtm"> NFS </option>
+                           <option value="RuPayPos"> Rupay </option>
+                            <option value="UPI">UPI </option>
+                           <option value="IMPS">IMPS </option> -->
+                        <option class="upperCases" ng-repeat="item in channel_code|orderBy:'channelDesc'" value="{{item.channelCode}}">{{item.channelDesc}}</option>
+                     </select>
+                     <div ng-messages="createRule.selectedChannel.$error" ng-show="createRule.selectedChannel.$error.required && visitedChannel">
+                        <div ng-message="required" class="text-danger">Please Select Channel.</div>
+                     </div>
+                  </div>
+                  <div class="form-group col-md-3">
+                     <span class="textcell_reports">Rule Description <span class="text-danger rule-mandatory">*</span></span>
+                     <textarea ng-blur="visitedRuleDesc=true" ng-disabled="isView" class="form-control ruleDesc" name="ruleDesc" ng-model="formParams.ruleMetaData.ruleDesc" pattern="^([a-zA-Z0-9\/'<>=_.\-@,\(\)]+\s)*[a-zA-Z0-9\/'<>=_.\-@,\(\)]*$" placeholder="Enter Rule Description" data-toggle="popover" data-content="Maximum one space is allowed between two words.No Special characters allowed except ' . -<>= _ / @()'" data-trigger="focus" data-placement="bottom" required></textarea>
+                     <div ng-messages="createRule.ruleDesc.$error" ng-show="createRule.ruleDesc.$error.required && visitedRuleDesc">
+                        <div ng-message="required" class="text-danger">Please Enter Rule Description.</div>
+                     </div>
+                     <div ng-messages="createRule.ruleDesc.$error" ng-show="createRule.ruleDesc.$error.pattern && visitedRuleDesc">
+                        <div ng-message="pattern" class="text-danger">Please enter valid description</div>
+                     </div>
+                  </div>
+                  <div class="form-group col-md-3">
+                     <span class="textcell_reports">Notes<span class=" rule-mandatory" style="color:#fff;">*</span></span>
+                     <textarea ng-blur="visitedRuleNote=true" ng-disabled="isView" class="form-control ruleDesc" name="ruleNote" ng-model="formParams.ruleMetaData.userInformationDTO.notes" pattern="^([a-zA-Z0-9\/'<>=_.\-@,\(\)]+\s)*[a-zA-Z0-9\/'<>=_.\-@,\(\)]*$" placeholder="Enter Notes" data-toggle="popover" data-content="Maximum one space is allowed between two words.No Special characters allowed except ' . -<>= _ / @()'" data-trigger="focus" data-placement="bottom"></textarea>
+                     <div ng-messages="createRule.ruleNote.$error" ng-show="createRule.ruleNote.$error.pattern && visitedRuleNote">
+                        <div ng-message="pattern" class="text-danger">Please enter valid note</div>
+                     </div>
+                  </div>
+               </div>
+               <!-- GRID START -->
+               <div class="clearfix row custMargin">
+               
+        
+               
+<div class="col-md-4" ng-if="(formParams.ruleMetaData.channel=='IMPS' && hasISSUER ) ||(formParams.ruleMetaData.channel=='NETC' && hasISSUER ) || (formParams.ruleMetaData.channel=='UPI' && hasISSUER)">
+   <ul class="ruleGrid">
+      <!-- <li class="ruleGridLabel">REMITTER <span class="text-danger rule-mandatory">*</span></li> -->
+      <li class="ruleGridLabel">{{formParams.ruleMetaData.channel=='NETC'?'ISSUER':'REMITTER'}} <span class="text-danger rule-mandatory">*</span></li>
+      <li>
+         <input ng-blur="visitedRemitter=true" ng-disabled="isView || (hasISSUER==true && hasACQUIRER==false)" type="radio" name="remitter" ng-value="true" ng-model="formParams.ruleMetaData.remitter" ng-required="!remitter" ng-checked="remitter" ng-click="cahngeRemitter(remitter)"/><span class="ruleRadio">Yes</span>
+         <input ng-blur="visitedRemitter=true" ng-disabled="isView || (hasISSUER==true && hasACQUIRER==false)" type="radio" name="remitter" ng-value="false" ng-model="formParams.ruleMetaData.remitter" ng-required="!remitter" ng-checked="remitter" ng-click="cahngeRemitter(remitter)"/><span class="ruleRadio">No</span>
+      </li>
+   </ul>
+</div>
+<div class="col-md-4" ng-if="(formParams.ruleMetaData.channel=='IMPS' && hasISSUER ) ||(formParams.ruleMetaData.channel=='NETC' && hasISSUER ) || (formParams.ruleMetaData.channel=='UPI' && hasISSUER)">
+   <ul class="ruleGrid">
+      <!-- <li class="ruleGridLabel">Beneficiary <span class="text-danger rule-mandatory">*</span></li> -->
+      <li class="ruleGridLabel">{{formParams.ruleMetaData.channel=='NETC'?'ACQUIRER':'Beneficiary'}} <span class="text-danger rule-mandatory">*</span></li>
+      <li>
+         <input ng-blur="visitedBeneficiary=true" ng-disabled="isView || (hasISSUER==false && hasACQUIRER==true)" type="radio" name="beneficiary" ng-value="true" ng-model="formParams.ruleMetaData.beneficiary" ng-required="!beneficiary" ng-checked="beneficiary" ng-click="cahngeBeneficiary(beneficiary)"/><span class="ruleRadio">Yes</span>
+         <input ng-blur="visitedBeneficiary=true" ng-disabled="isView || (hasISSUER==false && hasACQUIRER==true)" type="radio" name="beneficiary" ng-value="false" ng-model="formParams.ruleMetaData.beneficiary" ng-required="!beneficiary" ng-checked="beneficiary" ng-click="cahngeBeneficiary(beneficiary)"/><span class="ruleRadio">No</span>
+      </li>
+   </ul>
+</div>
+<div class="col-md-4"  ng-if="(formParams.ruleMetaData.channel==='RuPayPos' && hasISSUER) || (formParams.ruleMetaData.channel=='AEPS' && hasISSUER )||(formParams.ruleMetaData.channel.startsWith('RuPayAtm') && hasISSUER) || (formParams.ruleMetaData.channel==undefined && hasISSUER)">
+   <ul class="ruleGrid">
+      <li class="ruleGridLabel">Issuer <span class="text-danger rule-mandatory">*</span></li>
+      <li>
+         <input  ng-blur="visitedIssuer=true" ng-disabled="isView || (hasISSUER==true && hasACQUIRER==false)" type="radio" name="issuer" ng-value="true" ng-model="formParams.ruleMetaData.issuer" ng-required="!issuer" ng-checked="issuer"  ng-click="cahngeIssuer(issuer)"/><span class="ruleRadio">Yes</span>
+         <input  ng-blur="visitedIssuer=true" ng-disabled="isView || (hasISSUER==true && hasACQUIRER==false)" type="radio" name="issuer" ng-value="false" ng-model="formParams.ruleMetaData.issuer" ng-required="!issuer" ng-checked="issuer" ng-click="cahngeIssuer(issuer)"/><span class="ruleRadio" >No</span>
+      </li>
+   </ul>
+</div>
+<div class="col-md-4"  ng-if="(formParams.ruleMetaData.channel=='RuPayPos' && hasACQUIRER) || (formParams.ruleMetaData.channel=='AEPS' && hasACQUIRER)|| (formParams.ruleMetaData.channel.startsWith('RuPayAtm') && hasACQUIRER) || (formParams.ruleMetaData.channel==undefined  && hasACQUIRER)">
+   <ul class="ruleGrid">
+      <li class="ruleGridLabel">Acquirer <span class="text-danger rule-mandatory">*</span></li>
+      <li>
+         <input  ng-blur="visitedAcquirer=true" ng-disabled="isView || (hasISSUER==false && hasACQUIRER==true)" type="radio" name="acquirer" ng-value="true" ng-model="formParams.ruleMetaData.acquirer" ng-required="!acquirer" ng-checked="acquirer" ng-click="cahngeAcquirer(acquirer)"/><span class="ruleRadio" >Yes</span>
+         <input  ng-blur="visitedAcquirer=true" ng-disabled="isView || (hasISSUER==false && hasACQUIRER==true)" type="radio" name="acquirer" ng-value="false" ng-model="formParams.ruleMetaData.acquirer" ng-required="!acquirer" ng-checked="acquirer" ng-click="cahngeAcquirer(acquirer)"/><span class="ruleRadio" >No</span>
+      </li>
+   </ul>
+</div>
+<!-- <div class="col-md-4"  ng-if="hasAML && orgId==='NPCI' "> -->
+<div class="col-md-4">
+   <ul class="ruleGrid">
+      <li class="ruleGridLabel">NPCI <span class="text-danger rule-mandatory">*</span></li>
+      <li>
+         <input ng-blur="visitedAML=true" ng-disabled="chkAml" type="radio" name="aml" ng-value="true" ng-model="formParams.ruleMetaData.aml" ng-required="!aml" ng-checked="aml" /><span class="ruleRadio" >Yes</span>
+         <input ng-blur="visitedAML=true" ng-disabled="chkAml" type="radio" name="aml" ng-value="false" ng-model="formParams.ruleMetaData.aml" ng-required="!aml" ng-checked="aml"/><span class="ruleRadio" >No</span>
+      </li>
+   </ul>
+</div>
+<div class="col-md-4">
+   <ul class="ruleGrid">
+      <li class="ruleGridLabel">Alert Required <span class="text-danger rule-mandatory">*</span></li>
+      <li>
+         <input ng-blur="visitedAlertRequired=true" ng-disabled="formParams.ruleMetaData.ruleScore>=900 || isView" type="radio" name="alertRequired" ng-value="true" ng-model="formParams.ruleMetaData.alertRequired" ng-required="!alertRequired" ng-checked="alertRequired"/><span class="ruleRadio">Yes</span>
+         <input ng-blur="visitedAlertRequired=true" ng-disabled="formParams.ruleMetaData.ruleScore>=900 || isView" type="radio" name="alertRequired" ng-value="false" ng-model="formParams.ruleMetaData.alertRequired" ng-required="!alertRequired" ng-checked="alertRequired"/><span class="ruleRadio">No</span>
+      </li>
+   </ul>
+</div>
+<div class="col-md-4">
+   <ul class="ruleGrid">
+      <li class="ruleGridLabel">Auto-closable <span class="text-danger rule-mandatory">*</span></li>
+      <li>
+         <input ng-blur="visitedAutoClosable=true" ng-disabled="isView" type="radio" name="autoClosable" ng-value="true" ng-model="formParams.ruleMetaData.autoClosable" ng-required="!autoClosable" ng-checked="autoClosable"/><span class="ruleRadio">Yes</span>
+         <input ng-blur="visitedAutoClosable=true" ng-disabled="isView" type="radio" name="autoClosable" ng-value="false" ng-model="formParams.ruleMetaData.autoClosable" ng-required="!autoClosable" ng-checked="autoClosable"/><span class="ruleRadio">No</span>
+      </li>
+   </ul>
+</div>
+<div class="col-md-4">
+   <ul class="ruleGrid">
+      <li class="ruleGridLabel">Exclude Current TXN <span class="text-danger rule-mandatory">*</span></li>
+      <li>
+         <input ng-blur="visitedExcludeCurrentTxn=true" ng-disabled="isView" type="radio" name="excludeCurrentTxn" ng-value="true" ng-model="formParams.ruleMetaData.excludeCurrentTxn" ng-required="!excludeCurrentTxn" ng-checked="excludeCurrentTxn"/><span class="ruleRadio">Yes</span>
+         <input ng-blur="visitedExcludeCurrentTxn=true" ng-disabled="isView" type="radio" name="excludeCurrentTxn" ng-value="false" ng-model="formParams.ruleMetaData.excludeCurrentTxn" ng-required="!excludeCurrentTxn" ng-checked="excludeCurrentTxn"/><span class="ruleRadio">No</span>
+      </li>
+   </ul>
+</div>
+<div class="col-md-4" style="display:none;">
+   <ul class="ruleGrid">
+      <li class="ruleGridLabel">Decline Flag<span class="text-danger rule-mandatory">*</span></li>
+      <li>
+         <input ng-blur="visitedDeclineFlag=true" ng-disabled="isView" type="radio" name="declineFlag" ng-value="true" ng-model="formParams.ruleMetaData.declineFlag" ng-required="!declineFlag" ng-checked="declineFlag"/><span class="ruleRadio">Yes</span>
+         <input ng-blur="visitedDeclineFlag=true" ng-disabled="isView" type="radio" name="declineFlag" ng-value="false" ng-model="formParams.ruleMetaData.declineFlag" ng-required="!declineFlag" ng-checked="declineFlag"/><span class="ruleRadio">No</span>
+      </li>
+   </ul>
+</div>
+<div class="col-md-4">
+   <ul class="ruleGrid">
+      <li class="ruleGridLabel">Suppress On Model Score<span class="text-danger rule-mandatory">*</span></li>
+      <li>
+         <input ng-blur="visitedSOMS=true" ng-disabled="isView" type="radio" name="supressOnModelScore" ng-value="true" ng-model="formParams.ruleMetaData.supressOnModelScore" ng-required="!supressOnModelScore " ng-checked="supressOnModelScore"/><span class="ruleRadio">Yes</span>
+         <input ng-blur="visitedSOMS=true" ng-disabled="isView" type="radio" name="supressOnModelScore" ng-value="false" ng-model="formParams.ruleMetaData.supressOnModelScore" ng-required="!supressOnModelScore " ng-checked="supressOnModelScore"/><span class="ruleRadio">No</span>
+      </li>
+   </ul>
+</div>
+<div
+   ng-show="(formParams.ruleMetaData.channel=='RuPayPos' && hasISSUER && hasACQUIRER && issuerAcqr) && !isView||
+   (formParams.ruleMetaData.channel=='AEPS' && hasISSUER && hasACQUIRER && issuerAcqr) && !isView||
+   (formParams.ruleMetaData.channel=='NETC' && hasISSUER && hasACQUIRER && beneficiaryRemtr) && !isView||
+   (formParams.ruleMetaData.channel.startsWith('RuPayAtm') && hasISSUER && hasACQUIRER && issuerAcqr) && !isView">
+   <div class="alert text-danger">For channel AEPS,NETC, ATM & POS and ECOM, please select either Issuer Or Acquirer as 'True'.</div>
+</div>
+<div
+   ng-show="(formParams.ruleMetaData.channel=='IMPS' && hasISSUER && hasACQUIRER && beneficiaryRemtr) && !isView||
+   
+   (formParams.ruleMetaData.channel=='UPI' && hasISSUER && hasACQUIRER && beneficiaryRemtr)&& !isView">
+   <div class="alert text-danger">For channel IMPS, & UPI, please select either Remitter Or Beneficiary as 'True'.</div>
+</div>       
+                  <!-- <div class="col-md-6">
+                     <table class="table ruleEditorTbl">
+                        <tbody>
+                           <tr ng-if="(formParams.ruleMetaData.channel=='IMPS' && hasISSUER ) ||(formParams.ruleMetaData.channel=='NETC' && hasISSUER ) || (formParams.ruleMetaData.channel=='UPI' && hasISSUER)">
+                              <th>REMITTER <span class="text-danger rule-mandatory">*</span></th>
+                              <td><input ng-blur="visitedRemitter=true" ng-disabled="isView || (hasISSUER==true && hasACQUIRER==false)" type="radio" name="remitter" ng-value="true" ng-model="formParams.ruleMetaData.remitter" ng-required="!remitter" ng-checked="remitter" ng-click="cahngeRemitter(remitter)"/><span class="ruleRadio">Yes</span></td>
+                              <td><input ng-blur="visitedRemitter=true" ng-disabled="isView || (hasISSUER==true && hasACQUIRER==false)" type="radio" name="remitter" ng-value="false" ng-model="formParams.ruleMetaData.remitter" ng-required="!remitter" ng-checked="remitter" ng-click="cahngeRemitter(remitter)"/><span class="ruleRadio">No</span></td>
+                              <td><span ng-messages="createRule.remitter.$error" ng-show="createRule.remitter.$error.required && visitedRemitter">
+                                 <span ng-message="required" class="text-danger">Please Select Remitter.</span>
+                                 </span>
+                              </td>
+                           </tr>
+                           <tr ng-if="(formParams.ruleMetaData.channel=='IMPS' && hasACQUIRER)||(formParams.ruleMetaData.channel=='NETC' && hasACQUIRER)||(formParams.ruleMetaData.channel=='UPI' && hasACQUIRER)">
+                              <th>Beneficiary <span class="text-danger rule-mandatory">*</span></th>
+                              <td><input ng-blur="visitedBeneficiary=true" ng-disabled="isView || (hasISSUER==false && hasACQUIRER==true)" type="radio" name="beneficiary" ng-value="true" ng-model="formParams.ruleMetaData.beneficiary" ng-required="!beneficiary" ng-checked="beneficiary" ng-click="cahngeBeneficiary(beneficiary)"/><span class="ruleRadio">Yes</span></td>
+                              <td><input ng-blur="visitedBeneficiary=true" ng-disabled="isView || (hasISSUER==false && hasACQUIRER==true)" type="radio" name="beneficiary" ng-value="false" ng-model="formParams.ruleMetaData.beneficiary" ng-required="!beneficiary" ng-checked="beneficiary" ng-click="cahngeBeneficiary(beneficiary)"/><span class="ruleRadio">No</span></td>
+                              <td>
+                                 <span ng-messages="createRule.beneficiary.$error" ng-show="createRule.beneficiary.$error.required && visitedBeneficiary">
+                                 <span ng-message="required" class="text-danger">Please Select Beneficiary.</span>
+                                 </span>
+                              </td>
+                           </tr>
+                           <tr ng-if="(formParams.ruleMetaData.channel==='RuPayPos' && hasISSUER) || (formParams.ruleMetaData.channel=='AEPS' && hasISSUER )||(formParams.ruleMetaData.channel.startsWith('RuPayAtm') && hasISSUER) || (formParams.ruleMetaData.channel==undefined && hasISSUER)">
+                              <th>Issuer <span class="text-danger rule-mandatory">*</span></th>
+                              <td><input  ng-blur="visitedIssuer=true" ng-disabled="isView || (hasISSUER==true && hasACQUIRER==false)" type="radio" name="issuer" ng-value="true" ng-model="formParams.ruleMetaData.issuer" ng-required="!issuer" ng-checked="issuer"  ng-click="cahngeIssuer(issuer)"/><span class="ruleRadio">Yes</span></td>
+                              <td><input  ng-blur="visitedIssuer=true" ng-disabled="isView || (hasISSUER==true && hasACQUIRER==false)" type="radio" name="issuer" ng-value="false" ng-model="formParams.ruleMetaData.issuer" ng-required="!issuer" ng-checked="issuer" ng-click="cahngeIssuer(issuer)"/><span class="ruleRadio" >No</span></td>
+                              <td>
+                                 <span ng-messages="createRule.issuer.$error" ng-show="createRule.issuer.$error.required && visitedIssuer">
+                                 <span ng-message="required" class="text-danger">Please Select Issuer Status.</span>
+                                 </span>
+                              </td>
+                           </tr>
+                           <tr ng-if="(formParams.ruleMetaData.channel=='RuPayPos' && hasACQUIRER) || (formParams.ruleMetaData.channel=='AEPS' && hasACQUIRER)|| (formParams.ruleMetaData.channel.startsWith('RuPayAtm') && hasACQUIRER) || (formParams.ruleMetaData.channel==undefined  && hasACQUIRER)">
+                              <th>Acquirer <span class="text-danger rule-mandatory">*</span></th>
+                              <td><input  ng-blur="visitedAcquirer=true" ng-disabled="isView || (hasISSUER==false && hasACQUIRER==true)" type="radio" name="acquirer" ng-value="true" ng-model="formParams.ruleMetaData.acquirer" ng-required="!acquirer" ng-checked="acquirer" ng-click="cahngeAcquirer(acquirer)"/><span class="ruleRadio" >Yes</span></td>
+                              <td><input  ng-blur="visitedAcquirer=true" ng-disabled="isView || (hasISSUER==false && hasACQUIRER==true)" type="radio" name="acquirer" ng-value="false" ng-model="formParams.ruleMetaData.acquirer" ng-required="!acquirer" ng-checked="acquirer" ng-click="cahngeAcquirer(acquirer)"/><span class="ruleRadio" >No</span></td>
+                              <td>
+                                 <span ng-messages="createRule.acquirer.$error" ng-show="createRule.acquirer.$error.required && visitedAcquirer">
+                                 <span ng-message="required" class="text-danger">Please Select ACQUIRER Status.</span>
+                                 </span>
+                              </td>
+                           </tr>
+                           <tr ng-if="hasAML && orgId==='NPCI' ">
+                              <th>AML <span class="text-danger rule-mandatory">*</span></th>
+                              <td> <input ng-blur="visitedAML=true" disabled type="radio" name="aml" ng-value="true" ng-model="formParams.ruleMetaData.aml" ng-required="!aml" ng-checked="aml" /><span class="ruleRadio" >Yes</span></td>
+                              <td><input ng-blur="visitedAML=true" disabled type="radio" name="aml" ng-value="false" ng-model="formParams.ruleMetaData.aml" ng-required="!aml" ng-checked="aml"/><span class="ruleRadio" >No</span></td>
+                              <td>
+                                 <span ng-messages="createRule.aml.$error" ng-show="createRule.aml.$error.required && visitedAML">
+                                 <span ng-message="required" class="text-danger">Please Select AML Status.</span>
+                                 </span>
+                              </td>
+                           </tr>
+                           <tr ng-if="orgId==='NPCI'">
+                              <th>NPCI <span class="text-danger rule-mandatory">*</span></th>
+                              <td> <input ng-blur="visitedNPCI=true" ng-disabled="isView" type="radio" name="npci" ng-value="true" ng-model="formParams.ruleMetaData.npci" ng-required="!npci" ng-checked="npci"/><span class="ruleRadio">Yes</span></td>
+                              <td><input ng-blur="visitedNPCI=true" ng-disabled="isView" type="radio" name="npci" ng-value="false" ng-model="formParams.ruleMetaData.npci" ng-required="!npci" ng-checked="npci"/><span class="ruleRadio">No</span></td>
+                              <td>
+                                 <span ng-messages="createRule.npci.$error" ng-show="createRule.npci.$error.required && visitedNPCI">
+                                 <span ng-message="required" class="text-danger">Please Select NPCI.</span>
+                                 </span>
+                              </td>
+                              </tr>
+                           <tr>
+                              <th>Alert Required <span class="text-danger rule-mandatory">*</span></th>
+                              <td> <input ng-blur="visitedAlertRequired=true" ng-disabled="formParams.ruleMetaData.ruleScore>=900 || isView" type="radio" name="alertRequired" ng-value="true" ng-model="formParams.ruleMetaData.alertRequired" ng-required="!alertRequired" ng-checked="alertRequired"/><span class="ruleRadio">Yes</span></td>
+                              <td><input ng-blur="visitedAlertRequired=true" ng-disabled="formParams.ruleMetaData.ruleScore>=900 || isView" type="radio" name="alertRequired" ng-value="false" ng-model="formParams.ruleMetaData.alertRequired" ng-required="!alertRequired" ng-checked="alertRequired"/><span class="ruleRadio">No</span></td>
+                              <td>
+                                 <span ng-messages="createRule.alertRequired.$error" ng-show="createRule.alertRequired.$error.required && visitedAlertRequired">
+                                 <span ng-message="required" class="text-danger">Please Select Alert Type.</span>
+                                 </span>
+                              </td>
+                           </tr>
+                           <tr>
+                              <th>Auto-closable <span class="text-danger rule-mandatory">*</span></th>
+                              <td> <input ng-blur="visitedAutoClosable=true" ng-disabled="isView" type="radio" name="autoClosable" ng-value="true" ng-model="formParams.ruleMetaData.autoClosable" ng-required="!autoClosable" ng-checked="autoClosable"/><span class="ruleRadio">Yes</span></td>
+                              <td><input ng-blur="visitedAutoClosable=true" ng-disabled="isView" type="radio" name="autoClosable" ng-value="false" ng-model="formParams.ruleMetaData.autoClosable" ng-required="!autoClosable" ng-checked="autoClosable"/><span class="ruleRadio">No</span></td>
+                              <td>
+                                 <span ng-messages="createRule.autoClosable.$error" ng-show="createRule.autoClosable.$error.required && visitedAutoClosable">
+                                 <span ng-message="required" class="text-danger">Please Select Auto Closable.</span>
+                                 </span>
+                              </td>
+                           </tr>
+                           <tr>
+                              <th>Exclude Current TXN <span class="text-danger rule-mandatory">*</span></th>
+                              <td> <input ng-blur="visitedExcludeCurrentTxn=true" ng-disabled="isView" type="radio" name="excludeCurrentTxn" ng-value="true" ng-model="formParams.ruleMetaData.excludeCurrentTxn" ng-required="!excludeCurrentTxn" ng-checked="excludeCurrentTxn"/><span class="ruleRadio">Yes</span></td>
+                              <td><input ng-blur="visitedExcludeCurrentTxn=true" ng-disabled="isView" type="radio" name="excludeCurrentTxn" ng-value="false" ng-model="formParams.ruleMetaData.excludeCurrentTxn" ng-required="!excludeCurrentTxn" ng-checked="excludeCurrentTxn"/><span class="ruleRadio">No</span></td>
+                              <td>
+                                 <span ng-messages="createRule.excludeCurrentTxn.$error" ng-show="createRule.excludeCurrentTxn.$error.required && visitedExcludeCurrentTxn">
+                                 <span ng-message="required" class="text-danger">Please Select Current TXN.</span>
+                                 </span>
+                              </td>
+                           </tr>
+                           <tr style="display:none;">
+                              <th>Decline Flag <span class="text-danger rule-mandatory">*</span></th>
+                              <td> <input ng-blur="visitedDeclineFlag=true" ng-disabled="isView" type="radio" name="declineFlag" ng-value="true" ng-model="formParams.ruleMetaData.declineFlag" ng-required="!declineFlag" ng-checked="declineFlag"/><span class="ruleRadio">Yes</span></td>
+                              <td><input ng-blur="visitedDeclineFlag=true" ng-disabled="isView" type="radio" name="declineFlag" ng-value="false" ng-model="formParams.ruleMetaData.declineFlag" ng-required="!declineFlag" ng-checked="declineFlag"/><span class="ruleRadio">No</span></td>
+                              <td>
+                                 <span ng-messages="createRule.aml.$error" ng-show="createRule.aml.$error.required && visitedAML">
+                                 <span ng-message="required" class="text-danger">Please Select AML Status.</span>
+                                 </span>
+                              </td>
+                           </tr>
+                           <tr>
+                              <th>Suppress On Model Score  </th>
+                              <td> <input ng-blur="visitedSOMS=true" ng-disabled="isView" type="radio" name="supressOnModelScore" ng-value="true" ng-model="formParams.ruleMetaData.supressOnModelScore" ng-required="!supressOnModelScore " ng-checked="supressOnModelScore"/><span class="ruleRadio">Yes</span></td>
+                              <td><input ng-blur="visitedSOMS=true" ng-disabled="isView" type="radio" name="supressOnModelScore" ng-value="false" ng-model="formParams.ruleMetaData.supressOnModelScore" ng-required="!supressOnModelScore " ng-checked="supressOnModelScore"/><span class="ruleRadio">No</span></td>
+                              <td>
+                                 <span ng-messages="createRule.supressOnModelScore.$error" ng-show="createRule.supressOnModelScore.$error.required && visitedSOMS">
+                                 <span ng-message="required" class="text-danger">Please Select Suppress On Model Score.</span>
+                                 </span>
+                              </td>
+                           </tr>
+                           <tr>
+                              <td colspan="4">
+                                 <span
+                                    ng-show="(formParams.ruleMetaData.channel=='RuPayPos' && hasISSUER && hasACQUIRER && issuerAcqr) && !isView||
+                                     (formParams.ruleMetaData.channel=='AEPS' && hasISSUER && hasACQUIRER && issuerAcqr) && !isView||
+                                    (formParams.ruleMetaData.channel.startsWith('RuPayAtm') && hasISSUER && hasACQUIRER && issuerAcqr) && !isView">
+                                    <div class="text-danger">For channel AEPS, ATM & POS and ECOM, please select either Issuer Or Acquirer as 'True'.</div>
+                                 </span>
+                                 <span
+                                    ng-show="(formParams.ruleMetaData.channel=='IMPS' && hasISSUER && hasACQUIRER && beneficiaryRemtr) && !isView||
+                                   (formParams.ruleMetaData.channel=='NETC' && hasISSUER && hasACQUIRER && beneficiaryRemtr) && !isView||
+                                    (formParams.ruleMetaData.channel=='UPI' && hasISSUER && hasACQUIRER && beneficiaryRemtr)&& !isView">
+                                    <div class="text-danger">For channel IMPS, NETC & UPI, please select either Remitter Or Beneficiary as 'True'.</div>
+                                 </span>
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </div> -->
+               </div>
+               <!-- GRID END -->
+               <div class="clearfix row">
+                  <div class="form-group col-sm-4">
+                     <span class="textcell_reports">Organization <span class="text-danger rule-mandatory">*</span></span>
+                     <div class="userRole">
+                        <!--  <select ng-blur="visitedOrgId=true" ng-disabled="isView" class="form-control" ng-model="formParams.ruleMetaData.orgId" name="selectedOrgId" id="selectedOrgId" required>
+                           <option value="">SELECT</option>
+                           <option ng-repeat="bank in bankList" value="{{bank.orgId}}">{{bank.name}}</option>
+                           </select> -->
+                        <multiselect-org class="input-xlarge" multiple="true"
+                           ng-model="bankModel" empty="true"
+                           options="bank.name for bank in bankList"
+                           change="selected()" ng-if="showBankList && !isView && isEdit===null" ng-change="addBank(bankModel)" disabled="isView" required></multiselect-org>
+                        <multiselect-org class="input-xlarge" 
+                           ng-model="bankModel" empty="true"
+                           options="bank.name for bank in bankList"
+                           change="selected()" ng-if="showBankList && (isView || (!isView && isEdit))" ng-change="addBank(bankModel)" disabled="isView" required></multiselect-org>
+                     </div>
+                     <div class="multiselect-info multiselect-info-more">{{formParams.ruleMetaData.orgId}}</div>
+                     <div  ng-if="formParams.ruleMetaData.orgId.length>55" class="text-right multiselect-info" style="position: absolute; width: 100%; padding-right: 25px;margin-top: -14px;"><span data-toggle="popover" data-content="{{formParams.ruleMetaData.orgId}}" data-trigger="hover" data-placement="top" style="color:#000;cursor:pointer;">More</span></div>
+                     <div ng-messages="createRule.selectedOrgId.$error" ng-show="createRule.selectedOrgId.$error.required && visitedOrgId">
+                        <div ng-message="required" class="text-danger">Please Select Organization.</div>
+                     </div>
+                  </div>
+                  <div class="form-group col-sm-2">
+                     <span class="textcell_reports"> Rule Online Status <span class="text-danger rule-mandatory">*</span></span>
+                     <select ng-blur="visitedOnline=true" ng-disabled="isView" ng-model="formParams.ruleMetaData.online" name="online" id="online" class="form-control" id="online" required>
+                        <option label="SELECT RULE APPLICABLE"></option>
+                        <option ng-repeat="item in onlineList" ng-value="item.value">{{item.name}}</option>
+                     </select>
+                     <div ng-messages="createRule.online.$error" ng-show="createRule.online.$error.required && visitedOnline">
+                        <div ng-message="required" class="text-danger">Please Select Online Status.</div>
+                     </div>
+                  </div>
+                  <div class="form-group col-sm-2">
+                     <span class="textcell_reports">Rule Score <span class="text-danger rule-mandatory">*</span></span>
+                    <!--  <input ng-blur="visitedRuleScore=true" ng-disabled="isView " class="form-control" type="text" placeholder="ENTER RULE SCORE" name="ruleScore" id="ruleScore" ng-model="formParams.ruleMetaData.ruleScore" ng-change="scoreChange(formParams.ruleMetaData.ruleScore)" number autocomplete="off" data-toggle="popover" data-content="901-990 - Decline and 991-999 - Reserved" data-trigger="focus" data-placement="bottom"/> -->
+                     <input ng-blur="visitedRuleScore=true" ng-disabled="isView" class="form-control" type="text" placeholder="ENTER RULE SCORE" minlength="3" maxlength="3" name="ruleScore" id="ruleScore" ng-model="formParams.ruleMetaData.ruleScore" ng-change="scoreChange(formParams.ruleMetaData.ruleScore)" number autocomplete="off" data-toggle="popover" data-content="901-990 - Decline and 991-999 - Reserved" data-trigger="focus" data-placement="bottom" required/>
+                     <div ng-messages="createRule.ruleScore.$error" ng-show="createRule.ruleScore.$error.required && visitedRuleScore">
+                        <div ng-message="required" class="text-danger">Please Enter Rule Score.</div>
+                     </div>
+                     <div ng-messages="createRule.ruleScore.$error" ng-show="createRule.ruleScore.$error.minlength && visitedRuleScore">
+                        <div ng-message="minlength" class="text-danger">Rule Score should be 3 digit.</div>
+                     </div>
+                  </div>
+               <!-- </div> -->
+               <!-- <div class="clearfix row"> -->
+                  <div class="form-group col-md-2">
+                     <span class="textcell_reports">Priority <span class="text-danger rule-mandatory">*</span></span>
+                    <!--  <input type="number" style="position:absolute; visibility:hidden; left:-5000px;" ng-model="formParams.ruleMetaData.priority" min="{{isSimulatedd?'9999':'0'}}" /> -->
+                     <input ng-blur="visitedPriority=true" ng-disabled="isView" class="form-control" type="text" placeholder="ENTER RULE PRIORITY" maxlength="3" name="priority" id="priority" ng-model="formParams.ruleMetaData.priority" number autocomplete="off" data-toggle="popover" data-content="{{'Maximum Three digits number.'}}" data-trigger="focus" data-placement="bottom" required />
+                     <div ng-messages="createRule.priority.$error" ng-show="createRule.priority.$error.required && visitedPriority">
+                        <div ng-message="required" class="text-danger">Please Enter Rule Priority.</div>
+                     </div>
+                     <div class="text-danger" ng-if="priorityValid(formParams.ruleMetaData.priority)" style="font-size:.8em">Should be grater or equal to 9999</div>
+                  </div>
+                  <div class="form-group col-md-2">
+                     <span class="textcell_reports">Rule Type <span class="text-danger rule-mandatory">*</span></span>
+                     <select ng-blur="visitedRuleType=true" ng-disabled="isView" ng-model="formParams.ruleMetaData.ruleType"  name="ruleType" class="form-control" id="ruleType" required>
+                        <option label="SELECT RULE TYPE"></option>
+                        <option ng-repeat="item in ruleTypeList" value="{{item.value}}" title="{{item.title}}" >{{item.name}}</option>
+                     </select>
+                     <div ng-messages="createRule.ruleType.$error" ng-show="createRule.ruleType.$error.required && visitedRuleType">
+                        <div ng-message="required" class="text-danger">Please Select Rule Type.</div>
+                     </div>
+                  </div>
+               </div>
+               <div class="clearfix row">
+                  <div class="form-group col-md-4">
+                     <span class="textcell_reports">From Date <span class="text-danger rule-mandatory">*</span></span>
+                     <div>
+                        <input class="form-control" type="text"  ng-model="formParams.ruleMetaData.effectiveFromTs" disabled ng-if="isView">
+                        <adm-dtp  ng-if="!isView" ng-blur="visitedRuleEffectiveFromTs=true" name="fromDate1" ng-model="formParams.ruleMetaData.effectiveFromTs" full-data="formParams.ruleMetaData.effectiveFromTs_detail" mindate="'{{currentDate | date:'dd-MM-yyyy'}}'"  maxdate="{{formParams.ruleMetaData.effectiveToTs_detail.unix}}" options='{calType: "gregorian", format: "DD-MM-YYYY hh:mm", autoClose:true, default:"today"}' ng-required="dateRequired"></adm-dtp>
+                     </div>
+                     <div ng-messages="createRule.fromDate1.$error" class="text-danger" ng-show="createRule.fromDate1.$error.required && visitedRuleEffectiveFromTs">
+                        <div ng-message="required" class="text-danger">Please Select From Date.</div>
+                     </div>
+                  </div>
+                  <div class="form-group col-md-4">
+                     <span class="textcell_reports">To Date <span class=" rule-mandatory" style="color:#fff">*</span></span>
+                     <div class="date_cell ">
+                        <input class="form-control" type="text"  ng-model="formParams.ruleMetaData.effectiveToTs" disabled ng-if="isView">
+                     <adm-dtp ng-if="!isView" ng-blur="visitedRuleEffectiveToTs=true" ng-model="formParams.ruleMetaData.effectiveToTs" full-data="formParams.ruleMetaData.effectiveToTs_detail" mindate="{{formParams.ruleMetaData.effectiveFromTs_detail.unix}}" options='{calType: "gregorian", format: "DD-MM-YYYY hh:mm", autoClose:true}'></adm-dtp>
+                     
+                     </div>
+                     
+                    <!--  <div class="date_cell " ng-if="isSimulatedd">
+                        <input class="form-control" type="text"  ng-model="formParams.ruleMetaData.effectiveToTs" disabled ng-if="isView">
+                     
+                     <adm-dtp ng-if="!isView" ng-blur="visitedRuleEffectiveToTs=true" ng-model="formParams.ruleMetaData.effectiveToTs" full-data="formParams.ruleMetaData.effectiveToTs_detail"  options='{calType: "gregorian", format: "DD-MM-YYYY hh:mm", autoClose:true}' ng-required="isSimulatedd" ></adm-dtp>
+                     </div> -->
+                     <div ng-messages="createRule.toDate1.$error" class="text-danger" ng-show="createRule.toDate1.$error.required && visitedRuleEffectiveToTs">
+                        <div ng-message="required" class="text-danger">Please Select To Date.</div>
+                     </div>
+                     
+                  </div>
+               <!-- </div>
+               <div class="clearfix row"> -->
+                  <div class="form-group col-md-4">
+                     <span class="textcell_reports inline_block pull-left">Overriding Rules</span>
+                     <ui-select ng-disabled="!isOvrriding" class="col-md-12 ruleUiSelecet" style="border: 1px solid #e9ecef !important;margin: 0px;" multiple ng-model="formParams.ruleMetaData.overridingRuleList" theme="bootstrap"
+                        on-select="changeOverridingRules(overridingRules)"
+                        on-remove="changeOverridingRules(overridingRules)"
+                        remove-selected="false"
+                        close-on-select="true"
+                        title="Select Rules">
+                        <ui-select-match placeholder="Select Fields...">{{$item}}</ui-select-match>
+                        <ui-select-choices repeat="overridingRule in overridingRuleList | filter:$select.search" class="ruleli">
+                           <div ng-bind-html="overridingRule | highlight: $select.search"></div>
+                        </ui-select-choices>
+                     </ui-select>
+                  </div>
+               </div>
+               <!-- <div class="row" style="height:50px;">
+               <div class="col-sm-8">
+               <div class="text-danger" ng-if="simTimeRange && isSimulatedd">Date & Time range is incorrect. Time range should not grater than Six hours between From and To Date</div>
+               </div></div> -->
+            </div>
+            <div class="row">
+               <div class="col-md-12">
+                  <button type="button" class="btn btn-lg btn-danger custom-rule-button-next" ng-click="next('rule');changeNpci();(createRule.$invalid && !disableSubmit)|| isView" ng-disabled="( (disableSubmit || createRule.$invalid )&& !isView )?true:false">Next</button> (<span class="text-danger rule-mandatory">*</span><span style="padding-left:17px;">Fields are required. </span>)
+               </div>
+            </div>
+         </div>
+         <!-- RULE FORM - START -->
+         <div class="animate-switch" ng-switch-when="rule">
+            <div class="rule-header">
+               Rule Name : </strong>{{formParams.ruleMetaData.ruleName}}
+            </div>
+           	<!--<div class="rule-btn-container">
+               <button type="button" class="btn btn-lg btn-danger custom-rule-button-back" ng-click="back('');dateFormatChk()" >Back</button>
+               <button type="button" class="btn btn-lg btn-danger" ng-click="next('summary')" ng-disabled="createRule.$invalid">Next</button>
+            </div>-->
+            <fieldset ng-disabled="isView" class="ruleEditorFieldset summary-page">
+               <div class="summary-header">Transaction</div>
+               <rule-transaction   txnfilter="ruleDataTxnFilter" metadata="ruleMetaData" actiondisable="true"></rule-transaction>
+               <div class="summary-header">Payer</div>
+               <rule-payer payerfilter="ruleDataPayerFilter" metadata="ruleMetaData" ></rule-payer>
+               <div class="summary-header" ng-if="formParams.ruleMetaData.channel!='RuPayAtm'">Payee</div>
+               <rule-payee  payeefilter="ruleDataPayeeFilter" ng-if="formParams.ruleMetaData.channel!='RuPayAtm'"></rule-payee>
+               <div class="summary-header">Acceptance</div>
+               <rule-acceptance-end-point metadata="ruleMetaData" acceptancepointfilter="ruleDataAcceptancePointFilter"></rule-acceptance-end-point>
+               <div class="summary-header">Time Based Transaction</div>
+               <rule-time-based-txn-filter ruledata="ruleData" metadata="ruleMetaData" timebasedfilter="ruleDataTimeBasedFilter" timebasedwithtotalfilter="ruleDataTimeBasedTotalFilter"  ></rule-time-based-txn-filter>
+               <div class="summary-header">With Amount</div>
+               <rule-with-amount-where-amount  ruledata="ruleData" withamountfilter="ruleDataWithAmountFilter" whereamountfilter="ruleDataWhereAmountFilter"  ></rule-with-amount-where-amount>
+               <div class="summary-header">With Count</div>
+               <rule-with-count-where-count  ruledata="ruleData" withcountfilter="ruleDataWithCountFilter" wherecountfilter="ruleDataWhereCountFilter"  ></rule-with-count-where-count>
+            </fieldset>
+            <div ng-if="showMsg" style="margin-top:15px;">
+               <div class="{{msgColor}}">
+                  {{parseMsg}}
+               </div>
+               <!--  <div class="alert alert-info">
+                  <pre class="alert-info" style="font-size:1em;">{{ruleExpression}}</pre>
+                  </div> -->
+            </div>
+            <div class="rule-btn-container">
+               <button type="button" class="btn btn-lg btn-danger custom-rule-button-back" ng-click="back('');dateFormatChk()" >Back</button>
+               <button type="button" class="btn btn-lg btn-danger" ng-click="next('summary')" ng-disabled="createRule.$invalid">Next</button>
+            </div>
+         </div>
+         <!-- RULE FORM END -->
+         <!-- SUMMARY - START -->
+         <div class="animate-switch" ng-switch-when="summary">
+            <div class="rule-header">
+               <div class="pull-left">Summary</div>
+               <div class="pull-right"><strong>Rule Name : </strong>{{formParams.ruleMetaData.ruleName}}</div>
+            </div>
+            <div class="rule-btn-container row rule-top-nav-hide" style="margin-top:33px;">
+               <div class="col-sm-6">
+                  <button type="button" class="btn btn-info custom-rule-button-back rule-top-nav-hide" ng-click="back('withcntwherecnt')" >Back</button>
+                  <button type="button" class=" btn btn-warning" ng-click="parse()" ng-show="!isView">Parse</button>
+                  <button type="button" class="btn btn-primary" ng-click="submitForm()" ng-show="!isView">Submit</button>
+               </div>
+               <div class="col-sm-6 text-right"><strong>Rule Name : </strong>{{formParams.ruleMetaData.ruleName}}</div>
+            </div>
+            <fieldset ng-disabled="true" class="ruleEditorFieldset summary-page">
+               <div class="summary-header">Transaction</div>
+               <rule-transaction   txnfilter="ruleDataTxnFilter" metadata="ruleMetaData" actiondisable="false"></rule-transaction>
+               <div class="summary-header">Payer</div>
+               <rule-payer payerfilter="ruleDataPayerFilter" metadata="ruleMetaData" ></rule-payer>
+               <div class="summary-header" ng-if="formParams.ruleMetaData.channel!='RuPayAtm'">Payee</div>
+               <rule-payee  payeefilter="ruleDataPayeeFilter" ng-if="formParams.ruleMetaData.channel!='RuPayAtm'"></rule-payee>
+               <div class="summary-header">Acceptance</div>
+               <rule-acceptance-end-point metadata="ruleMetaData" acceptancepointfilter="ruleDataAcceptancePointFilter"  ></rule-acceptance-end-point>
+               <div class="summary-header">Time Based Transaction</div>
+               <rule-time-based-txn-filter ruledata="ruleData" metadata="ruleMetaData" timebasedfilter="ruleDataTimeBasedFilter" timebasedwithtotalfilter="ruleDataTimeBasedTotalFilter"  ></rule-time-based-txn-filter>
+               <div class="summary-header">With Amount</div>
+               <rule-with-amount-where-amount  ruledata="ruleData" withamountfilter="ruleDataWithAmountFilter" whereamountfilter="ruleDataWhereAmountFilter"  ></rule-with-amount-where-amount>
+               <div class="summary-header">With Count</div>
+               <rule-with-count-where-count  ruledata="ruleData" withcountfilter="ruleDataWithCountFilter" wherecountfilter="ruleDataWhereCountFilter"  ></rule-with-count-where-count>
+            </fieldset>
+            <div ng-if="showMsg" style="margin-top:15px;">
+               <div class="{{msgColor}}">
+                  {{parseMsg}}
+               </div>
+               <!-- <div class="alert alert-info">
+                  <pre class="alert-info" style="font-size:1em;">{{ruleExpression}}</pre>
+                  </div> -->
+            </div>
+            <div class="rule-btn-container">
+               <button type="button" class="btn btn-lg btn-danger custom-rule-button-back" ng-click="back('rule');hideParse();">Back</button>
+               <button type="button" class="btn btn-lg btn-warning" ng-click="parse()" ng-show="!isView">Parse</button>
+               <button type="button" class="btn btn-lg btn-danger" ng-click="submitForm();hideParse();formParams.ruleMetaData.userInformationDTO.actionType='PENDING_REVIEW'" ng-show="!isView">Submit</button>
+               <button type="button" class="btn btn-lg btn-info" ng-click="submitForm();hideParse();formParams.ruleMetaData.userInformationDTO.actionType='DRAFT'" ng-if="!isView && !isEdit">Save as Draft</button>
+            </div>
+            <!--  <div>For Summary</div>
+               <button type="button" class="btn btn-info custom-rule-button-back" ng-click="back('withcntwherecnt')">Back</button>
+               <button type="button" class="btn btn-warning" ng-click="submitForm()">Submit</button> -->
+         </div>
+         <!-- SUMMARY END -->
+         <!-- SUCCESS SECTION START -->
+         <div class="animate-switch" ng-switch-when="success">
+            <div class="success-wrap">
+               <h2 class="confirmation-text">Thank you</h2>
+               	<p>Your message has been sent.<br>You should receive a confirmation email.</p>
+               <div><button type="button" class="btn btn-success" ng-click="reset()" >Send Another</button></div>
+            </div>
+         </div>
+         <!-- SUCCESS SECTION END -->
+      </div>
+   </form>
+   <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">&nbsp;</div>
+   </div>
+   <div class="row">
+      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+         <button type="button" class="btn btn-lg btn-danger" ng-click="toggleJSONView = !toggleJSONView" >View Rule Model</button>
+         <div>&nbsp;</div>
+         <pre ng-show="toggleJSONView"> {{ formParams | json }}</pre>
+      </div>
+   </div>
+   <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">&nbsp;</div>
+   </div>
+</div>
+<script type="text/ng-template" id="sessionTimeOut">
+   <h5>Need more time?</h5>
+   <div class="progress">
+      <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" progressbarsessiontimeout total="10" current="countDown"> <span class="sr-only">10% Complete (warning)</span>
+      </div>
+   </div>
+   <div class="alert alert-info" style="line-height:20px;font-size:1.3em;">
+      Your session is about to expire, You will be automatically signed out in next <strong>Two Minutes</strong>.
+      To continue your session, press any key.
+   </div>
+</script>

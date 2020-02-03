@@ -1,0 +1,44 @@
+<div>
+  <div class="verticalCenter">
+        <div class="login" ng-init="required=true">
+       <center> <h4>Update Security Question</h4></center>
+            <div>
+			<br>
+			   <form name="emailForm" id="emailForm" ng-submit="emailForm.$valid && questionForm()" autocomplete="off" novalidate accessible-form>
+			   <br>
+			   
+			    <div class='form-group' ng-class="{true: 'has-error'}[submitted && emailForm.primaryQuestion.$invalid]" >
+			        <select class="form-control" ng-model="userSelection.primaryQuestion" placeholder="Select security question" 
+			        ng-change="showSecondQuestion(userSelection.primaryQuestion)" name="primaryQuestion" id="primaryQuestion" ng-disabled="disabledBanknameDropdown" required>
+			        <option  value="">SELECT SECURITY QUESTION</option>
+				     <option ng-repeat="item in questions" value="{{item.questionId}}">{{item.question}}</option>
+				    </select>
+				    <p class="text-danger" style="color:red"  ng-show = "submitted && emailForm.primaryQuestion.$error.required">Please select security question</p>
+			   </div>
+			   
+			   <div class='form-group'  ng-class="{true: 'has-error'}[submitted && emailForm.primaryAnswer.$invalid]" >
+			       <input type="text" class="form-control" placeholder="Enter Answer" name="primaryAnswer" ng-model="userSelection.primaryAnswer" required autofocus="autofocus"/>
+			          <p class="text-danger" style="color:red"  ng-show = "submitted && emailForm.primaryAnswer.$error.required">Answer Required</p>
+			   </div>
+			    <div class='form-group'  ng-class="{true: 'has-error'}[submitted && emailForm.secoundQues.$invalid]"  >
+			        <select class="form-control" ng-model="userSelection.secondryQuestion" placeholder="Select security question" ng-hide="true"
+			         ng-show="secoundQues" name="secoundQues" id="secoundQues" ng-change="showSecondryAnswer(userSelection.secondryQuestion)" ng-disabled="disabledBanknameDropdown" required>
+			         <option  value="">SELECT SECURITY QUESTION</option>
+				     <option ng-repeat="item in secQues" value="{{item.questionId}}" >{{item.question}}</option>
+				    </select>
+				     <p class="text-danger" style="color:red"  ng-show = "submitted && emailForm.secoundQues.$error.required && secoundQues" >Please select security question</p>
+			   </div>
+			    <div class='form-group' ng-class="{true: 'has-error'}[submitted && emailForm.secondryAnswer.$invalid]"  >
+			       <input type="text" class="form-control" placeholder="Enter Answer" ng-model="userSelection.secondryAnswer" name="secondryAnswer" ng-hide="true" ng-show="showSecAnswer" required />
+			         <p class="text-danger" style="color:red"  ng-show = "submitted && emailForm.secondryAnswer.$error.required && showSecAnswer" >Answer Required</p>
+			   </div>
+			   <input type="submit" class="btn btn-block btn-lg btn-danger" value="Submit" ng-click="submitted=true" id="sendMail">
+			   
+			   </form>
+			
+			
+			</div>
+        </div>
+   </div>
+</div>
+

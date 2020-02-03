@@ -1,0 +1,544 @@
+<div class="userDashboard container-fluid">
+   <div class="hasHeader">
+      <div class="userTabs clearfix settings">
+         <div class="tab-content formStyle">
+            <div class="pull-right">
+               <div class="row no-margin">
+                  <div class="pull-left dropdown createRuleBtn" ng-if="loggedInOrgId==='NPCI'">
+                     <button class="btn btn-lg btn-danger" ng-click="refreshRules()">Refresh Rules</button>
+                     <button class="btn btn-lg btn-danger" ng-click="notGeneratedRules()">My Draft Rules</button>
+					 <button class="btn btn-lg btn-danger" ng-click="mySimulatedRules()">My Simulated Rules</button>
+                   <!--  <button ng-json-export-excel data="data.data" report-fields="{ruleId: 'Rule Name', orgId: 'Org Id', ruleScore:'Rule Score',priority:'Priority',ruleType:'Rule Type','userInformationDTO.userId':'Created By','userInformationDTO.actionType':'Status'}" filename="'filename'" class="btn-sm btn-primary">Export Excel</button> -->
+                  
+                  
+				  
+                  </div>
+                  <!-- 
+                     <div class="dropdown createRuleBtn" id="createRule_dropdown">
+                     <button class="btn btn-lg btn-danger" type="button" data-toggle="dropdown"><span aria-hidden="true">Create Rule</span>
+                     </button>
+                     <ul class="dropdown-menu ruleDropdownAdj">
+                     <li><a href="#" id="createByScript"><span ng-click="createRuleByScript()" aria-hidden="true" >Create Rule By Script</span></a></li>
+                     <li><a href="#" id="createBy"><span ng-click="createRuleByEditor()" aria-hidden="true"  >Create Rule By Editor</span></a></li>
+                     </ul>
+                     </div>
+                     -->
+               </div>
+            </div>
+            <div class="pageHeading">
+               <h5>View Rules</h5>
+            </div>
+            <div class="tab-pane active searchUser" id="searchUser" style="margin-bottom:120px;">
+               <form ng-submit="viewRule.$valid && searchRule(selectedOrgId,selectedChannel,selectedStatus.value)"  name="viewRule" novalidate accessible-form>
+                  <div class="col-sm-12 noPadding">
+                     <div class="form-group col-sm-4 noPadding" ng-class="{true: 'has-error'}[submitted && viewRule.selectedOrgId.$invalid]">
+                       <!--  <div class="userRule" ng-if="bankList.length===1">
+                           <select class="form-control" ng-model="selectedOrgId" ng-change="changOrganization(selectedOrgId)" name="selectedOrgId" id="selectedOrgId1" required>
+                              <option style="display:none" value="">SELECT ORGANISATION</option>
+                              <option class="upperCases" value="NPCI" >NPCI</option>
+                              <option class="upperCases" ng-repeat="bank in bankList" value="{{bank.orgId}}">{{bank.name}}</option>
+                           </select>
+                        </div> -->
+                        <!-- <div class="userRule" ng-if="bankList.length>1" > -->
+                        <div class="userRule" >
+                          <!--  <select class="form-control" ng-model="selectedOrgId" ng-change="changOrganization(selectedOrgId)" name="selectedOrgId" id="selectedOrgId2" style="position:absolute;left:-5000px;" required>
+                              <option style="display:none" value="">SELECT ORGANISATION</option>
+                              <option class="upperCases" ng-repeat="bank in bankList" value="{{bank.orgId}}">{{bank.name}}</option>
+                           </select> -->
+                            <select class="form-control" ng-model="selectedOrgId" ng-change="changOrganization(selectedOrgId)" name="selectedOrgId" id="selectedOrgId2" style="position:absolute;left:-5000px;" required>
+                              <option style="display:none" value="">SELECT ORGANISATION</option>
+                              <option class="upperCases" ng-repeat="bank in bankList" value="{{bank.orgId}}">{{bank.name}}</option>
+                           </select>
+                           <!-- <div class="form-group col-sm-4 labelMargintop">	 -->
+								<!-- <span class="textcell_reports">ORGANISATION*</span> -->
+										<!-- <select class="form-control" ng-change="changedValueForOrganisation(selectedOrgid)" ng-disabled = "organisationDisabled" ng-model="selectedOrgid"  required>
+						 						<option style="display:none" value="">PLEASE SELECT</option>
+												<option class="upperCases" ng-repeat="data in orgarnisations" value="{{data.orgId}}">{{data.name}}</option>
+										</select> -->
+										
+   <ui-select 
+           id="organisation_fld"
+           name="organisation_fld"
+           ng-model="selectedOrgId" 
+           uiSelectNoAnimate
+           theme="selectize"  
+           title="Choose a organisation"
+           append-to-body="true" 
+           close-on-select="true" 
+           ng-disabled = "organisationDisabled"
+           on-select="changOrganization(selectedOrgId)"
+           ng-required="true"
+	       >
+      	 <ui-select-match placeholder="SELECT A ORGANISATION IN THE LIST...">{{$select.selected.name}}</ui-select-match>
+	     <ui-select-choices 
+	        repeat="option.orgId as option in bankList | propsFilter:{name:$select.search} |  uppercase"
+	        position="down" 
+	        
+	        refresh-delay="300">
+	      <span ng-bind-html="option.name | highlight: $select.search"></span>
+	      <small ng-bind-html="option.code | highlight: $select.search"></small>
+	    </ui-select-choices>
+    </ui-select>
+							<div ng-show="orglMsg==false">
+								<div ng-message="required" class="text-danger">Please Select the Organisation.</div>
+							</div>
+							
+						<!-- 	</div> -->
+                        </div>
+                        <div class="text-danger" id="selectedBank_required_msg" ng-show="viewRule.selectedOrgId.$error.required && submitted"><small>This is a required field.</small></div>
+                        <br>
+                     </div>
+                     <!-- <div class="form-group col-sm-4" ng-class="{true: 'has-error'}[submitted && viewRule.selectedChannel.$invalid]"> -->
+                        <div class="form-group col-sm-4">
+                        <select ng-model="selectedChannel" name="selectedChannel" id="selectedChannel" class="form-control" id="selectedChannel"  style="height:34px;" required>
+                           <option style="display:none" value="">PLEASE SELECT THE CHANNEL</option>
+                           <!-- <option value="ALL">ALL</option> -->
+                           <option class="upperCases" ng-repeat="item in channel_code|orderBy:'channelDesc'" value="{{item.channelCode}}">{{item.channelDesc}}</option>
+                        </select>
+                        <div class="text-danger" id="selectedChannel_required_msg" ng-show="viewRule.selectedChannel.$error.required && submitted"><small>This is a required field.</small></div>
+                     </div>
+                     <!-- <div ng-if="onlyActive===false && bankList.length>1" class="form-group col-sm-4" ng-class="{true: 'has-error'}[submitted && viewRule.selectedStatus.$invalid]"> -->
+                        <div ng-if="onlyActive===false && bankList.length>1" class="form-group col-sm-4" >
+                        <select ng-model="selectedStatus.value" name="selectedStatus" id="selectedStatus1" class="form-control" style="height:34px;" required>
+                           <option style="display:none" value="">PLEASE SELECT THE STATUS</option>
+                           <option class="upperCases" ng-repeat="item in status" value="{{item}}">{{item}}</option>
+                        </select>
+                        <div class="text-danger" id="selectedStatus_required_msg1" ng-show="viewRule.selectedStatus.$error.required && submitted"><small>This is a required field.</small></div>
+                     </div>
+                     <div ng-if="onlyActive===true" class="form-group col-sm-4" >
+                        <select ng-model="selectedStatus.value" name="selectedStatus" id="selectedStatus2" class="form-control" disabled>
+                           <option value="ACTIVE">ACTIVE</option>
+                        </select>
+                     </div>
+                    <!--  <div ng-if="onlyActive===false && bankList.length===1" class="form-group col-sm-4" ng-class="{true: 'has-error'}[submitted && viewRule.selectedStatus.$invalid]"> -->
+                      <div ng-if="onlyActive===false && bankList.length===1" class="form-group col-sm-4" >
+                        <select ng-model="selectedStatus.value" name="selectedStatus" id="selectedStatus3" class="form-control" style="height:34px;" required>
+                           <option style="display:none" value="">PLEASE SELECT THE STATUS</option>
+                           <option class="upperCases" ng-repeat="item in status" value="{{item}}">{{item}}</option>
+                        </select>
+                        <div class="text-danger" id="selectedStatus_required_msg2" ng-show="viewRule.selectedStatus.$error.required && submitted"><small>This is a required field.</small></div>
+                     </div>
+                  </div>
+                  <div><button type="submit" id="viewRule_submit" class="btn btn-lg btn-danger" ng-click="submitted=true; search=''">Submit
+                     </button>
+                  </div>
+                  <div>
+                     <p><br></p>
+                  </div>
+               </form>
+               <div class="row" style="padding-bottom:10px;" ng-show="data.data!=undefined && data.data.length >5">
+                  <div class="col-sm-9" style="padding-top:19px;">
+                  <strong style="font-size:1.5em;" ng-if="data.data.length>0">Total Records : {{data.data.length}}</strong>
+	                   		<!-- <div class="row">
+		                        <label class="col-sm-6" style="font-size:1.3em;margin-top:15px;">Item Per Page</label>
+		                        <select ng-model="pageSize" class="form-control col-sm-4">
+		                           <option value="5">5</option>
+		                           <option value="10">10</option>
+		                           <option value="20">20</option>
+		                           <option value="50">50</option>
+		                        </select>
+	                        </div> -->
+	              <ul style="margin:0px; padding:0px;display:inline;" ng-if="forSimulate && data.data.length>0">
+	                  <li><i class="fa fa-pie-chart"></i> No Simulation History</li>
+	                  <li><i class="fa fa-pie-chart text-warning"></i> Simulation in Progress</li>
+	                  <li><i class="fa fa-pie-chart text-success"></i> Simulation Complited</li>
+                  </ul>
+                  </div>
+               
+                  <div class="col-sm-3 " >
+                     <input type="text" class="form-control"  placeholder="Search - Rule Name" ng-model="search">
+                  </div>
+               </div>
+               <table class="table  t-responsive" ng-if="!showRuleData">
+                  <thead>
+                     <tr>
+                        <th scope="col" id="img"></th>
+                        <th scope="col">Rule Name</th>
+                        <th scope="col" class="text-center">Creation Type</th>
+                        <th scope="col" class="text-center">Rule Type</th>
+                        <th scope="col" class="text-center">Org Id</th>
+                        <th scope="col">Creation Time</th>
+                        <th scope="col" class="text-center">Rule Score</th>
+                        <th scope="col" class="text-center">Priority</th>
+                        <th scope="col" class="text-center">Creation Type</th>
+                        <th scope="col" class="text-center">Created By</th>
+                        <!-- <th scope="col" class="text-center" ng-if="selectedStatus.value==='PENDING_REVIEW'">Pending Review</th> -->
+                        <th scope="col" class="text-center" ng-if="selectedStatus.value==='ACTIVE'">Approved By</th>
+                        <th scope="col" class="text-center" ng-if="selectedStatus.value==='DEACTIVATED'">Deactivated By</th>
+                        <th scope="col" class="text-center" ng-if="selectedStatus.value==='REJECTED'">Rejected By</th>
+                        <!-- <th scope="col" class="text-center">Priority</th> -->
+                        <th scope="col" class="text-center">Perspective</th>
+                        <th scope="col">Action</th>
+                     </tr>
+                  </thead>
+               </table>
+               <table class="table  t-responsive" ng-if="showRuleData">
+                  <thead>
+                     <tr>
+                        <th scope="col" id="img"></th>
+                        <th scope="col" style="width:200px; word-break:all-break;">Rule Name</th>
+                        <th scope="col" class="text-center">Creation Type</th>
+                        <th scope="col" class="text-center">Rule Type</th>
+                        <th scope="col" class="text-center">Org Id</th>
+                        <th scope="col">Creation Time</th>
+                        <th scope="col" class="text-center">Rule Score</th>
+                        <th scope="col" class="text-center">Priority</th>
+                        
+                        <th scope="col" class="text-center">Created By</th>
+                        <!-- <th scope="col" class="text-center" ng-if="selectedStatuss==='PENDING_REVIEW'">Pending Review</th> -->
+                        <th scope="col" class="text-center" ng-if="selectedStatuss==='ACTIVE'">Approved By</th>
+                        <th scope="col" class="text-center" ng-if="selectedStatuss==='DEACTIVATED'">Deactivated By</th>
+                        <th scope="col" class="text-center" ng-if="selectedStatuss==='REJECTED'">Rejected By</th>
+                        <!-- <th scope="col" class="text-center">Priority</th> -->
+                        <th scope="col" class="text-center">Perspective</th>
+                        <th scope="col">Action</th>
+                     </tr>
+                  </thead>
+                  <tbody ng-hide="data.length == '0' && angular.isUndefined(data) && showRuleData" dir-paginate="rule in data.data|orderBy:sortKey:reverse|filter:{ruleName:search}|itemsPerPage:pageSize">
+                     <tr id="rule_table_expand_row" ng-class="rule.select?'expandColorTr':''">
+                        <td data-label="Expand to more info" id="rule_select">
+                           <h5><span class="fa" ng-class="!rule.select?'fa-plus':'fa-minus'" ng-init="rule.select=false" ng-model="rule.select" ng-click="rule.select=!rule.select;isSessionValid()"></span></h5>
+                        </td>
+                        <td data-label="rule id">
+                       <div style="position:absolute;margin-left: -20px;"> 
+                       <span ng-if="rule.userInformationDTO.actionType==='PENDING_REVIEW'">
+                       <i class="fa fa-pie-chart text-warning" aria-hidden="true" ng-if="rule.simulationDetails.status=='NOT_STARTED' || rule.simulationDetails.status==='IN_PROGRESS'" title="Simulation in Progress"></i>
+                        <i class="fa fa-pie-chart text-success" aria-hidden="true" ng-if="rule.simulationDetails.status=='FINISHED'" title="Simulation Complited" style="cursor:pointer;" ng-click="viewSimulationDetail(rule.simulationDetails)"></i>
+                        <i class="fa fa-pie-chart" aria-hidden="true" ng-if="rule.simulationDetails==null|| rule.simulationDetails===undefined" title="No Simulation history" style="color:#ccc;"></i></div>
+                       </span>
+                       <div style="word-break: break-all; padding-left:15px;"> <span data-toggle="popover" data-content="{{rule.ruleDesc}}" data-trigger="hover" data-placement="bottom" style="cursor:pointer;">{{ rule.ruleName }}</span><!-- <i class="fa fa-info-circle" aria-hidden="true" data-toggle="popover" data-content="{{rule.ruleDesc}}" data-trigger="hover" data-placement="bottom" style="cursor:pointer;"></i> --></div></td>
+                        <td data-label="rule score" class="text-center">{{ rule.composite?'Script':'Editor' }}</td>
+                        <td data-label="rule title" class="text-center">{{ ruleTitle(rule) }}</td>
+                        <td data-label="rule orgId" class="text-center">{{ rule.orgId }}</td>
+                        <td data-label="creation time">
+                           <!-- {{ rule.creationTs| date: 'yyyy-MM-dd HH:mm:ss Z '|GMT}} -->
+                           {{ rule.creationTs!=null?(rule.creationTs  | GMT):'NA'}}
+                           
+                        </td>
+                        <td data-label="rule score" class="text-center">{{ rule.ruleScore }}</td>
+                        <td data-label="rule score" class="text-center">{{ rule.priority }}</td>
+                        
+                        <td data-label="rule score" class="text-center">{{ rule.userInformationDTO.userId }}</td>
+                        <!-- <td data-label="rule score" ng-if="selectedStatuss =='PENDING_REVIEW'" class="text-center">NA</td> -->
+                        <td data-label="rule score" ng-if="selectedStatuss =='ACTIVE'" class="text-center">{{ rule.userInformationDTO.approvedByUserId }}</td>
+                        <td data-label="rule score" ng-if="selectedStatuss=='DEACTIVATED'" class="text-center">{{ rule.userInformationDTO.deactivatedByUserId }}</td>
+                        <td data-label="rule score" ng-if="selectedStatuss =='REJECTED'" class="text-center">{{ rule.userInformationDTO.rejectedByUserId }}</td>
+                        <!--  <td data-label="priority" class="text-center">{{ rule.priority}}</td> -->
+                        <td data-label="orgId" class="text-center">
+                           <span ng-if="rule.online==true">Online</span>
+                           <span ng-if="rule.online==false">Offline</span>
+                        </td>
+                        <td data-label="Action" id="rule_action" data-action="{{rulsAccessFn(rule)}}-{{ruleAccessFnForADR(rule)}}-{{rule.userInformationDTO.actionType}}">
+                           <div class="dropdown" id="rule_action_dropdown">
+                              <button class="btn dropdown-toggle button-width text-center" type="button" data-toggle="dropdown"><span class="fa fa-cog" aria-hidden="true"></span>
+                              </button>
+                              <ul class="dropdown-menu drop-downadj fa-eye-ul" id="rule_info_action_dropdown_action" ng-if="loggedInOrgId != 'NPCI'">
+                              <li ng-click="viewRuleDetail(rule)"><a href="#" id="view_rule"><span class="fa fa-eye" aria-hidden="true" >View Rule</span></a></li>
+                              </ul>
+	                              <ul class="dropdown-menu drop-downadj fa-eye-ul" id="rule_info_action_dropdown_action" ng-if="loggedInOrgId==='NPCI'">
+	                                 <li ng-click="viewRuleDetail(rule)"><a href="#" id="view_rule"><span class="fa fa-eye" aria-hidden="true" >View Rule</span></a></li>
+	                                 <li ng-click="copyRuleDetail(rule)"ng-if="selectedStatus.value =='ACTIVE'" ><a href="#" id="view_rule"><span class="fa fa-copy" aria-hidden="true" >Copy Rule</span></a></li>
+	                                 <li ng-if="rulsAccessFn(rule) && rule.userInformationDTO.actionType!='PENDING_REVIEW' && rule.userInformationDTO.actionType!='PENDING_DEACTIVATION' && rule.userInformationDTO.actionType!='PENDING_REACTIVATION'" ng-click="editRuleDetail(rule)" ><a href="#" id="view_rule"><span class="fa fa-edit" aria-hidden="true" >Edit Rule</span></a></li>
+	                                
+	                                 <li ng-if="rulsAccessFn(rule) && ruleAccessFnForADR(rule) && (rule.userInformationDTO.actionType=='PENDING_REVIEW' || rule.userInformationDTO.actionType=='DEACTIVATED') && (rule.simulationDetails===null || rule.simulationDetails===undefined || rule.simulationDetails.status==='FINISHED')" ng-click="callActivate(rule,'ACTIVE')"><a href="#" id="active1"><span class="glyphicon" aria-hidden="true" >&#xe013; Activate</span></a></li>
+	                                 <li ng-if="rulsAccessFn(rule) && ruleAccessFnForADR(rule) && (rule.userInformationDTO.actionType=='PENDING_REVIEW' || rule.userInformationDTO.actionType=='DEACTIVATED') && (rule.simulationDetails!=null || rule.simulationDetails!=undefined) && (rule.simulationDetails.status===NOT_STARTED || rule.simulationDetails.status==='IN_PROGRESS')"><a href="#" id="active1" style="cursor:auto;"><span class="glyphicon" aria-hidden="true" >&#xe013; <s>Activate</s></span></a></li>
+	                                 <!-- <li ng-if="rulsAccessFn(rule) && ruleAccessFnForADR(rule) && rule.userInformationDTO.actionType=='DEACTIVATED'" ng-click="callActivate(rule,'ACTIVE')"><a href="#" id="active1"><span class="glyphicon" aria-hidden="true" >&#xe013; Activate</span></a></li> -->
+	                               
+	                               
+	                               
+	                               
+	                                <!--  <li ng-if="rulsAccessFn(rule) && ruleAccessFnForADR(rule) && rule.userInformationDTO.actionType=='DEACTIVATED' && rule.simulationUnderProgress" ><a href="#" id="active1" style="cursor:auto;"><span class="glyphicon" aria-hidden="true" >&#xe013; <s>Activate</s></span></a></li> -->
+	                                 <!-- <li ng-if="rulsAccessFn(rule) && ruleAccessFnForADR(rule) && rule.userInformationDTO.actionType=='DEACTIVATED'" ng-click="callActivate(rule,'PENDING_REACTIVATION')"><a href="#" id="active1"><span class="glyphicon" aria-hidden="true" >&#xe013; Activate</span></a></li> -->
+	                                 
+	                                 <li ng-if="rulsAccessFn(rule) && ruleAccessFnForADR(rule) && rule.userInformationDTO.actionType=='ACTIVE'" ng-click="callDeactivate(rule,'DEACTIVATED')"><a href="#" id="active1"><span class="glyphicon" aria-hidden="true" >&#xe013; Deactivate</span></a></li>
+	                                <!--  <li ng-if="rulsAccessFn(rule) && ruleAccessFnForADR(rule) && rule.userInformationDTO.actionType=='ACTIVE'" ng-click="callDeactivate(rule,'PENDING_DEACTIVATION')"><a href="#" id="active1"><span class="glyphicon" aria-hidden="true" >&#xe014; Deactivate</span></a></li> -->
+	                                 <li ng-if="rulsAccessFn(rule) && ruleAccessFnForADR(rule) && rule.userInformationDTO.actionType=='PENDING_REVIEW'" ng-click="callReject(rule,'REJECTED')"><a href="#" id="active1"><span class="glyphicon" aria-hidden="true" >&#xe014; Reject</span></a></li>
+	                                 <li ng-if="rule.userInformationDTO.actionType =='PENDING_REVIEW'" ng-click="validateRuleFn(rule)"><a href="#" id="validate"><span class="glyphicon" aria-hidden="true" >&#xe067; Validate</span></a></li>
+	                                 <li ng-if="rule.userInformationDTO.actionType =='PENDING_REVIEW' && (rule.simulationDetails.status==='FINISHED' || rule.simulationDetails===null || rule.simulationDetails===undefined)" ng-click="simulateRuleFn(rule)"><a href="#" id="simulate"><span class="glyphicon" aria-hidden="true" >&#xe115; Simulate</span></a></li>
+	                                 <li ng-if="rule.userInformationDTO.actionType =='PENDING_REVIEW' && (rule.simulationDetails.status==='NOT_STARTED' || rule.simulationDetails.status==='IN_PROGRESS')"><a href="#" id="simulate" style="cursor:auto;"><span class="glyphicon" aria-hidden="true" >&#xe115; <s>Simulate</s></span></a></li>
+	                                 <li ng-if="rule.hasMultiple"  ng-click="compareRule(rule)"><a href="#" id="deactivate1"><span class="glyphicon" aria-hidden="true" >&#xe110; Compare</span></a></li>
+	                              </ul>
+                           </div>
+                        </td>
+                     </tr>
+                     <tr ng-show="rule.select" id="rule_select_row" class="expandColor">
+                        <td colspan="12" class="ruleTable">
+                           <div class="row clearfix">
+                              <div class="col-sm-1 gapAlign"></div>
+                              <!--
+                                 <div class="col-sm-offset-1 col-sm-6" id="rule_channel"><strong>Channel :</strong> <span class="">{{ rule.channel }}</span> </div>
+                                 -->
+                              <div class="col-sm-11">
+                                 <div class="col-sm-6" id="createdTime" ><strong>Creation Time :</strong><span class="">
+                                    {{(angular.isUndefined(rule.creationTs))?'NA':rule.creationTs| date: 'yyyy-MM-dd HH:mm:ss Z '|GMT }}
+                                    </span>
+                                 </div>
+                                 <div class="col-sm-6" id="createdBy"><strong>Created By :</strong> <span class="">
+                                    {{ rule.userInformationDTO.userId}}</span>
+                                 </div>
+                                 <div ng-if="rule.lastUpdateTs!=null" class="col-sm-6" id="updatedTime" ><strong>Last Updated Time:</strong><span class="">
+                                    {{(angular.isUndefined(rule.lastUpdateTs))?'NA':rule.lastUpdateTs| date: 'yyyy-MM-dd HH:mm:ss Z '|GMT }}
+                                    </span>
+                                 </div>
+                                 <div ng-if="rule.lastUpdateTs!=null" class="col-sm-6" id="updatedBy"><strong>Updated By :</strong> <span class="">
+                                    {{ rule.userInformationDTO.updatedByUserId }}</span>
+                                 </div>
+                                 <div ng-if="rule.approvalTs!=null" class="col-sm-6" id="approvalTime" ><strong>Approval Time:</strong><span class="">
+                                    {{(angular.isUndefined(rule.approvalTs))?'NA':rule.approvalTs | date: 'yyyy-MM-dd HH:mm:ss Z '|GMT }}
+                                    </span>
+                                 </div>
+                                 <div ng-if="rule.approvalTs!=null" class="col-sm-6" id="approvedBy"><strong>Approved By :</strong> <span class="">
+                                    {{ rule.userInformationDTO.approvedByUserId}}</span>
+                                 </div>
+                                 <div ng-if="rule.rejectionTs!=null" class="col-sm-6" id="rejectedTime" ><strong>Rejected Time :</strong><span class="">
+                                    {{(angular.isUndefined(rule.rejectionTs))?'NA': rule.rejectionTs| date: 'yyyy-MM-dd HH:mm:ss Z '|GMT }}
+                                    </span>
+                                 </div>
+                                 <div ng-if="rule.rejectionTs!=null" class="col-sm-6" id="rejectedBy"><strong>Rejected By :</strong> <span class="">
+                                    {{ rule.userInformationDTO.rejectedByUserId}}</span>
+                                 </div>
+                                 <div ng-if="rule.deactivationTs!=null" class="col-sm-6" id="deactivationTime" ><strong>Deactivation Time:</strong><span class="">
+                                    {{(angular.isUndefined(rule.deactivationTs))?'NA':rule.deactivationTs| date: 'yyyy-MM-dd HH:mm:ss Z '|GMT }}
+                                    </span>
+                                 </div>
+                                 <div ng-if="rule.deactivationTs!=null" class="col-sm-6" id="deactivatedBy"><strong>Deactivated By :</strong> <span class="">
+                                    {{ rule.userInformationDTO.deactivatedByUserId}}</span>
+                                 </div>
+                                 <div class="col-sm-6" id="rule_type"><strong>Rule Type :</strong> <span class="">{{ rule.ruleType }}</span> </div>
+                                 <!--<div class="col-sm-4" id="rule_perspective" ><strong>Perspective :</strong>
+                                    <span ng-if="rule.online==true">Online</span>
+                                    <span ng-if="rule.online==false">Offline</span></div>-->
+                              </div>
+                           </div>
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+               <div class="text-center noData" id="no_data_found" ng-show="data.data ==null || data.length == 0 || (data.data!=undefined && data.data.length ==0)|| !showRuleData">
+                  <h6>No Data Found</h6>
+               </div>
+               <div class="gridPagination clearfix" ng-hide="data.data ==null || data.length == '0' || angular.isUndefined(data)||!showRuleData">
+                  <div class="col-sm-1  padding-left-zero" ng-show="(data.data!=undefined || data.data !=null) && data.data.length >50 ">
+                     <select ng-model="pageSize" ng-change="refreshGrid(selectedOrgId,selectedChannel,selectedStatus.value)" >
+                        <!-- <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option> -->
+                        <option value="50">50</option>
+                        <option value="75">75</option>
+                        <option value="100">100</option>
+                     </select>
+                  </div>
+                  <div class="col-sm-8">
+                     <dir-pagination-controls max-size="pageSize" direction-links="true" boundary-links="true" ></dir-pagination-controls>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <!-- Modal -->
+   <div class="modal fade" id="myModal" role="dialog">
+      <div class="modal-dialog">
+         <!-- Modal content-->
+         <div class="modal-content">
+            <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal">&times;</button>
+               <h4 class="modal-title">Modal Header</h4>
+            </div>
+            <div class="modal-body">
+               <p>Some text in the modal.</p>
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+         </div>
+      </div>
+   </div>
+   <input type="hidden" ng-model="stTxnDate"/>
+   
+</div>
+<script type="text/ng-template" id="templateSimulate">
+   <style>
+      .ruleCalender{
+      	left:230px; 
+      }
+   </style>
+
+<div class="row">
+   <div class="col-sm-6">
+      <h6 style="margin-top:11px;margin-bottom:11px;">Challenger Rule - {{simRuleName}}</h6>
+   </div>
+   <div class="col-sm-6">
+      <div class="row">
+         <div class="col-sm-4">
+            <h6 style="margin-top:10px;">Champion Rule</h6>
+         </div>
+         <div class="col-sm-6">
+            <select class="form-control" ng-model="ruleCompare" name="limit" id="limit" ng-change="getCompareExpr(ruleCompare)" ng-disabled="simulationTrackStatus">
+               <option value="">Select</option>
+               <option ng-repeat="rule in simRuleData.data" value="{{rule.ruleId}}" ng-hide="(simRuleID==rule.ruleId)?true:false">{{rule.ruleName}}</option>
+            </select>
+         </div>
+      </div>
+   </div>
+
+</div>
+
+<div class="row">
+   <div ng-class="{'col-sm-6':ruleCompare,'col-sm-12':!ruleCompare}">
+      <div class="alert alert-info ng-dialog-content"><pre class="alert-info" style="font-size:1.1em;height: 100px; overflow-y: scroll;">{{simRuleExpr}}</pre></div>
+   </div>
+   <div class="col-sm-6"ng-if="ruleCompare.length>0">
+      <div class="alert alert-info ng-dialog-content"><pre class="alert-info" style="font-size:1.1em;height: 100px; overflow-y: scroll;">{{comExpr}}</pre></div>
+   </div>
+</div>
+<div class="row no-margin" ng-if="simulationTrackStatus">
+<div class="col-sm-12 alert alert-info">{{simulationTrackMsg}}</div>
+
+</div>
+
+
+<div class="row" ng-show="showSimulateResult">
+   <h5 class="col-sm-6" style="font-size:1.5em;" >Simulated Rule Id - {{simulateRuleId}}</h5>
+</div>
+<div class="row" ng-show="showSimulateResult">
+   <div class="col-sm-12 ng-dialog-content">
+      <table class="table table-striped" >
+         <tr>
+            <th style="width:40%; font-weight:bold;">Simulated Start</th>
+            <td>{{simulatedIdResult.actualStartDateTs}}</td>
+         </tr>
+         <tr>
+            <th style="width:40%; font-weight:bold;">Simulated End</th>
+            <td>{{simulatedIdResult.actualEndDateTs}}</td>
+         </tr>
+         <tr>
+            <th style="width:40%; font-weight:bold;">Status</th>
+            <td>{{simulatedIdResult.status}}</td>
+         </tr>
+      </table>
+   </div>
+</div>
+
+   <div class="row" ng-if="!simulationTrackStatus">
+
+
+      <div class="col-sm-4">
+         <div class="form-group">
+            <label for="startDate">From Date </label>
+           <adm-dtp name="stTxnDate" ng-model="stTxnDate" full-data="stTxnDate_detail"   mindate="'{{currentDate | date:'dd-MM-yyyy hh:mm '}}'" options='{calType: "gregorian", format: "DD-MM-YYYY hh:mm ",autoClose:true}' ng-change="timevalid(stTxnDate)"></adm-dtp>
+         <!--<adm-dtp name="stTxnDate" ng-model="stTxnDate" full-data="stTxnDate_detail"   mindate="'{{currentDate | date:'dd-MM-yyyy hh:mm '}}'" options='{calType: "gregorian", format: "DD-MM-YYYY hh:mm ",autoClose:true}' ></adm-dtp>-->
+		</div>
+	<div class="text-danger" ng-if="timeValidAlert">{{simulationDurationMsg}}</div>
+      </div>
+      <div class="col-sm-2">
+         <div class="form-group">
+            <label for="startDate">Duration</label>
+            <select ng-model="duration" class="form-control">
+				<option value="">0</option>
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+				<option value="6">6</option>
+			</select>
+         </div>
+      </div>
+      <!--<div class="col-sm-2">
+         <label for="ex">Count</label>
+         <select class="form-control" ng-model="count" name="limit" id="limit" required>
+            <option value="">Select</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+            <option value="500">500</option>
+            <option value="1000">1000</option>
+            <option value="2000">2000</option>
+            <option value="5000">5000</option>
+            <option value="10000">10000</option>
+         </select>
+      </div>-->
+      <div class="col-sm-2" style="padding-top:20px;"><button class="btn btn-primary" ng-click="simulateRule(stTxnDate,duration);duration='';stTxnDate='';enTxnDate='';" ng-disabled="(stTxnDate.length>0 && duration.length>0 && !timeValidAlert )?false:true">Submit</button></div>
+   </div>
+<div class="text-danger" ng-if="showErrMsg">{{qErrMsg}}</div>
+</script>
+<script type="text/ng-template" id="templateId">
+   <h5>Compare Rule - {{compareRuleId}}</h5>
+   <div>
+      <div>
+         <div class="alert alert-warning ng-dialog-content">
+            <h5>Previous Version</h5>
+            <pre class="alert-warning" style="font-size:1.1em; height: 100px; overflow-y: scroll;">{{previousRule}}</pre>
+         </div>
+      </div>
+      <div>
+         <div class="alert alert-info ng-dialog-content">
+            <h5>Current Version</h5>
+            <pre class="alert-info" style="font-size:1.1em;height: 100px; overflow-y: scroll;">{{currentRule}}</pre>
+         </div>
+      </div>
+   </div>
+</script>
+<script type="text/ng-template" id="templateRefresh">
+   <h5>Refresh Rule</h5>
+   <div class="row">
+      <div class="col-sm-5">
+         <select class="form-control" ng-model="refreshOrg" required>
+            <option value="">Organisation</option>
+   		 <option class="upperCases" ng-repeat="bank in bankList" value="{{bank.orgId}}">{{bank.name}}</option>
+         </select>
+      </div>
+      <div class="col-sm-4">
+         <select class="form-control" ng-model="refreshChannel" required>
+            <option value="">Channel</option>
+   		<option class="upperCases" ng-repeat="item in channel_code|orderBy:'channelDesc'" value="{{item.channelCode}}"  ng-if="item.channelCode!='RuPayAtm_RuPayPos'" >{{item.channelDesc}}</option>
+         </select>
+      </div>
+      <div class="col-sm-2">
+         <button class="btn btn-lg btn-danger" ng-disabled="(refreshOrg.length>0 && refreshChannel.length>0)?false:true" ng-click="refreshFN(refreshOrg,refreshChannel);refreshOrg='';refreshChannel='';">Submit</button>
+      </div>
+   </div>
+</script>
+<script type="text/ng-template" id="templateSimulateRslt">
+   <h5>Simulation Detail</h5>
+   <div class="row">
+	<div class="col-sm-5" ng-if="hasChampion">
+		<div id="simulatorChart" dx-chart="chartOptions"></div>
+	</div>
+	<div ng-class="hasChampion?'col-sm-7':'col-sm-12'" ng-style="hasChampion === true && {'padding-top':'23px'}  || hasChampion === false && {'padding-top':'auto'}">
+	<div style="font-size:1.5em;padding:10px 0;"><strong>Start : </strong>{{ruleInfo.actualStartDateTs }}
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>End : </strong>{{ruleInfo.actualEndDateTs }}
+	</div>
+	<table class="table table-striped table-bordered">
+		<thead class="alert-info">
+			<tr>
+				<th style="width:200px;">Rule Name</th>
+				<th ng-if="hasChampion">Type</th>
+				<th>Alert Count</th>
+				<th>Average Time (millis)</th>
+				<th>Max Time (millis)</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-if="hasChampion" ng-style="hasChampion === true && {'background-color':'#9ab57e'}  || hasChampion === false && {'background-color':'#fff'}">
+				<td style="width:200px; word-break: break-all;"><i class="fa fa-info-circle" aria-hidden="true" data-toggle="popover" data-content="{{ruleInfo.chamapion.expr}}" data-trigger="hover" data-placement="bottom" style="cursor:pointer;"></i> {{ruleInfo.chamapion.ruleName}} </td>
+				<td ng-if="hasChampion">Champion</td>
+				<td>{{ruleInfo.chamapion.alertCount}}</td>
+				<td><span >{{ruleInfo.chamapion.avgExecTime }}</span></td>
+				<td><span >{{ruleInfo.chamapion.maxExecTime }}</span></td>
+			</tr>
+			<tr ng-style="hasChampion === true && {'background-color':'#cbc87b'}  || hasChampion === false && {'background-color':'#fff'}">
+				<td style="width:200px; word-break: break-all;"><i class="fa fa-info-circle" aria-hidden="true" data-toggle="popover" data-content="{{ruleInfo.challenger.expr}}" data-trigger="hover" data-placement="bottom" style="cursor:pointer;"></i> {{ruleInfo.challenger.ruleName}} </td>
+				<td ng-if="hasChampion">Challenger</td>
+				<td>{{ruleInfo.challenger.alertCount}}</td>
+				<td><span >{{ruleInfo.challenger.avgExecTime }}</span></td>
+				<td><span >{{ruleInfo.challenger.maxExecTime }}</span></td>
+			</tr>
+		</tbody>
+	</table>
+	<div style="font-size:1.5em;padding:10px 0;"><strong>Txn Count :</strong> {{ruleInfo.txnCount }}</div>
+	</div>
+   </div>
+</script>
